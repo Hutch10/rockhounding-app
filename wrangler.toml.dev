@@ -1,0 +1,144 @@
+##########################################
+# Local Development Wrangler Configuration
+# Rockhounding API Backend
+#
+# Usage: wrangler dev --config wrangler.toml.dev
+# Or: wrangler dev --env development
+#
+# This configuration optimizes for local development:
+# - Connects to local Supabase (port 54321)
+# - Uses local Durable Objects (in-memory)
+# - Disables authentication checks
+# - Enables verbose logging
+# - Uses localhost for all connections
+##########################################
+
+name = "rockhound-api-dev"
+main = "src/index.ts"
+type = "service"
+compatibility_date = "2025-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Environment variables
+[env.development]
+vars = {
+  ENVIRONMENT = "development",
+  LOG_LEVEL = "debug",
+  SUPABASE_URL = "http://localhost:54321",
+  SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4YW1wbGUiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTYxNTc2OTYwMCwiZXhwIjoxNjQ3MzA1NjAwfQ.rRaWGV7d0GRR8yPhglVHvyYsSTSFcl1NG7roxi4eNQU",
+  ENABLE_CORS = "true",
+  CORS_ORIGINS = "http://localhost:3000,http://localhost:3001",
+  SKIP_AUTH = "true",
+  DEBUG_API = "true"
+}
+
+##################################################
+# Local Durable Objects (In-Memory)
+##################################################
+# These run in the local wrangler dev environment
+
+[[env.development.durable_objects.bindings]]
+name = "EXPORT_COORDINATOR"
+class_name = "ExportCoordinatorDO"
+script_name = "rockhound-api-dev"
+
+[[env.development.durable_objects.bindings]]
+name = "STATE_PACK_REGISTRY"
+class_name = "StatePackRegistryDO"
+script_name = "rockhound-api-dev"
+
+##################################################
+# Durable Objects Migrations
+##################################################
+
+[[migrations]]
+tag = "v1"
+new_classes = ["ExportCoordinatorDO", "StatePackRegistryDO"]
+
+##################################################
+# Local Queue Configuration
+##################################################
+
+[[env.development.queues.producers]]
+name = "exports-queue"
+binding = "EXPORTS_QUEUE"
+
+[[env.development.queues.consumers]]
+queue = "exports-queue"
+max_batch_size = 1
+max_batch_timeout = 5
+max_retries = 1
+
+##################################################
+# Local R2 Bindings (Using miniflare/local simulation)
+##################################################
+
+[[env.development.r2_buckets]]
+binding = "EXPORTS_BUCKET"
+bucket_name = "rockhound-exports-dev"
+jurisdiction = "eu"
+
+[[env.development.r2_buckets]]
+binding = "STATE_PACKS_BUCKET"
+bucket_name = "rockhound-state-packs-dev"
+jurisdiction = "eu"
+
+[[env.development.r2_buckets]]
+binding = "MEDIA_BUCKET"
+bucket_name = "rockhound-media-dev"
+jurisdiction = "eu"
+
+##################################################
+# Local KV Configuration
+##################################################
+
+[[env.development.kv_namespaces]]
+binding = "CACHE_KV"
+id = "local-cache-kv"
+preview_id = "local-cache-kv-preview"
+
+[[env.development.kv_namespaces]]
+binding = "SESSION_KV"
+id = "local-session-kv"
+preview_id = "local-session-kv-preview"
+
+##################################################
+# Observability Settings
+##################################################
+
+[env.development]
+# Enable request logging in console
+# Set this to true to see all incoming requests
+
+##################################################
+# Notes for Local Development
+##################################################
+# 
+# To run:
+#   wrangler dev --env development
+#
+# This will:
+# 1. Start the Workers dev server on http://localhost:8787
+# 2. Create in-memory Durable Objects
+# 3. Connect to local Supabase on http://localhost:54321
+# 4. Log all requests to console
+# 5. Simulate R2 buckets locally
+# 6. Simulate KV locally
+#
+# Required local services:
+# - Supabase local: supabase start
+# - (Optional) Check Supabase status: supabase status
+#
+# Testing endpoints:
+#   GET http://localhost:8787/health
+#   GET http://localhost:8787/locations?bbox=-180,-90,180,90
+#   POST http://localhost:8787/exports -d '{"type":"observations"}'
+#
+# To reset local state:
+#   wrangler dev --env development --local-protocol=http
+#
+# Environment Variables:
+# - SKIP_AUTH: Set to "true" to disable auth checks (default: false)
+# - DEBUG_API: Set to "true" for verbose request/response logging
+# - LOG_LEVEL: Set to "debug", "info", "warn", or "error"
+# - CORS_ORIGINS: Comma-separated list of allowed origins

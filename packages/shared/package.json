@@ -1,0 +1,46 @@
+{
+  "name": "@rockhounding/shared",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./enums": {
+      "types": "./dist/enums.d.ts",
+      "default": "./dist/enums.js"
+    },
+    "./settings-schema": {
+      "types": "./dist/settings-schema.d.ts",
+      "default": "./dist/settings-schema.js"
+    },
+    "./field-session-schema": {
+      "types": "./dist/field-session-schema.d.ts",
+      "default": "./dist/field-session-schema.js"
+    },
+    "./find-log-schema": {
+      "types": "./dist/find-log-schema.d.ts",
+      "default": "./dist/find-log-schema.js"
+    },
+    "./capture-session-schema": {
+      "types": "./dist/capture-session-schema.d.ts",
+      "default": "./dist/capture-session-schema.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "type-check": "tsc --noEmit",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "vitest": "^1.2.0"
+  }
+}

@@ -1,0 +1,57 @@
+// Rockhound v1.4.0 Mobile (React Native + Expo) - File List
+// Deterministic, regeneration-safe, ultra-dense
+
+/
+  README.md
+  app.json
+  package.json
+  App.js
+  assets/
+    icon.png
+    ...
+  src/
+    models/
+      Specimen.js
+      CustomView.js
+      Migration.js
+    storage/
+      SpecimenStorage.js
+      CustomViewStorage.js
+      OnboardingStorage.js
+    components/
+      ListView.js
+      SpecimenForm.js
+      PhotoGallery.js
+      TagInput.js
+      TagList.js
+      CustomFieldsEditor.js
+      BatchSelectionBar.js
+      BatchActionPanel.js
+      HistoryPanel.js
+      AttachmentPanel.js
+      AdvancedFilterPanel.js
+      SortPanel.js
+      TemplateManager.js
+      TemplatePicker.js
+      I18nProvider.js
+      LanguageSwitcher.js
+      ExportImportPanel.js
+      CustomViewManager.js
+      CustomViewPicker.js
+      OnboardingTour.js
+      ContextualHelp.js
+      RelationshipEditor.js
+      RelationshipViewer.js
+      AnnotationPanel.js
+    demo/
+      demoSpecimens.js
+      demoCustomViews.js
+    utils/
+      migrationUtils.js
+      annotationUtils.js
+      relationshipUtils.js
+    routes/
+      Router.js
+      SpecimenDetail.js
+      Home.js
+      ...

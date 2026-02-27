@@ -1,0 +1,315 @@
+##########################################
+# Cloudflare Workers Configuration
+# Rockhounding API Backend
+# 
+# This file configures the Cloudflare Workers deployment for the
+# Rockhounding API, including Durable Objects, Queues, and R2 storage.
+#
+# For local development, see wrangler.toml.dev
+##########################################
+
+# Project metadata
+name = "rockhound-api"
+main = "src/index.ts"
+type = "service"
+compatibility_date = "2025-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Account and deployment settings
+# Set these via wrangler env config or .env file
+# account_id = "YOUR_ACCOUNT_ID"
+# api_token = "YOUR_API_TOKEN" # Set via CLOUDFLARE_API_TOKEN env var
+
+# Build configuration
+[build]
+command = "npm install && npm run build"
+cwd = "apps/backend"  # Adjust if backend is in a different location
+main = "dist/index.js"
+
+# Development server configuration
+[env.development]
+name = "rockhound-api-dev"
+
+[env.development.vars]
+ENVIRONMENT = "development"
+LOG_LEVEL = "debug"
+SUPABASE_URL = "http://localhost:54321"
+ENABLE_CORS = "true"
+
+[[env.development.routes]]
+pattern = "http://localhost:8787/*"
+zone_name = "localhost"
+
+# Staging environment
+[env.staging]
+name = "rockhound-api-staging"
+routes = [
+  { pattern = "staging-api.rockhound.app/*", zone_name = "rockhound.app" }
+]
+vars = {
+  ENVIRONMENT = "staging",
+  LOG_LEVEL = "info",
+  SUPABASE_URL = "https://staging.rockhound.supabase.co",
+  ENABLE_CORS = "true"
+}
+
+# Production environment
+[env.production]
+name = "rockhound-api-prod"
+routes = [
+  { pattern = "api.rockhound.app/*", zone_name = "rockhound.app" },
+  { pattern = "https://api.rockhound.app/*" }
+]
+vars = {
+  ENVIRONMENT = "production",
+  LOG_LEVEL = "warn",
+  SUPABASE_URL = "https://prod.rockhound.supabase.co",
+  ENABLE_CORS = "false"
+}
+
+##################################################
+# Secrets (set via: wrangler secret put NAME)
+##################################################
+# These must be set separately for each environment:
+# - SUPABASE_SERVICE_ROLE_KEY
+# - ADMIN_API_KEY
+# - MAPBOX_API_KEY (if API validation needed)
+# - R2_ACCESS_KEY_ID
+# - R2_SECRET_ACCESS_KEY
+#
+# To set a secret:
+# wrangler secret put SUPABASE_SERVICE_ROLE_KEY --env production
+#
+# To list secrets:
+# wrangler secret list --env production
+
+##################################################
+# Durable Objects Configuration
+##################################################
+
+# Export Coordinator - Manages export job lifecycle
+[[durable_objects.bindings]]
+name = "EXPORT_COORDINATOR"
+class_name = "ExportCoordinatorDO"
+environment = "production"
+
+[[env.staging.durable_objects.bindings]]
+name = "EXPORT_COORDINATOR"
+class_name = "ExportCoordinatorDO"
+environment = "staging"
+
+[[env.development.durable_objects.bindings]]
+name = "EXPORT_COORDINATOR"
+class_name = "ExportCoordinatorDO"
+environment = "development"
+
+# State Pack Registry - Manages state pack metadata and distribution
+[[durable_objects.bindings]]
+name = "STATE_PACK_REGISTRY"
+class_name = "StatePackRegistryDO"
+environment = "production"
+
+[[env.staging.durable_objects.bindings]]
+name = "STATE_PACK_REGISTRY"
+class_name = "StatePackRegistryDO"
+environment = "staging"
+
+[[env.development.durable_objects.bindings]]
+name = "STATE_PACK_REGISTRY"
+class_name = "StatePackRegistryDO"
+environment = "development"
+
+##################################################
+# Durable Objects Migrations
+##################################################
+# These run in order. Add new migrations here as schema changes occur.
+
+[[migrations]]
+tag = "v1"
+new_classes = ["ExportCoordinatorDO", "StatePackRegistryDO"]
+
+[[migrations]]
+tag = "v2"
+renamed_classes = []
+deleted_classes = []
+
+##################################################
+# Queue Configuration
+##################################################
+
+# Exports queue - Processes asynchronous export jobs
+[[queues.producers]]
+name = "exports-queue"
+binding = "EXPORTS_QUEUE"
+
+[[queues.consumers]]
+queue = "exports-queue"
+max_batch_size = 10
+max_batch_timeout = 30
+max_retries = 3
+dead_letter_queue = "exports-queue-dlq"
+
+# Dead letter queue for failed exports
+[[queues.consumers]]
+queue = "exports-queue-dlq"
+max_batch_size = 5
+max_batch_timeout = 60
+
+##################################################
+# Analytics Engine (for monitoring)
+##################################################
+# Optional: Enable for performance metrics
+# [[analytics_engine_datasets]]
+
+##################################################
+# R2 Bucket Bindings (Object Storage)
+##################################################
+
+# Exports bucket - Stores generated export files (GeoJSON, KML, CSV, etc)
+[[r2_buckets]]
+binding = "EXPORTS_BUCKET"
+bucket_name = "rockhound-exports"
+jurisdiction = "eu"
+
+[[env.staging.r2_buckets]]
+binding = "EXPORTS_BUCKET"
+bucket_name = "rockhound-exports-staging"
+jurisdiction = "eu"
+
+[[env.development.r2_buckets]]
+binding = "EXPORTS_BUCKET"
+bucket_name = "rockhound-exports-dev"
+jurisdiction = "eu"
+
+# State packs bucket - Stores generated state pack JSON files
+[[r2_buckets]]
+binding = "STATE_PACKS_BUCKET"
+bucket_name = "rockhound-state-packs"
+jurisdiction = "eu"
+
+[[env.staging.r2_buckets]]
+binding = "STATE_PACKS_BUCKET"
+bucket_name = "rockhound-state-packs-staging"
+jurisdiction = "eu"
+
+[[env.development.r2_buckets]]
+binding = "STATE_PACKS_BUCKET"
+bucket_name = "rockhound-state-packs-dev"
+jurisdiction = "eu"
+
+# Media bucket - Stores observation photos, map tiles, etc
+[[r2_buckets]]
+binding = "MEDIA_BUCKET"
+bucket_name = "rockhound-media"
+jurisdiction = "eu"
+
+[[env.staging.r2_buckets]]
+binding = "MEDIA_BUCKET"
+bucket_name = "rockhound-media-staging"
+jurisdiction = "eu"
+
+[[env.development.r2_buckets]]
+binding = "MEDIA_BUCKET"
+bucket_name = "rockhound-media-dev"
+jurisdiction = "eu"
+
+##################################################
+# KV Namespace Bindings (Caching)
+##################################################
+
+# API response cache - Caches frequently accessed data
+[[kv_namespaces]]
+binding = "CACHE_KV"
+id = "YOUR_KV_NAMESPACE_ID"
+preview_id = "YOUR_KV_PREVIEW_ID"
+
+[[env.staging.kv_namespaces]]
+binding = "CACHE_KV"
+id = "YOUR_STAGING_KV_NAMESPACE_ID"
+
+[[env.development.kv_namespaces]]
+binding = "CACHE_KV"
+id = "YOUR_DEV_KV_NAMESPACE_ID"
+
+# Session store - Stores temporary session data
+[[kv_namespaces]]
+binding = "SESSION_KV"
+id = "YOUR_SESSION_KV_NAMESPACE_ID"
+
+[[env.staging.kv_namespaces]]
+binding = "SESSION_KV"
+id = "YOUR_STAGING_SESSION_KV_NAMESPACE_ID"
+
+[[env.development.kv_namespaces]]
+binding = "SESSION_KV"
+id = "YOUR_DEV_SESSION_KV_NAMESPACE_ID"
+
+##################################################
+# Database (D1) Configuration
+##################################################
+# Optional: Use Cloudflare D1 instead of/alongside Supabase
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "rockhound"
+# database_id = "YOUR_D1_DATABASE_ID"
+#
+# [[env.staging.d1_databases]]
+# binding = "DB"
+# database_name = "rockhound-staging"
+# database_id = "YOUR_D1_STAGING_DATABASE_ID"
+#
+# [[env.development.d1_databases]]
+# binding = "DB"
+# database_name = "rockhound-dev"
+# database_id = "YOUR_D1_DEV_DATABASE_ID"
+
+##################################################
+# Observability & Monitoring
+##################################################
+
+# Logpush for audit logs
+# [logpush]
+# enabled = true
+# datasets = ["http_requests", "workers_trace_events"]
+
+# Tail consumers (for wrangler tail)
+[tail_consumers]
+service = "rockhound-api"
+
+##################################################
+# Limits and Performance
+##################################################
+
+# Limits (defaults shown)
+# - max_request_size_mb = 100
+# - execution_timeout_ms = 30000
+# - memory_limit_mb = 128
+
+##################################################
+# Service Bindings (for multi-worker architecture)
+##################################################
+# Optional: Reference other Cloudflare Workers
+
+# [[services]]
+# binding = "AUTH_SERVICE"
+# service = "rockhound-auth"
+# environment = "production"
+
+##################################################
+# Custom Domains (optional)
+##################################################
+# These configure the custom domain routes for the Worker.
+# The routes section above already handles this, but this section
+# can be used for additional domain management.
+
+##################################################
+# Notes
+##################################################
+# 1. Replace YOUR_ACCOUNT_ID with your Cloudflare Account ID
+# 2. Replace YOUR_API_TOKEN with your Cloudflare API Token
+# 3. Replace KV namespace IDs with actual IDs from Cloudflare dashboard
+# 4. Replace R2 bucket names with your actual bucket names
+# 5. Set secrets via: wrangler secret put NAME --env [environment]
+# 6. Test locally with: wrangler dev --env development
+# 7. Deploy with: wrangler deploy --env production

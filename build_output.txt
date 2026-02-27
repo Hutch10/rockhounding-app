@@ -1,0 +1,54 @@
+
+> rockhounding-app@0.1.0 build C:\Users\hetfw\Rockhounding Project
+> pnpm --filter shared build && pnpm --filter web build
+
+
+> @rockhounding/shared@0.1.0 build C:\Users\hetfw\Rockhounding Project\packages\shared
+> tsc --build
+
+
+> web@0.1.0 build C:\Users\hetfw\Rockhounding Project\apps\web
+> next build
+
+  Γû▓ Next.js 14.2.35
+
+   Creating an optimized production build ...
+> [PWA] Compile server
+> [PWA] Compile server
+> [PWA] Compile client (static)
+> [PWA] Auto register service worker with: C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next-pwa@5.6.0_@babel+core@7.29.0_next@14.2.35_webpack@5.105.2\node_modules\next-pwa\register.js
+> [PWA] Service worker: C:\Users\hetfw\Rockhounding Project\apps\web\public\sw.js
+> [PWA]   url: /sw.js
+> [PWA]   scope: /
+ Γ£ô Compiled successfully
+   Linting and checking validity of types ...
+ ΓÜá TypeScript project references are not fully supported. Attempting to build in incremental mode.
+
+ ΓÜá The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/basic-features/eslint#migrating-existing-config
+Failed to compile.
+
+./app/hooks/useFieldSession.tsx:368:3
+Type error: Type 'UseMutationResult<FieldSession | null, Error, string, unknown>' is not assignable to type 'UseMutationResult<FieldSession, Error, string>'.
+  Type 'Override<MutationObserverIdleResult<FieldSession | null, Error, string, unknown>, { mutate: UseMutateFunction<FieldSession | null, Error, string, unknown>; }> & { ...; }' is not assignable to type 'UseMutationResult<FieldSession, Error, string>'.
+    Type 'Override<MutationObserverIdleResult<FieldSession | null, Error, string, unknown>, { mutate: UseMutateFunction<FieldSession | null, Error, string, unknown>; }> & { ...; }' is not assignable to type 'Override<MutationObserverIdleResult<FieldSession, Error, string, unknown>, { mutate: UseMutateFunction<FieldSession, Error, string, unknown>; }> & { ...; }'.
+      Type 'Override<MutationObserverIdleResult<FieldSession | null, Error, string, unknown>, { mutate: UseMutateFunction<FieldSession | null, Error, string, unknown>; }> & { ...; }' is not assignable to type 'Override<MutationObserverIdleResult<FieldSession, Error, string, unknown>, { mutate: UseMutateFunction<FieldSession, Error, string, unknown>; }>'.
+        Types of property 'mutate' are incompatible.
+          Type 'UseMutateFunction<FieldSession | null, Error, string, unknown>' is not assignable to type 'UseMutateFunction<FieldSession, Error, string, unknown>'.
+            Types of parameters 'options' and 'options' are incompatible.
+              Type 'MutateOptions<FieldSession, Error, string, unknown> | undefined' is not assignable to type 'MutateOptions<FieldSession | null, Error, string, unknown> | undefined'.
+                Type 'MutateOptions<FieldSession, Error, string, unknown>' is not assignable to type 'MutateOptions<FieldSession | null, Error, string, unknown>'.
+                  Type 'FieldSession | null' is not assignable to type 'FieldSession'.
+                    Type 'null' is not assignable to type 'FieldSession'.
+
+  366 |   const queryClient = useQueryClient();
+  367 |   
+> 368 |   return useMutation({
+      |   ^
+  369 |     mutationFn: async (sessionId: string) => {
+  370 |       if (!manager) throw new Error('Session manager not initialized');
+  371 |       return manager.completeSession(sessionId);
+Next.js build worker exited with code: 1 and signal: null
+C:\Users\hetfw\Rockhounding Project\apps\web:
+ΓÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILΓÇë web@0.1.0 build: `next build`
+Exit status 1
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.

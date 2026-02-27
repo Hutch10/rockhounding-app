@@ -1,0 +1,23 @@
+{
+  "name": "@rockhounding/ingest",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "seed:materials": "tsx src/seed_materials.ts",
+    "seed:rulesets": "tsx src/seed_rulesets.ts",
+    "seed:staging": "tsx src/seed_staging_locations.ts",
+    "seed:all": "tsx src/seed_all.ts",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "@rockhounding/shared": "workspace:*",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  }
+}

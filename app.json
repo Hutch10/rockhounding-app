@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "android": {
+      "package": "com.rockhound.app"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3644027e-8e44-465e-831a-2118ce72d7c9"
+      }
+    }
+  }
+}
