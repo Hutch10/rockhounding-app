@@ -17,54 +17,9 @@ import {
   isExpired,
   isStale,
   verifyChecksum,
+  StorageAdapterFactory,
+  type StorageAdapter,
 } from '@rockhounding/shared';
-class StorageAdapterFactory {
-  getAdapter<T>(entityType: StorageEntityType): any {
-    return {
-      validate: async (data: T) => ({ valid: true }),
-      normalize: async (data: T) => data,
-      serialize: async (data: T) => ({
-        encoded: data,
-        encoding: 'json',
-        size: JSON.stringify(data).length,
-      }),
-      deserialize: (data: any) => data,
-      denormalize: async (data: any) => data,
-      createMetadata: async (
-        entityId: string,
-        data: any,
-        userId: string,
-        deviceId: string
-      ) => ({
-        storage_key: entityId,
-        entity_type: entityType,
-        entity_id: entityId,
-        version: 1,
-        schema_version: 1,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        accessed_at: new Date().toISOString(),
-        encoding: 'json',
-        size_bytes: JSON.stringify(data).length,
-        checksum: 'stub',
-      }),
-    };
-  }
-
-  static create() {
-    return {};
-  }
-  static getAdapter() {
-    return {};
-  }
-}
-
-// TODO: StorageAdapter stub - implement proper adapter pattern
-interface StorageAdapter {
-  validate(data: any): Promise<{ valid: boolean; errors?: string[] }>;
-  serialize(data: any): any;
-  deserialize(data: any): any;
-}
 
 // ============================================================================
 // IndexedDB Schema
@@ -103,6 +58,30 @@ interface StorageDB extends DBSchema {
       error?: string;
     };
   };
+  operations: {
+    key: string; // client_operation_id
+    value: any; // BaseSyncOperation
+    indexes: {
+      'by-queue-status': string;
+      'by-priority': string;
+      'by-depends-on': string;
+      'by-record': string;
+    };
+  };
+  mappings: {
+    key: string; // client_id
+    value: {
+      client_id: string;
+      server_id: string;
+      entity_type: string;
+      remote_path?: string;
+      synced_at: string;
+    };
+    indexes: {
+      'by-server-id': string;
+      'by-entity-type': string;
+    };
+  };
 }
 
 // ============================================================================
@@ -137,8 +116,8 @@ export class StorageManager {
 
   async initialize(): Promise<void> {
     try {
-      this.db = await openDB<StorageDB>('rockhound-storage', 1, {
-        upgrade(db) {
+      this.db = await openDB<StorageDB>('rockhound-storage', 2, {
+        upgrade(db, oldVersion) {
           // Entities store
           if (!db.objectStoreNames.contains('entities')) {
             const entityStore = db.createObjectStore('entities', { keyPath: 'metadata.storage_key' });
@@ -165,11 +144,30 @@ export class StorageManager {
           if (!db.objectStoreNames.contains('migrations')) {
             db.createObjectStore('migrations', { keyPath: 'version' });
           }
+
+          // Operations store (v2)
+          if (!db.objectStoreNames.contains('operations')) {
+            const opStore = db.createObjectStore('operations', { keyPath: 'client_operation_id' });
+            opStore.createIndex('by-queue-status', 'queue_status');
+            opStore.createIndex('by-priority', 'priority');
+            opStore.createIndex('by-depends-on', 'depends_on_operation_id');
+            opStore.createIndex('by-record', 'client_record_id');
+          }
+
+          // Mappings store (v2)
+          if (!db.objectStoreNames.contains('mappings')) {
+            const mapStore = db.createObjectStore('mappings', { keyPath: 'client_id' });
+            mapStore.createIndex('by-server-id', 'server_id');
+            mapStore.createIndex('by-entity-type', 'entity_type');
+          }
         },
       });
 
       // Run pending migrations
       await this.runMigrations();
+
+      // Crash recovery: Reconcile in-flight operations
+      await this.reconcileInFlightOperations();
 
       // Start background jobs
       this.startCompactionJob();
@@ -226,16 +224,14 @@ export class StorageManager {
       this.deviceId
     );
 
-    // Override TTL if provided
+    // Override options
     if (options.ttl) {
       metadata.ttl_ms = options.ttl;
       metadata.expires_at = new Date(Date.now() + options.ttl).toISOString();
     }
-
     if (options.priority) {
       metadata.eviction_priority = options.priority;
     }
-
     if (options.syncStatus) {
       metadata.sync_status = options.syncStatus as any;
     }
@@ -246,7 +242,7 @@ export class StorageManager {
     // Create cached entity
     const cachedEntity: CachedEntity = {
       metadata,
-      data: normalized as any,
+      data: encoded, // Store the encoded string
     };
 
     // Store in IndexedDB
@@ -299,7 +295,14 @@ export class StorageManager {
 
     this.stats.cacheHits++;
     const adapter = this.factory.getAdapter<T>(entityType);
-    return await adapter.denormalize(cached.data as T);
+    
+    // Deserialize payloads from either legacy object form or serialized string form.
+    const serializedData =
+      typeof cached.data === 'string'
+        ? cached.data
+        : JSON.stringify(cached.data);
+    const deserialized = await adapter.deserialize(serializedData, cached.metadata.encoding);
+    return await adapter.denormalize(deserialized);
   }
 
   async delete(
@@ -577,6 +580,39 @@ export class StorageManager {
     if (currentVersion >= 1) {
       // v1 is current
     }
+
+    // Contract Alignment: Normalize legacy synced status in existing records
+    try {
+      const allMetadata = await this.db.getAll('metadata');
+      const tx = this.db.transaction('metadata', 'readwrite');
+      let migratedCount = 0;
+      
+      for (const meta of allMetadata) {
+        let needsUpdate = false;
+        if (meta.sync_status === 'synced' as any) {
+          meta.sync_status = 'applied';
+          needsUpdate = true;
+        } else if (meta.sync_status === 'SYNCED' as any) {
+          meta.sync_status = 'applied';
+          needsUpdate = true;
+        } else if (meta.sync_status === 'METADATA_SYNCED_MEDIA_PENDING' as any) {
+          meta.sync_status = 'METADATA_APPLIED_MEDIA_PENDING' as any;
+          needsUpdate = true;
+        }
+        
+        if (needsUpdate) {
+          await tx.store.put(meta);
+          migratedCount++;
+        }
+      }
+      
+      await tx.done;
+      if (migratedCount > 0) {
+        console.log(`[StorageManager] Migrated ${migratedCount} legacy sync statuses to V1 contract`);
+      }
+    } catch (error) {
+      console.warn('[StorageManager] Failed to migrate legacy sync statuses', error);
+    }
   }
 
   async recordMigration(
@@ -681,7 +717,7 @@ export class StorageManager {
       stale_entities: allMetadata.filter(m => isStale(m.accessed_at)).length,
       expired_entities: allMetadata.filter(m => isExpired(m.expires_at)).length,
       pending_sync: allMetadata.filter(m => m.sync_status === 'pending').length,
-      synced_entities: allMetadata.filter(m => m.sync_status === 'synced').length,
+      synced_entities: allMetadata.filter(m => m.sync_status === 'applied').length,
       avg_access_time_ms: 5,
       cache_hit_rate:
         this.stats.cacheHits /
@@ -730,6 +766,144 @@ export class StorageManager {
       ].filter(Boolean),
       timestamp: new Date().toISOString(),
     });
+  }
+
+  // ========================================================================
+  // Operation Queue Management (Phase 1C)
+  // ========================================================================
+
+  /**
+   * Write-Ahead Logic: Persist operation to ledger before network attempt.
+   */
+  async pushOperation(operation: any): Promise<void> {
+    if (!this.db) throw new Error('Storage manager not initialized');
+    await this.db.put('operations', operation);
+  }
+
+  async getPendingOperations(): Promise<any[]> {
+    if (!this.db) throw new Error('Storage manager not initialized');
+    return await this.db.getAllFromIndex('operations', 'by-queue-status', 'PENDING');
+  }
+
+  async getReadyOperations(): Promise<any[]> {
+    if (!this.db) throw new Error('Storage manager not initialized');
+    const pending = await this.getPendingOperations();
+    const retrying = await this.db.getAllFromIndex('operations', 'by-queue-status', 'RETRY_SCHEDULED');
+    
+    // Combine and sort by priority/created_at
+    const ready = [...pending, ...retrying].filter(op => {
+      if (op.queue_status === 'RETRY_SCHEDULED') {
+        return new Date(op.next_retry_at) <= new Date();
+      }
+      return true;
+    });
+
+    return ready.sort((a, b) => {
+      if (a.priority !== b.priority) return a.priority < b.priority ? -1 : 1;
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+    });
+  }
+
+  async updateOperationStatus(
+    clientOperationId: string, 
+    status: string, 
+    updates: Partial<any> = {}
+  ): Promise<void> {
+    if (!this.db) throw new Error('Storage manager not initialized');
+    const op = await this.db.get('operations', clientOperationId);
+    if (!op) return;
+
+    await this.db.put('operations', {
+      ...op,
+      queue_status: status,
+      ...updates,
+      updated_at: new Date().toISOString()
+    });
+  }
+
+  /**
+   * Crash Recovery: Reset stale IN_FLIGHT items to RETRY_SCHEDULED.
+   */
+  async reconcileInFlightOperations(): Promise<void> {
+    if (!this.db) return;
+    const inFlight = await this.db.getAllFromIndex('operations', 'by-queue-status', 'IN_FLIGHT');
+    
+    for (const op of inFlight) {
+      await this.updateOperationStatus(op.client_operation_id, 'RETRY_SCHEDULED', {
+        next_retry_at: new Date().toISOString(),
+        last_error_message: 'Operation interrupted (Crash Recovery)'
+      });
+    }
+  }
+
+  async getOperationsByRecordId(clientRecordId: string): Promise<any[]> {
+    if (!this.db) throw new Error('Storage manager not initialized');
+    return await this.db.getAllFromIndex('operations', 'by-record', clientRecordId);
+  }
+
+  // ========================================================================
+  // ID Mapping & Reconciliation (Phase 1C)
+  // ========================================================================
+
+  async setMapping(
+    clientId: string, 
+    serverId: string, 
+    entityType: string, 
+    remotePath?: string
+  ): Promise<void> {
+    if (!this.db) throw new Error('Storage manager not initialized');
+    await this.db.put('mappings', {
+      client_id: clientId,
+      server_id: serverId,
+      entity_type: entityType,
+      remote_path: remotePath,
+      synced_at: new Date().toISOString()
+    });
+  }
+
+  async getMapping(clientId: string) {
+    if (!this.db) throw new Error('Storage manager not initialized');
+    return await this.db.get('mappings', clientId);
+  }
+
+  async getServerId(clientId: string): Promise<string | null> {
+    const mapping = await this.getMapping(clientId);
+    return mapping?.server_id || null;
+  }
+
+  async getClientId(serverId: string): Promise<string | null> {
+    if (!this.db) throw new Error('Storage manager not initialized');
+    const mapping = await this.db.getFromIndex('mappings', 'by-server-id', serverId);
+    return mapping?.client_id || null;
+  }
+
+  async updateEntitySyncStatus(
+    entityType: StorageEntityType, 
+    entityId: string, 
+    status: string
+  ): Promise<void> {
+    if (!this.db) throw new Error('Storage manager not initialized');
+    const key = generateStorageKey(entityType, entityId);
+    
+    // Update both entities and metadata stores
+    const tx = this.db.transaction(['entities', 'metadata'], 'readwrite');
+    const entity = await tx.objectStore('entities').get(key);
+    const metadata = await tx.objectStore('metadata').get(key);
+
+    if (entity) {
+      entity.metadata.sync_status = status as any;
+      await tx.objectStore('entities').put(entity);
+    }
+
+    if (metadata) {
+      metadata.sync_status = status as any;
+      if (status === 'applied') {
+        metadata.synced_at = new Date().toISOString();
+      }
+      await tx.objectStore('metadata').put(metadata);
+    }
+
+    await tx.done;
   }
 
   // ========================================================================

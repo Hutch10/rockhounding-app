@@ -36,6 +36,9 @@ export type SyncEntityType = z.infer<typeof SyncEntityType>;
 // ============================================================================
 
 export const SyncOperationType = z.enum([
+  'UPSERT_FIND',
+  'UPLOAD_MEDIA',
+  'FINALIZE_MEDIA_LINK',
   'create',
   'update',
   'delete',
@@ -45,17 +48,72 @@ export const SyncOperationType = z.enum([
 export type SyncOperationType = z.infer<typeof SyncOperationType>;
 
 // ============================================================================
+// Record Sync States (Hard Truth)
+// ============================================================================
+
+export const RecordSyncState = z.preprocess((val) => {
+  if (val === 'METADATA_SYNCED_MEDIA_PENDING') return 'METADATA_APPLIED_MEDIA_PENDING';
+  if (val === 'SYNCED') return 'APPLIED';
+  return val;
+}, z.enum([
+  'LOCAL_ONLY',
+  'SYNCING_METADATA',
+  'METADATA_APPLIED_MEDIA_PENDING',
+  'SYNCING_MEDIA',
+  'APPLIED',
+  'SYNC_FAILED',
+]));
+
+export type RecordSyncState = z.infer<typeof RecordSyncState>;
+
+// ============================================================================
+// Queue Item Status
+// ============================================================================
+
+export const QueueItemStatus = z.enum([
+  'PENDING',
+  'IN_FLIGHT',
+  'RETRY_SCHEDULED',
+  'FAILED_TERMINAL',
+  'DONE',
+]);
+
+export type QueueItemStatus = z.infer<typeof QueueItemStatus>;
+
+// ============================================================================
+// State Machine Transitions
+// ============================================================================
+
+export const VALID_TRANSITIONS: Record<QueueItemStatus, QueueItemStatus[]> = {
+  PENDING: ['IN_FLIGHT', 'FAILED_TERMINAL'],
+  IN_FLIGHT: ['DONE', 'RETRY_SCHEDULED', 'FAILED_TERMINAL'],
+  RETRY_SCHEDULED: ['IN_FLIGHT', 'FAILED_TERMINAL'],
+  FAILED_TERMINAL: ['PENDING'], // Manual retry reset
+  DONE: [], // Terminal success
+};
+
+/**
+ * Enforce strict state transitions for queue items.
+ * Throws if the transition is not allowed according to VALID_TRANSITIONS.
+ */
+export function transition(current: QueueItemStatus, next: QueueItemStatus): void {
+  const allowed = VALID_TRANSITIONS[current] ?? [];
+  if (!allowed.includes(next)) {
+    throw new Error(`Invalid state transition from ${current} to ${next}`);
+  }
+}
+
+
+
+// ============================================================================
 // Sync Status
 // ============================================================================
 
 export const SyncStatus = z.enum([
-  'pending',      // Queued, waiting to sync
-  'syncing',      // Currently syncing
-  'success',      // Successfully synced
-  'conflict',     // Conflict detected, needs resolution
-  'error',        // Failed to sync
-  'retry',        // Waiting for retry
-  'cancelled',    // Cancelled by user
+  'pending',      // Queued locally
+  'accepted',     // Received by server batch handler
+  'applied',      // Committed to server database
+  'failed',       // Terminal error
 ]);
 
 export type SyncStatus = z.infer<typeof SyncStatus>;
@@ -120,13 +178,17 @@ export const BaseSyncOperationSchema = z.object({
   
   // Entity information
   entity_type: SyncEntityType,
-  entity_id: z.string().uuid(),
+  entity_id: z.string().uuid(), // Legacy support
+  client_operation_id: z.string().uuid(),
+  client_record_id: z.string().uuid(),
+  client_media_id: z.string().uuid().nullable(),
   operation_type: SyncOperationType,
   
   // Sync metadata
   priority: SyncPriority,
   direction: SyncDirection,
   status: SyncStatus,
+  queue_status: QueueItemStatus.default('PENDING'),
   
   // Versioning
   client_version: z.number().int().nonnegative(),
@@ -138,11 +200,12 @@ export const BaseSyncOperationSchema = z.object({
   synced_at: z.string().datetime().nullable(),
   
   // Data payload
+  payload: z.record(z.unknown()).nullable(),
   delta: z.record(z.unknown()).nullable(), // Changed fields only
   full_entity: z.record(z.unknown()).nullable(), // Complete entity (for creates)
   
   // Dependencies
-  depends_on: z.array(z.string().uuid()).default([]),
+  depends_on_operation_id: z.string().uuid().nullable(),
   blocks: z.array(z.string().uuid()).default([]),
   
   // Retry information
@@ -151,8 +214,10 @@ export const BaseSyncOperationSchema = z.object({
   next_retry_at: z.string().datetime().nullable(),
   
   // Error tracking
-  error_message: z.string().max(1000).nullable(),
-  error_code: z.string().max(50).nullable(),
+  last_error_code: z.string().max(50).nullable(),
+  last_error_message: z.string().max(1000).nullable(),
+  error_message: z.string().max(1000).nullable(), // Legacy support
+  error_code: z.string().max(50).nullable(), // Legacy support
   
   // Integrity
   checksum: z.string().max(64).nullable(),
@@ -225,6 +290,31 @@ export const SyncBatchSchema = z.object({
   // Integrity
   batch_checksum: z.string().max(64).nullable(),
 });
+
+// ============================================================================
+// Ledger Reconciliation Schemas (Phase 1C Hardening)
+// ============================================================================
+export const GetSyncHistoryRequestSchema = z.object({
+  user_id: z.string().uuid(),
+  device_id: z.string().uuid(),
+  since: z.string().datetime().optional(),
+  limit: z.number().int().min(1).max(1000).default(100),
+});
+export type GetSyncHistoryRequest = z.infer<typeof GetSyncHistoryRequestSchema>;
+
+export const SyncOperationHistoryItemSchema = z.object({
+  client_operation_id: z.string().uuid(),
+  server_id: z.string().uuid().nullable(),
+  status: z.string(),
+  processed_at: z.string().datetime().nullable(),
+  error_details: z.string().nullable(),
+});
+export type SyncOperationHistoryItem = z.infer<typeof SyncOperationHistoryItemSchema>;
+
+export const GetSyncHistoryResponseSchema = z.object({
+  operations: z.array(SyncOperationHistoryItemSchema),
+});
+export type GetSyncHistoryResponse = z.infer<typeof GetSyncHistoryResponseSchema>;
 
 export type SyncBatch = z.infer<typeof SyncBatchSchema>;
 
@@ -747,6 +837,6 @@ export function requiresSync(
 
 export function canRetry(operation: BaseSyncOperation): boolean {
   return operation.retry_count < operation.max_retries &&
-         operation.status !== 'success' &&
-         operation.status !== 'cancelled';
+         operation.status !== 'applied' &&
+         operation.status !== 'failed';
 }

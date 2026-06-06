@@ -106,7 +106,7 @@ export async function getSyncQueueFromCache(
   return result;
 }
 
-export async function markSyncItemAsSynced(
+export async function markSyncItemAsApplied(
   syncId: string,
   userId: string
 ): Promise<void> {
@@ -122,7 +122,7 @@ export async function markSyncItemAsSynced(
       'sync_queue',
       syncId,
       item,
-      { syncStatus: 'synced' }
+      { syncStatus: 'applied' }
     );
   }
 }

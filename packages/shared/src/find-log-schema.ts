@@ -98,7 +98,7 @@ export enum FindLogState {
 export enum FindLogSyncStatus {
   PENDING = 'PENDING',
   SYNCING = 'SYNCING',
-  SYNCED = 'SYNCED',
+  APPLIED = 'APPLIED',
   CONFLICT = 'CONFLICT',
   FAILED = 'FAILED',
   RETRY_SCHEDULED = 'RETRY_SCHEDULED',

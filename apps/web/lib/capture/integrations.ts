@@ -13,7 +13,7 @@ export async function removeCaptureSessionOffline(sessionId: string, storageMana
 
 // Sync engine stubs
 export async function enqueueCaptureSessionSync(session: CaptureSession, syncEngine: any, operation: 'create' | 'update' | 'delete'): Promise<void> {}
-export async function markCaptureSessionSynced(sessionId: string, syncEngine: any): Promise<void> {}
+export async function markCaptureSessionApplied(sessionId: string, syncEngine: any): Promise<void> {}
 
 // Telemetry stubs
 export function emitCaptureSessionTelemetry(event: string, session: CaptureSession, telemetry: any, extra?: Record<string, any>): void {}
@@ -44,7 +44,7 @@ export const CaptureSessionIntegration = {
   loadCaptureSessionOffline,
   removeCaptureSessionOffline,
   enqueueCaptureSessionSync,
-  markCaptureSessionSynced,
+  markCaptureSessionApplied,
   emitCaptureSessionTelemetry,
   runCameraSpecimenPipeline,
   linkCaptureSessionToFieldSession,

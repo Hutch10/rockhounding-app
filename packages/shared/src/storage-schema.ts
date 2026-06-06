@@ -97,7 +97,11 @@ export const StorageMetadataSchema = z.object({
   
   // Sync tracking
   synced_at: z.string().datetime().optional(),
-  sync_status: z.enum(['pending', 'syncing', 'synced', 'conflict']).optional(),
+  sync_status: z.preprocess((val) => {
+    if (val === 'synced') return 'applied';
+    if (val === 'SYNCED') return 'applied';
+    return val;
+  }, z.enum(['pending', 'syncing', 'applied', 'conflict'])).optional(),
   
   // Access tracking
   access_count: z.number().int().nonnegative().default(0),
@@ -115,7 +119,8 @@ export type StorageMetadata = z.infer<typeof StorageMetadataSchema>;
 
 export const CachedEntitySchema = z.object({
   metadata: StorageMetadataSchema,
-  data: z.record(z.unknown()),
+  // Keep backward compatibility while supporting serialized string payloads.
+  data: z.union([z.record(z.unknown()), z.string()]),
   compression_ratio: z.number().min(0).max(1).optional(),
   computed_fields: z.record(z.unknown()).optional(),
 });

@@ -531,7 +531,7 @@ export enum SyncStatus {
   LOCAL_ONLY = 'LOCAL_ONLY',
   PENDING = 'PENDING',
   SYNCING = 'SYNCING',
-  SYNCED = 'SYNCED',
+  APPLIED = 'APPLIED',
   FAILED = 'FAILED',
   CONFLICT = 'CONFLICT',
 }
