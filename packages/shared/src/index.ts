@@ -3,6 +3,8 @@
  * Single source of truth for enums, types, and validators
  */
 
+/* eslint-disable import/export -- barrel re-exports overlap across domain modules by design */
+
 // Export TypeScript enums
 export { LegalTag, SourceTier, Status, Visibility } from './enums';
 
@@ -307,13 +309,88 @@ export {
 } from './storage-schema';
 
 // Export Storage Adapter types and factory
-export {
-  type StorageAdapter,
-  StorageAdapterFactory,
-} from './storage-adapters';
+export { type StorageAdapter, StorageAdapterFactory } from './storage-adapters';
 
 // Export Telemetry types and schemas
 export * from './telemetry';
 
 // Export Sync Engine types and schemas
 export * from './sync-engine';
+
+// HutchStack client-safe exports only (no node:crypto).
+// Server hashing/orchestrator: @rockhounding/shared/hutchstack/server
+export {
+  HUTCHSTACK_POLICY_VERSION,
+  HUTCHSTACK_HARNESS_VERSION,
+  LEGAL_DISCLAIMER,
+  CANONICAL_SERIALIZATION_VERSION,
+  CONFIDENCE_THRESHOLDS,
+  REPUTATION_DELTAS,
+  TRUST_DECAY,
+  DUPLICATE_DETECTION,
+  HarnessEvaluationRequestSchema,
+  HarnessEvaluationResponseSchema,
+  ProvenanceHashesSchema,
+  SiteVerificationInputSchema,
+  PermitValidationInputSchema,
+  UserSubmissionInputSchema,
+  MaterialIdentificationInputSchema,
+  ModerationGateInputSchema,
+  TrustScoringInputSchema,
+  evaluateSiteVerification,
+  evaluatePermitValidation,
+  evaluateUserSubmission,
+  scoreSubmissionCompleteness,
+  evaluateMaterialIdentification,
+  evaluateModerationGate,
+  evaluateCommunityTrust,
+  wilsonLowerBound,
+  computeEffectiveReputation,
+  applyTrustDecay,
+  detectDuplicateSite,
+  buildTrustScoringInput,
+  computeSubmitterTrustScore,
+  buildPolicyManifest,
+  buildHarnessChainFromSubmission,
+  canonicalize,
+  toProvenanceMetadata,
+  toProvenanceBadge,
+  browserHashProvider,
+} from './hutchstack';
+export type {
+  RiskTier,
+  EvaluationType,
+  VerificationStatus,
+  SubmissionRoute,
+  IdentificationState,
+  MaterialIdentificationTier,
+  PermitStatus,
+  HarnessAdvisoryLevel,
+  ProvenanceHashes,
+  ProvenanceChainContext,
+  ProvenanceMetadata,
+  ProvenanceBadge,
+  PolicyManifest,
+  HashProvider,
+  SyncHashProvider,
+  TrustAdapterProfile,
+  ContributorModerationHistory,
+  NearbySiteRef,
+  DuplicateSiteSignal,
+  SiteVerificationInput,
+  PermitValidationInput,
+  UserSubmissionInput,
+  MaterialIdentificationInput,
+  ModerationGateInput,
+  TrustScoringInput,
+  SiteVerificationResult,
+  PermitValidationResult,
+  UserSubmissionResult,
+  MaterialIdentificationResult,
+  ModerationGateResult,
+  TrustScoringResult,
+  ProvenanceRecord,
+  HarnessComponentResults,
+  HarnessEvaluationRequest,
+  HarnessEvaluationResponse,
+} from './hutchstack';

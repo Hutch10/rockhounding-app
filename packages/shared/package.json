@@ -28,6 +28,14 @@
     "./capture-session-schema": {
       "types": "./dist/capture-session-schema.d.ts",
       "default": "./dist/capture-session-schema.js"
+    },
+    "./hutchstack": {
+      "types": "./dist/hutchstack/index.d.ts",
+      "default": "./dist/hutchstack/index.js"
+    },
+    "./hutchstack/server": {
+      "types": "./dist/hutchstack/server/index.d.ts",
+      "default": "./dist/hutchstack/server/index.js"
     }
   },
   "scripts": {

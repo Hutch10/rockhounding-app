@@ -1,0 +1,45 @@
+-- PROPOSED: HutchStack Provenance Events Ledger
+-- STATUS: Not for execution in Tier-0 sprint
+-- PURPOSE: Persistence layer for shadow P1 and score-only P1
+
+-- CREATE TABLE IF NOT EXISTS public.provenance_events (
+--   id TEXT PRIMARY KEY,  -- evaluation_hash (sha256-v1)
+--   entity_type TEXT NOT NULL,
+--   entity_id UUID NOT NULL,
+--   event_type TEXT NOT NULL,
+--   actor_id TEXT NOT NULL,
+--   actor_role TEXT NOT NULL CHECK (actor_role IN ('user', 'moderator', 'harness', 'system')),
+--   hash_alg TEXT NOT NULL DEFAULT 'sha256-v1',
+--   harness_version TEXT NOT NULL,
+--   policy_version TEXT NOT NULL,
+--   policy_hash TEXT NOT NULL,
+--   input_hash TEXT NOT NULL,
+--   output_hash TEXT NOT NULL,
+--   evaluation_hash TEXT NOT NULL,
+--   input_snapshot JSONB,
+--   output_summary JSONB NOT NULL,
+--   parent_event_id TEXT REFERENCES public.provenance_events(id),
+--   chain_sequence INTEGER,
+--   root_event_type TEXT,
+--   root_event_id TEXT,
+--   occurred_at TIMESTAMPTZ NOT NULL,
+--   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+-- );
+--
+-- CREATE INDEX idx_provenance_entity ON public.provenance_events (entity_type, entity_id);
+-- CREATE INDEX idx_provenance_parent ON public.provenance_events (parent_event_id);
+-- CREATE INDEX idx_provenance_occurred ON public.provenance_events (occurred_at);
+--
+-- COMMENT ON TABLE public.provenance_events IS 'Immutable HutchStack provenance ledger — Tier-0 proposed, P1 deploy';
+
+-- PROPOSED: Contributor trust stats (90d rolling, for adapter queries)
+-- CREATE MATERIALIZED VIEW public.contributor_trust_stats_90d AS
+-- SELECT
+--   submitted_by AS user_id,
+--   COUNT(*) FILTER (WHERE moderation_status = 'APPROVED') AS approvals_90d,
+--   COUNT(*) FILTER (WHERE moderation_status = 'REJECTED') AS rejections_90d,
+--   AVG(submission_confidence) FILTER (WHERE moderation_status = 'APPROVED') AS avg_approved_confidence_90d,
+--   MAX(reviewed_at) AS last_moderation_action_at
+-- FROM public.locations_staging
+-- WHERE submitted_at > now() - interval '90 days'
+-- GROUP BY submitted_by;
