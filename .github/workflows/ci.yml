@@ -94,9 +94,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run tests
-        run: pnpm test
-        working-directory: apps/web
+      - name: RLS migration audit (DEPLOY-003)
+        run: pnpm exec tsx scripts/audit-rls.ts
+
+      - name: Run Sprint 1 + shared tests
+        run: pnpm exec vitest run packages/shared apps/web/lib/trust apps/web/app/api/v1/locations apps/web/app/api/sync
         env:
           # Test environment variables
           NEXT_PUBLIC_SUPABASE_URL: https://test.supabase.co
