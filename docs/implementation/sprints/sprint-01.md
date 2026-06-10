@@ -49,12 +49,13 @@
 
 ## Operational Certification (2026-06-10)
 
-| Check                                                           | Status                                          |
-| --------------------------------------------------------------- | ----------------------------------------------- |
-| Linked DB reset + 4 migrations applied                          | done                                            |
-| Remote Sprint 1 objects (`locations_v1_in_bbox`, trust columns) | done                                            |
-| `pnpm run audit:rls` + vitest + build                           | done                                            |
-| Live Next.js API (bbox + detail)                                | blocked — `.env.local` → localhost, Docker down |
+| Check                                                           | Status |
+| --------------------------------------------------------------- | ------ |
+| Linked DB reset + migrations applied (incl. GRANT fix)          | done   |
+| Remote Sprint 1 objects (`locations_v1_in_bbox`, trust columns) | done   |
+| `.env.local` → `dcbjjvygjhmngwzuwdjj` (verified, not committed) | done   |
+| `pnpm run audit:rls` + vitest + build                           | done   |
+| Authenticated live API (bbox + detail)                          | done   |
 
 **Report:** `docs/implementation/certification-sprint-01-operational.md`  
-**Verdict:** PASS WITH BLOCKERS
+**Verdict:** **PASS**

@@ -3,7 +3,7 @@
 **Gate:** M0 Foundation (Sprint 1 exit)  
 **Certified by:** Principal Release Engineer / Senior QA (automated run)  
 **Date:** 2026-06-10  
-**Git SHA:** `328ae2d` + grant migration commit (pending)  
+**Git SHA:** `728a6b1`  
 **Supabase project ref:** `dcbjjvygjhmngwzuwdjj`  
 **Environment:** Linked remote + local Next.js (`http://localhost:3001`)
 
