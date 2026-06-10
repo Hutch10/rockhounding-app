@@ -53,6 +53,8 @@
     "apps/web/app/api/admin/**/*",
     "apps/web/app/api/**/tests/**/*",
     "apps/web/**/*.test.ts",
-    "apps/web/**/*.test.tsx"
+    "apps/web/**/*.test.tsx",
+    "packages/shared/**/*.test.ts",
+    "scripts/**/*.ts"
   ]
 }

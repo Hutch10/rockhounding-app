@@ -46,3 +46,15 @@
 
 - Migration friction
 - Supabase local vs linked workflow
+
+## Operational Certification (2026-06-10)
+
+| Check                                                           | Status                                          |
+| --------------------------------------------------------------- | ----------------------------------------------- |
+| Linked DB reset + 4 migrations applied                          | done                                            |
+| Remote Sprint 1 objects (`locations_v1_in_bbox`, trust columns) | done                                            |
+| `pnpm run audit:rls` + vitest + build                           | done                                            |
+| Live Next.js API (bbox + detail)                                | blocked — `.env.local` → localhost, Docker down |
+
+**Report:** `docs/implementation/certification-sprint-01-operational.md`  
+**Verdict:** PASS WITH BLOCKERS

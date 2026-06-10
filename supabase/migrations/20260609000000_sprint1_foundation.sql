@@ -1,9 +1,8 @@
 -- Sprint 1 Foundation (DB-001, DB-003, AUTH-004 partial)
 -- Profiles V1 columns, location trust/freshness, finds RLS, bbox RPC
 
-BEGIN;
 
--- ─── DB-001: profiles V1 columns ───────────────────────────────────────────
+-- â”€â”€â”€ DB-001: profiles V1 columns â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS display_name text;
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS trust_level integer NOT NULL DEFAULT 1;
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS preferences jsonb NOT NULL DEFAULT '{}'::jsonb;
@@ -12,7 +11,7 @@ ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS is_admin boolean NOT NULL D
 COMMENT ON COLUMN public.profiles.trust_level IS 'Contributor tier 1-4 per HutchStack trust policy';
 COMMENT ON COLUMN public.profiles.preferences IS 'User preferences JSON per ProfileV1 contract';
 
--- ─── DB-003: location trust presentation ───────────────────────────────────
+-- â”€â”€â”€ DB-003: location trust presentation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ALTER TABLE public.locations ADD COLUMN IF NOT EXISTS source_tier public.source_tier DEFAULT 'SECONDARY';
 
 ALTER TABLE public.locations ADD COLUMN IF NOT EXISTS trust_category text NOT NULL DEFAULT 'unverified'
@@ -37,7 +36,7 @@ SET trust_category = 'community'
 WHERE source_tier = 'COMMUNITY_STAGED'
   AND trust_category = 'unverified';
 
--- ─── AUTH-004: finds write policies ────────────────────────────────────────
+-- â”€â”€â”€ AUTH-004: finds write policies â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 DO $$
 BEGIN
   IF NOT EXISTS (
@@ -65,7 +64,7 @@ BEGIN
   END IF;
 END $$;
 
--- ─── API-001: bbox list RPC ─────────────────────────────────────────────────
+-- â”€â”€â”€ API-001: bbox list RPC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 CREATE OR REPLACE FUNCTION public.locations_v1_in_bbox(
   p_min_lon double precision,
   p_min_lat double precision,
@@ -136,7 +135,7 @@ $$;
 
 GRANT EXECUTE ON FUNCTION public.locations_v1_in_bbox(double precision, double precision, double precision, double precision, integer) TO anon, authenticated;
 
--- ─── AUTH-004: enable RLS on V1 tables flagged by audit-rls ────────────────
+-- â”€â”€â”€ AUTH-004: enable RLS on V1 tables flagged by audit-rls â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 ALTER TABLE public.sync_operations ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS sync_operations_own ON public.sync_operations;
 CREATE POLICY sync_operations_own ON public.sync_operations
@@ -219,4 +218,3 @@ ALTER TABLE public.embeddings ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS embeddings_deny_all ON public.embeddings;
 CREATE POLICY embeddings_deny_all ON public.embeddings FOR SELECT USING (false);
 
-COMMIT;

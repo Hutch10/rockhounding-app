@@ -4,21 +4,23 @@
   "private": true,
   "description": "Production-grade Rockhounding + Geologist web application for HutchSolves",
   "scripts": {
-    "dev": "pnpm --filter web dev",
-    "build": "pnpm --filter shared build && pnpm --filter web build",
-    "test": "vitest",
+    "dev": "pnpm run --parallel /dev:(web|shared)/",
+    "build": "pnpm run -r build",
+    "test": "pnpm run -r test",
     "test:ci": "vitest run",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\"",
-    "type-check": "pnpm -r run type-check",
-    "prepare": "husky"
+    "type-check": "pnpm run -r type-check",
+    "integrity-check": "tsx scripts/sync-enums.ts",
+    "audit:rls": "tsx scripts/audit-rls.ts",
+    "prepare": "husky install"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": "20.x",
     "pnpm": ">=8.0.0"
   },
-  "packageManager": "pnpm@8.15.0",
+  "packageManager": "pnpm@10.33.0",
   "devDependencies": {
     "@types/node": "^20.11.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
