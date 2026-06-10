@@ -3,7 +3,7 @@
 **Gate:** M0 Foundation (Sprint 1 exit)  
 **Certified by:** Principal Database / Release / QA Engineer (automated run)  
 **Date:** 2026-06-10  
-**Git SHA (pre-commit):** `a212eece928eb7483dfb348adb943a6977b2fe32`  
+**Git SHA:** `70386a7` (`fix(db): certifiable migration path for Sprint 1 operational gate`)  
 **Supabase project ref:** `dcbjjvygjhmngwzuwdjj`  
 **Environment:** Linked remote via Supabase CLI
 
