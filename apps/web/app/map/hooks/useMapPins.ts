@@ -1,20 +1,11 @@
+import type { LocationV1 } from '@rockhounding/shared';
+import { LocationsListResponseSchema } from '@rockhounding/shared';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import { useCallback, useEffect, useState } from 'react';
 
-import type { LocationsResponse } from '../../api/locations/types';
-import type { ThinLocationPin } from '../types';
+import type { MapLocationPin } from '../types';
+import { ZOOM_THRESHOLDS } from '../types';
 import { bboxFromMap } from '../utils/bboxFromMap';
-
-/**
- * Hook for fetching thin pins from the map viewport
- * Build Document: NEVER fetch full-detail data during panning
- *
- * Features:
- * - Debounced fetching (150ms)
- * - Automatic bbox calculation from map bounds
- * - Loading and error states
- * - Progressive disclosure by zoom level
- */
 
 interface UseMapPinsOptions {
   map: MapboxMap | null;
@@ -23,53 +14,55 @@ interface UseMapPinsOptions {
 }
 
 interface UseMapPinsResult {
-  pins: ThinLocationPin[];
+  pins: MapLocationPin[];
   loading: boolean;
   error: string | null;
   refetch: () => void;
 }
 
+/**
+ * FE-004: Fetch thin pins from V1 locations API with debounced bbox.
+ */
 export function useMapPins({
   map,
-  debounceMs = 150,
-  minZoom = 6,
+  debounceMs = 300,
+  minZoom = ZOOM_THRESHOLDS.MIN_VISIBLE,
 }: UseMapPinsOptions): UseMapPinsResult {
-  const [pins, setPins] = useState<ThinLocationPin[]>([]);
+  const [pins, setPins] = useState<MapLocationPin[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchPins = useCallback(async (): Promise<void> => {
-    if (!map) {
+    if (map == null) {
       return;
     }
 
     const zoom = map.getZoom();
 
-    // Build Document: Below zoom 6, show nothing
     if (zoom < minZoom) {
       setPins([]);
       return;
     }
 
     const bounds = map.getBounds();
-    if (!bounds) return;
-    const bbox = bboxFromMap(bounds as any);
+    if (bounds == null) return;
+    const bbox = bboxFromMap(bounds);
 
     setLoading(true);
     setError(null);
 
     try {
-      // Build Document Rule #2: Fetch ONLY thin pins with bbox
-      const response = await fetch(`/api/locations?bbox=${bbox}`, {
-        cache: 'no-store', // Live map data, no caching
+      const response = await fetch(`/api/v1/locations?bbox=${bbox}`, {
+        cache: 'no-store',
       });
 
       if (!response.ok) {
         throw new Error(`Failed to fetch locations: ${response.statusText}`);
       }
 
-      const data: LocationsResponse = await response.json();
-      setPins(data.data);
+      const json: unknown = await response.json();
+      const data = LocationsListResponseSchema.parse(json);
+      setPins(data.data as LocationV1[]);
     } catch (err) {
       console.error('Error fetching map pins:', err);
       setError(err instanceof Error ? err.message : 'Unknown error');
@@ -79,13 +72,12 @@ export function useMapPins({
     }
   }, [map, minZoom]);
 
-  // Debounced fetch on map move/zoom
   useEffect(() => {
-    if (!map) {
+    if (map == null) {
       return;
     }
 
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout>;
 
     const handleMapMove = (): void => {
       clearTimeout(timeoutId);
@@ -94,10 +86,8 @@ export function useMapPins({
       }, debounceMs);
     };
 
-    // Initial fetch
     void fetchPins();
 
-    // Listen to map events
     map.on('moveend', handleMapMove);
     map.on('zoomend', handleMapMove);
 
@@ -112,6 +102,8 @@ export function useMapPins({
     pins,
     loading,
     error,
-    refetch: fetchPins,
+    refetch: () => {
+      void fetchPins();
+    },
   };
 }

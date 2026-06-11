@@ -1,112 +1,93 @@
+import { LocationV1Schema } from '@rockhounding/shared';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { z } from 'zod';
 
-import type { FullLocationDetailResponse } from '@/app/api/locations/[id]/types';
-import { LocationDetailClient } from './LocationDetailClient';
-
-/**
- * Location Detail Page - Server Component
- * Build Document: Full detail view for a single location
- *
- * Features:
- * - Fetches full location detail (NOT thin pins)
- * - Server-side rendering for SEO
- * - Legal gating UI for restricted areas
- * - "Why?" link to primary ruleset
- * - Materials, rulesets, sources lists
- */
+import { LocationDetailClient, type LocationDetailV1 } from './LocationDetailClient';
 
 interface PageProps {
-  params: Promise<{
-    id: string;
-  }>;
+  params: Promise<{ id: string }>;
+}
+
+const ParamsSchema = z.object({
+  id: z.string().uuid(),
+});
+
+const LocationDetailResponseSchema = z.object({
+  data: LocationV1Schema.extend({
+    permit_summary: z.string().nullable().optional(),
+    collecting_summary: z.string().nullable().optional(),
+    materials: z
+      .array(
+        z.object({
+          id: z.string(),
+          name: z.string(),
+          abundance: z.string().nullable(),
+        })
+      )
+      .optional(),
+  }),
+});
+
+async function fetchLocation(id: string): Promise<LocationDetailV1 | null> {
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+  const response = await fetch(`${base}/api/v1/locations/${id}`, { cache: 'no-store' });
+
+  if (response.status === 404) {
+    return null;
+  }
+  if (!response.ok) {
+    throw new Error(`Failed to fetch location: ${response.statusText}`);
+  }
+
+  const json: unknown = await response.json();
+  const parsed = LocationDetailResponseSchema.parse(json);
+  return parsed.data as LocationDetailV1;
 }
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const params = await props.params;
-  const { id } = params;
+  const parsed = ParamsSchema.safeParse(params);
+  if (!parsed.success) {
+    return { title: 'Location Not Found' };
+  }
 
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/locations/${id}`,
-      {
-        cache: 'no-store', // Always fetch fresh data for metadata
-      }
-    );
-
-    if (!response.ok) {
-      return {
-        title: 'Location Not Found',
-      };
+    const location = await fetchLocation(parsed.data.id);
+    if (location == null) {
+      return { title: 'Location Not Found' };
     }
-
-    const data: FullLocationDetailResponse = await response.json();
-    const { location } = data;
-
     return {
       title: `${location.name} - Rockhounding Location`,
-      description:
-        location.description || `Details for ${location.name} rockhounding location`,
+      description: location.description ?? `Details for ${location.name}`,
     };
-  } catch (error) {
-    console.error('Error generating metadata:', error);
-    return {
-      title: 'Location Details',
-    };
+  } catch {
+    return { title: 'Location Details' };
   }
 }
 
-export default async function LocationDetailPage(props: PageProps) {
+export default async function LocationDetailPage(props: PageProps): Promise<JSX.Element> {
   const params = await props.params;
-  const { id } = params;
+  const parsed = ParamsSchema.safeParse(params);
 
-  // Validate ID format
-  if (!/^\d+$/.test(id)) {
+  if (!parsed.success) {
     notFound();
   }
 
-  // Fetch full location detail from API
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/locations/${id}`,
-      {
-        cache: 'no-store', // Server component, always fetch fresh
-      }
-    );
-
-    if (!response.ok) {
-      if (response.status === 404) {
-        notFound();
-      }
-      throw new Error(`Failed to fetch location: ${response.statusText}`);
-    }
-
-    const data: FullLocationDetailResponse = await response.json();
-    const { location } = data;
-
-    return (
-      <main className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <header className="bg-gray-900 text-white px-6 py-4 shadow-lg">
-          <div className="max-w-4xl mx-auto">
-            <a
-              href="/map"
-              className="text-sm text-gray-300 hover:text-white mb-2 inline-block"
-            >
-              ← Back to Map
-            </a>
-            <h1 className="text-3xl font-bold">{location.name}</h1>
-          </div>
-        </header>
-
-        {/* Content */}
-        <div className="max-w-4xl mx-auto px-6 py-8">
-          <LocationDetailClient location={location} />
-        </div>
-      </main>
-    );
-  } catch (error) {
-    console.error('Error fetching location:', error);
-    throw error; // Let Next.js error boundary handle it
+  const location = await fetchLocation(parsed.data.id);
+  if (location == null) {
+    notFound();
   }
+
+  return (
+    <main className="min-h-screen bg-gray-50 px-4 py-6 max-w-lg mx-auto">
+      <header className="mb-4">
+        <h1 className="text-2xl font-bold text-gray-900">{location.name}</h1>
+        {location.description != null && location.description !== '' ? (
+          <p className="text-sm text-gray-600 mt-1">{location.description}</p>
+        ) : null}
+      </header>
+      <LocationDetailClient location={location} />
+    </main>
+  );
 }

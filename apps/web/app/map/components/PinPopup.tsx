@@ -1,99 +1,91 @@
-import type { ThinLocationPin } from '../types';
-import {
-  ACCESS_MODEL_COLORS,
-  DIFFICULTY_COLORS,
-  LEGAL_TAG_COLORS,
-} from '../types';
+'use client';
 
-/**
- * Pin popup component
- * Build Document UI Rules:
- * - Always show 3 badges: legal_tag, access_model, difficulty
- * - GRAY_AREA / RESEARCH_ONLY → Show "Observe/Verify Only" banner
- *
- * Does NOT show full detail (Step 7)
- */
+import type { LocationV1 } from '@rockhounding/shared';
+import Link from 'next/link';
+
+import { AccessBanner, normalizeAccessStatus } from '@/components/Access/AccessBanner';
+import { TrustBadge, trustFromMetadata } from '@/components/Trust/TrustBadge';
+import { openExternalMaps } from '@/lib/gis/openExternalMaps';
 
 interface PinPopupProps {
-  pin: ThinLocationPin;
+  pin: LocationV1;
+  userLat?: number;
+  userLon?: number;
 }
 
-export function PinPopup({ pin }: PinPopupProps): JSX.Element {
-  const isRestrictedCollecting =
-    pin.legal_tag === 'GRAY_AREA' || pin.legal_tag === 'RESEARCH_ONLY';
+function topMaterial(pin: LocationV1): string | null {
+  const raw: unknown = pin.metadata?.top_materials;
+  if (!Array.isArray(raw) || raw.length === 0) {
+    return null;
+  }
+  const first: unknown = raw[0];
+  return typeof first === 'string' ? first : null;
+}
 
-  const legalColor =
-    LEGAL_TAG_COLORS[pin.legal_tag as keyof typeof LEGAL_TAG_COLORS] || 'bg-gray-600';
+function distanceLabel(pin: LocationV1, userLat?: number, userLon?: number): string | null {
+  if (userLat == null || userLon == null) {
+    return null;
+  }
+  const R = 6371000;
+  const toRad = (d: number): number => (d * Math.PI) / 180;
+  const lat = pin.latitude ?? 0;
+  const lon = pin.longitude ?? 0;
+  const dLat = toRad(lat - userLat);
+  const dLon = toRad(lon - userLon);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(userLat)) * Math.cos(toRad(lat)) * Math.sin(dLon / 2) ** 2;
+  const m = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return m < 1000 ? `${Math.round(m)} m` : `${(m / 1000).toFixed(1)} km`;
+}
 
-  const accessColor =
-    ACCESS_MODEL_COLORS[pin.access_model as keyof typeof ACCESS_MODEL_COLORS] ||
-    'bg-gray-500';
-
-  const difficultyColor = pin.difficulty
-    ? DIFFICULTY_COLORS[pin.difficulty as keyof typeof DIFFICULTY_COLORS] || 'bg-gray-400'
-    : 'bg-gray-300';
+/**
+ * FE-005: Tier-1 popup — name, access, trust, material, navigate, open site.
+ */
+export function PinPopup({ pin, userLat, userLon }: PinPopupProps): JSX.Element {
+  const material = topMaterial(pin);
+  const dist = distanceLabel(pin, userLat, userLon);
+  const trust = trustFromMetadata(pin.metadata);
+  const accessStatus = normalizeAccessStatus(pin.access_status);
 
   return (
-    <div className="min-w-[250px] max-w-[300px]">
-      {/* Observe/Verify banner for restricted areas */}
-      {isRestrictedCollecting && (
-        <div className="mb-2 rounded bg-yellow-100 border border-yellow-400 p-2 text-sm">
-          <p className="font-semibold text-yellow-800">⚠️ Observe/Verify Only</p>
-          <p className="text-yellow-700 text-xs">
-            Collection not confirmed legal. Research required.
-          </p>
-        </div>
-      )}
+    <div className="min-w-[260px] max-w-[320px] p-1" data-testid="pin-popup">
+      <AccessBanner accessStatus={accessStatus} className="mb-2" />
 
-      {/* Location name */}
-      <h3 className="text-lg font-semibold mb-2">{pin.name}</h3>
+      <h3 className="text-base font-bold text-gray-900 leading-tight">{pin.name}</h3>
 
-      {/* 3 Required badges */}
-      <div className="flex flex-wrap gap-2 mb-3">
-        {/* 1. Legal status badge */}
-        <span
-          className={`${legalColor} text-white text-xs px-2 py-1 rounded font-medium`}
-        >
-          {pin.legal_tag.replace(/_/g, ' ')}
-        </span>
-
-        {/* 2. Access model badge */}
-        <span
-          className={`${accessColor} text-white text-xs px-2 py-1 rounded font-medium`}
-        >
-          {pin.access_model.replace(/_/g, ' ')}
-        </span>
-
-        {/* 3. Difficulty badge */}
-        <span
-          className={`${difficultyColor} text-white text-xs px-2 py-1 rounded font-medium`}
-        >
-          {pin.difficulty ? `Difficulty ${pin.difficulty}` : 'Difficulty Unknown'}
-        </span>
-      </div>
-
-      {/* Status and kid-friendly indicators */}
-      <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
-        <span className="capitalize">{pin.status.toLowerCase().replace('_', ' ')}</span>
-        {pin.kid_friendly && (
-          <>
-            <span>•</span>
-            <span>👨‍👩‍👧‍👦 Kid Friendly</span>
-          </>
+      <div className="flex flex-wrap items-center gap-2 mt-2">
+        <TrustBadge trustCategory={trust} size="sm" />
+        {material != null && material !== '' && (
+          <span className="text-[10px] font-semibold uppercase tracking-wide bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">
+            {material}
+          </span>
         )}
+        {dist != null && dist !== '' ? (
+          <span className="text-[10px] text-gray-500 font-medium">{dist} away</span>
+        ) : null}
       </div>
 
-      {/* View details link (Step 7) */}
-      <a
-        href={`/location/${pin.id}`}
-        className="block w-full mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium text-center"
-      >
-        View Full Details →
-      </a>
-
-      {/* Coordinates (for debugging) */}
-      <div className="mt-2 pt-2 border-t border-gray-200 text-xs text-gray-500">
-        {pin.lat.toFixed(4)}, {pin.lon.toFixed(4)}
+      <div className="flex gap-2 mt-3">
+        <button
+          type="button"
+          onClick={() => {
+            const fuzzy = pin.fuzzy_location;
+            if (fuzzy?.lat != null && fuzzy.lon != null) {
+              openExternalMaps({ lat: fuzzy.lat, lon: fuzzy.lon });
+            }
+          }}
+          disabled={pin.fuzzy_location?.lat == null || pin.fuzzy_location.lon == null}
+          className="flex-1 px-3 py-2 bg-gray-800 text-white rounded-lg text-xs font-bold uppercase tracking-wide hover:bg-gray-700 disabled:opacity-40"
+        >
+          Navigate
+        </button>
+        <Link
+          href={`/location/${pin.id}`}
+          className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold uppercase tracking-wide hover:bg-blue-500 text-center"
+        >
+          Open Site
+        </Link>
       </div>
     </div>
   );

@@ -1,0 +1,55 @@
+name: Vercel Preview
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+# DEPLOY-002: Preview deployment per PR (requires VERCEL_TOKEN + VERCEL_ORG_ID + VERCEL_PROJECT_ID secrets)
+jobs:
+  deploy-preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Pull Vercel env
+        if: env.VERCEL_TOKEN != ''
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          pnpm dlx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+        working-directory: apps/web
+        continue-on-error: true
+
+      - name: Build & deploy preview
+        if: env.VERCEL_TOKEN != ''
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          pnpm dlx vercel deploy --token=$VERCEL_TOKEN --prebuilt 2>/dev/null || \
+          pnpm dlx vercel deploy --token=$VERCEL_TOKEN
+        working-directory: apps/web
+        continue-on-error: true
+
+      - name: Preview gate note
+        if: env.VERCEL_TOKEN == ''
+        run: |
+          echo "::notice::DEPLOY-002: Link Vercel Git integration or set VERCEL_TOKEN for automatic PR preview URLs."
