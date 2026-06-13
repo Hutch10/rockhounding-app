@@ -39,6 +39,14 @@ pnpm-debug.log*
 *.tmp
 .temp/
 .vercel
+.wrangler/tmp/
+
+# Local tooling / agent workspaces (never commit)
+.cursor/
+.claude/
+
+# Database backups (local-only; may contain sensitive data)
+backups/
 
 # Cloudflare Wrangler temp files
 .wrangler/tmp/
