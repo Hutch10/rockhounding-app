@@ -3,7 +3,7 @@
 **Gate:** G1 — M2 Field Test Build  
 **Issue:** META-001 / META-001A  
 **Certification date:** 2026-06-07  
-**Certification commit:** `PENDING_COMMIT`  
+**Certification commit:** `7d9a8076d9a7c323e3fcf96c62f4616f007e72ee` (`7d9a807`)  
 **Certifiers:** Principal QA Engineer · Principal Field Systems Engineer · Release Certification Engineer  
 **Environment:** Local vitest (fake-indexeddb) + `pnpm --filter web` type-check/build
 
@@ -88,7 +88,7 @@ While **offline**, Quick Log:
 ```
 Certified by: Principal QA / Field Systems / Release Certification
 Date: 2026-06-07
-Git SHA: PENDING_COMMIT
+Git SHA: 7d9a8076d9a7c323e3fcf96c62f4616f007e72ee
 Environment: local automated + web build
 Verdict: PASS
 ```

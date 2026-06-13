@@ -29,7 +29,7 @@
 | ------------------------- | ----------------------------------------------------------------------------------------------- |
 | **Verdict**               | **PASS**                                                                                        |
 | **Certification date**    | 2026-06-07                                                                                      |
-| **Certification commit**  | `PENDING_COMMIT`                                                                                |
+| **Certification commit**  | `7d9a8076d9a7c323e3fcf96c62f4616f007e72ee` (`7d9a807`)                                          |
 | **META-001A report**      | [`certification-sprint-03-field-validation.md`](../certification-sprint-03-field-validation.md) |
 | **Implementation report** | [`certification-sprint-03-field-build.md`](../certification-sprint-03-field-build.md)           |
 

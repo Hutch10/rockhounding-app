@@ -21,7 +21,7 @@
 ## Pre-Sprint 4 Entry (Complete)
 
 - [x] META-001A field validation PASS
-- [x] Sprint 3 commit recorded
+- [x] Sprint 3 commit recorded (`7d9a807`)
 - [ ] Preview deployment promoted from certification SHA
 - [ ] Sentry DSN configured on preview (DEPLOY-004)
 

@@ -8,14 +8,14 @@
 
 ## 1. Build & Deploy
 
-| Item                                        | Owner   | Status |
-| ------------------------------------------- | ------- | ------ |
-| Sprint 3 certification commit on `main`     | Release | [ ]    |
-| Preview URL deployed from cert SHA          | Release | [ ]    |
-| `pnpm --filter web build` green on cert SHA | QA      | [ ]    |
-| Service worker `/offline` fallback verified | QA      | [ ]    |
-| Supabase linked project migrations current  | Release | [ ]    |
-| Magic-link auth works on preview domain     | QA      | [ ]    |
+| Item                                        | Owner   | Status        |
+| ------------------------------------------- | ------- | ------------- |
+| Sprint 3 certification commit on `main`     | Release | [x] `7d9a807` |
+| Preview URL deployed from cert SHA          | Release | [ ]           |
+| `pnpm --filter web build` green on cert SHA | QA      | [ ]           |
+| Service worker `/offline` fallback verified | QA      | [ ]           |
+| Supabase linked project migrations current  | Release | [ ]           |
+| Magic-link auth works on preview domain     | QA      | [ ]           |
 
 ---
 

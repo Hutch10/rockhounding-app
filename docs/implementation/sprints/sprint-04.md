@@ -3,7 +3,7 @@
 **Milestone:** M3 — Closed Beta  
 **Goal:** Field Mode hardening + E2E + 5-tester cohort  
 **Exit:** META-003 closed beta certification (Gate G2)  
-**Prerequisite:** Sprint 3 META-001A **PASS** — committed
+**Prerequisite:** Sprint 3 META-001A **PASS** — commit `7d9a807`
 
 **Planning artifacts:**
 

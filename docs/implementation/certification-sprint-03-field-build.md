@@ -3,10 +3,9 @@
 **Milestone:** M2 — Field Test Build  
 **Gate:** G1 (META-001)  
 **Date:** 2026-06-07  
-**Git SHA:** `5e41e38789359cf6506b666f716ee06e0a7482dd` (uncommitted Sprint 3 changes on working tree)  
-**Certification:** **PASS** (META-001A field validation complete)  
+**Git SHA:** `7d9a8076d9a7c323e3fcf96c62f4616f007e72ee` (`7d9a807`)  
 **Certification date:** 2026-06-07  
-**Certification commit:** `PENDING_COMMIT`
+**Certification commit:** `7d9a8076d9a7c323e3fcf96c62f4616f007e72ee`
 
 **Field validation report:** [`certification-sprint-03-field-validation.md`](./certification-sprint-03-field-validation.md)
 
