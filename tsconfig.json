@@ -21,5 +21,6 @@
     "incremental": true
   },
   "files": [],
+  "include": ["vitest.config.ts", "src/**/*.ts"],
   "references": [{ "path": "./packages/shared" }, { "path": "./apps/web" }]
 }

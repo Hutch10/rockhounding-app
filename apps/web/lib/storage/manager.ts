@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unused-vars, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument, @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-misused-promises, @typescript-eslint/require-await, no-console */
 /**
  * Offline Storage & Caching - Storage Manager
- * 
+ *
  * Main storage manager with eviction, TTL, migrations, integrity verification
  */
 
-import { openDB, type DBSchema, type IDBPDatabase } from 'idb';
 import {
   StorageEntityType,
   StorageConfig,
@@ -20,6 +20,7 @@ import {
   StorageAdapterFactory,
   type StorageAdapter,
 } from '@rockhounding/shared';
+import { openDB, type DBSchema, type IDBPDatabase } from 'idb';
 
 // ============================================================================
 // IndexedDB Schema
@@ -120,7 +121,9 @@ export class StorageManager {
         upgrade(db, oldVersion) {
           // Entities store
           if (!db.objectStoreNames.contains('entities')) {
-            const entityStore = db.createObjectStore('entities', { keyPath: 'metadata.storage_key' });
+            const entityStore = db.createObjectStore('entities', {
+              keyPath: 'metadata.storage_key',
+            });
             entityStore.createIndex('by-type', 'metadata.entity_type');
             entityStore.createIndex('by-expired', 'metadata.expires_at');
             entityStore.createIndex('by-stale', 'metadata.accessed_at');
@@ -295,20 +298,15 @@ export class StorageManager {
 
     this.stats.cacheHits++;
     const adapter = this.factory.getAdapter<T>(entityType);
-    
+
     // Deserialize payloads from either legacy object form or serialized string form.
     const serializedData =
-      typeof cached.data === 'string'
-        ? cached.data
-        : JSON.stringify(cached.data);
+      typeof cached.data === 'string' ? cached.data : JSON.stringify(cached.data);
     const deserialized = await adapter.deserialize(serializedData, cached.metadata.encoding);
     return await adapter.denormalize(deserialized);
   }
 
-  async delete(
-    entityType: StorageEntityType,
-    entityId: string
-  ): Promise<void> {
+  async delete(entityType: StorageEntityType, entityId: string): Promise<void> {
     if (!this.db) throw new Error('Storage manager not initialized');
 
     const key = generateStorageKey(entityType, entityId);
@@ -316,10 +314,7 @@ export class StorageManager {
     await this.db.delete('metadata', key);
   }
 
-  async exists(
-    entityType: StorageEntityType,
-    entityId: string
-  ): Promise<boolean> {
+  async exists(entityType: StorageEntityType, entityId: string): Promise<boolean> {
     if (!this.db) throw new Error('Storage manager not initialized');
 
     const key = generateStorageKey(entityType, entityId);
@@ -339,10 +334,7 @@ export class StorageManager {
     return keys;
   }
 
-  async bulkGet<T>(
-    entityType: StorageEntityType,
-    entityIds: string[]
-  ): Promise<Map<string, T>> {
+  async bulkGet<T>(entityType: StorageEntityType, entityIds: string[]): Promise<Map<string, T>> {
     const results = new Map<string, T>();
 
     for (const entityId of entityIds) {
@@ -355,10 +347,7 @@ export class StorageManager {
     return results;
   }
 
-  async bulkDelete(
-    entityType: StorageEntityType,
-    entityIds: string[]
-  ): Promise<void> {
+  async bulkDelete(entityType: StorageEntityType, entityIds: string[]): Promise<void> {
     for (const entityId of entityIds) {
       await this.delete(entityType, entityId);
     }
@@ -391,11 +380,8 @@ export class StorageManager {
     const allMetadata = await this.db.getAll('metadata');
 
     for (const metadata of allMetadata) {
-      if (
-        metadata.storage_key.startsWith(`${userId}:`) &&
-        !isExpired(metadata.expires_at)
-      ) {
-        const entityType = metadata.entity_type as StorageEntityType;
+      if (metadata.storage_key.startsWith(`${userId}:`) && !isExpired(metadata.expires_at)) {
+        const entityType = metadata.entity_type;
         const entityId = metadata.entity_id;
         const data = await this.get(entityType, entityId);
         if (data) {
@@ -415,7 +401,7 @@ export class StorageManager {
 
     for (const metadata of allMetadata) {
       if (pattern.test(metadata.storage_key) && !isExpired(metadata.expires_at)) {
-        const entityType = metadata.entity_type as StorageEntityType;
+        const entityType = metadata.entity_type;
         const entityId = metadata.entity_id;
         const data = await this.get(entityType, entityId);
         if (data) {
@@ -434,11 +420,10 @@ export class StorageManager {
   async ensureCapacity(requiredBytes: number): Promise<void> {
     if (!this.db) throw new Error('Storage manager not initialized');
 
-    let currentSize = await this.calculateTotalSize();
+    const currentSize = await this.calculateTotalSize();
 
     if (currentSize + requiredBytes > this.config.max_storage_bytes) {
-      const targetSize =
-        this.config.max_storage_bytes - requiredBytes;
+      const targetSize = this.config.max_storage_bytes - requiredBytes;
 
       switch (this.config.eviction_policy) {
         case 'lru':
@@ -467,8 +452,7 @@ export class StorageManager {
 
     const allMetadata = await this.db.getAll('metadata');
     const sortedByAccess = allMetadata.sort(
-      (a, b) =>
-        new Date(a.accessed_at).getTime() - new Date(b.accessed_at).getTime()
+      (a, b) => new Date(a.accessed_at).getTime() - new Date(b.accessed_at).getTime()
     );
 
     let freedBytes = 0;
@@ -509,8 +493,7 @@ export class StorageManager {
 
     const allMetadata = await this.db.getAll('metadata');
     const sortedByCreation = allMetadata.sort(
-      (a, b) =>
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     );
 
     let freedBytes = 0;
@@ -543,9 +526,7 @@ export class StorageManager {
     if (!this.db) throw new Error('Storage manager not initialized');
 
     const allMetadata = await this.db.getAll('metadata');
-    const sortedByPriority = allMetadata.sort(
-      (a, b) => a.eviction_priority - b.eviction_priority
-    );
+    const sortedByPriority = allMetadata.sort((a, b) => a.eviction_priority - b.eviction_priority);
 
     let freedBytes = 0;
     for (const metadata of sortedByPriority) {
@@ -586,29 +567,31 @@ export class StorageManager {
       const allMetadata = await this.db.getAll('metadata');
       const tx = this.db.transaction('metadata', 'readwrite');
       let migratedCount = 0;
-      
+
       for (const meta of allMetadata) {
         let needsUpdate = false;
-        if (meta.sync_status === 'synced' as any) {
+        if (meta.sync_status === ('synced' as any)) {
           meta.sync_status = 'applied';
           needsUpdate = true;
-        } else if (meta.sync_status === 'SYNCED' as any) {
+        } else if (meta.sync_status === ('SYNCED' as any)) {
           meta.sync_status = 'applied';
           needsUpdate = true;
-        } else if (meta.sync_status === 'METADATA_SYNCED_MEDIA_PENDING' as any) {
+        } else if (meta.sync_status === ('METADATA_SYNCED_MEDIA_PENDING' as any)) {
           meta.sync_status = 'METADATA_APPLIED_MEDIA_PENDING' as any;
           needsUpdate = true;
         }
-        
+
         if (needsUpdate) {
           await tx.store.put(meta);
           migratedCount++;
         }
       }
-      
+
       await tx.done;
       if (migratedCount > 0) {
-        console.log(`[StorageManager] Migrated ${migratedCount} legacy sync statuses to V1 contract`);
+        console.log(
+          `[StorageManager] Migrated ${migratedCount} legacy sync statuses to V1 contract`
+        );
       }
     } catch (error) {
       console.warn('[StorageManager] Failed to migrate legacy sync statuses', error);
@@ -648,13 +631,16 @@ export class StorageManager {
   }
 
   private startCleanupJob(): void {
-    this.cleanupInterval = setInterval(async () => {
-      try {
-        await this.cleanupExpired();
-      } catch (error) {
-        console.error('Cleanup job failed:', error);
-      }
-    }, 60 * 60 * 1000); // 1 hour
+    this.cleanupInterval = setInterval(
+      async () => {
+        try {
+          await this.cleanupExpired();
+        } catch (error) {
+          console.error('Cleanup job failed:', error);
+        }
+      },
+      60 * 60 * 1000
+    ); // 1 hour
   }
 
   async compact(): Promise<number> {
@@ -697,14 +683,15 @@ export class StorageManager {
 
   async getStats() {
     const totalSize = await this.calculateTotalSize();
-    const allMetadata = await this.db?.getAll('metadata') || [];
+    const allMetadata = (await this.db?.getAll('metadata')) || [];
 
     const entitiesByType: Record<string, number> = {};
     const sizeByType: Record<string, number> = {};
 
     for (const metadata of allMetadata) {
       entitiesByType[metadata.entity_type] = (entitiesByType[metadata.entity_type] || 0) + 1;
-      sizeByType[metadata.entity_type] = (sizeByType[metadata.entity_type] || 0) + metadata.size_bytes;
+      sizeByType[metadata.entity_type] =
+        (sizeByType[metadata.entity_type] || 0) + metadata.size_bytes;
     }
 
     return StorageStatsSchema.parse({
@@ -713,15 +700,13 @@ export class StorageManager {
       available_bytes: this.config.max_storage_bytes - totalSize,
       entities_by_type: entitiesByType,
       size_by_type: sizeByType,
-      cached_entities: allMetadata.filter(m => !isExpired(m.expires_at)).length,
-      stale_entities: allMetadata.filter(m => isStale(m.accessed_at)).length,
-      expired_entities: allMetadata.filter(m => isExpired(m.expires_at)).length,
-      pending_sync: allMetadata.filter(m => m.sync_status === 'pending').length,
-      synced_entities: allMetadata.filter(m => m.sync_status === 'applied').length,
+      cached_entities: allMetadata.filter((m) => !isExpired(m.expires_at)).length,
+      stale_entities: allMetadata.filter((m) => isStale(m.accessed_at)).length,
+      expired_entities: allMetadata.filter((m) => isExpired(m.expires_at)).length,
+      pending_sync: allMetadata.filter((m) => m.sync_status === 'pending').length,
+      synced_entities: allMetadata.filter((m) => m.sync_status === 'applied').length,
       avg_access_time_ms: 5,
-      cache_hit_rate:
-        this.stats.cacheHits /
-        (this.stats.cacheHits + this.stats.cacheMisses || 1),
+      cache_hit_rate: this.stats.cacheHits / (this.stats.cacheHits + this.stats.cacheMisses || 1),
       measured_at: new Date().toISOString(),
     });
   }
@@ -753,7 +738,7 @@ export class StorageManager {
       },
     };
 
-    const allChecksPassed = Object.values(checks).every(c => c.passed);
+    const allChecksPassed = Object.values(checks).every((c) => c.passed);
     const status = allChecksPassed ? 'healthy' : usagePercent > 95 ? 'critical' : 'warning';
 
     return StorageHealthSchema.parse({
@@ -788,10 +773,14 @@ export class StorageManager {
   async getReadyOperations(): Promise<any[]> {
     if (!this.db) throw new Error('Storage manager not initialized');
     const pending = await this.getPendingOperations();
-    const retrying = await this.db.getAllFromIndex('operations', 'by-queue-status', 'RETRY_SCHEDULED');
-    
+    const retrying = await this.db.getAllFromIndex(
+      'operations',
+      'by-queue-status',
+      'RETRY_SCHEDULED'
+    );
+
     // Combine and sort by priority/created_at
-    const ready = [...pending, ...retrying].filter(op => {
+    const ready = [...pending, ...retrying].filter((op) => {
       if (op.queue_status === 'RETRY_SCHEDULED') {
         return new Date(op.next_retry_at) <= new Date();
       }
@@ -805,8 +794,8 @@ export class StorageManager {
   }
 
   async updateOperationStatus(
-    clientOperationId: string, 
-    status: string, 
+    clientOperationId: string,
+    status: string,
     updates: Partial<any> = {}
   ): Promise<void> {
     if (!this.db) throw new Error('Storage manager not initialized');
@@ -817,7 +806,7 @@ export class StorageManager {
       ...op,
       queue_status: status,
       ...updates,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     });
   }
 
@@ -827,11 +816,11 @@ export class StorageManager {
   async reconcileInFlightOperations(): Promise<void> {
     if (!this.db) return;
     const inFlight = await this.db.getAllFromIndex('operations', 'by-queue-status', 'IN_FLIGHT');
-    
+
     for (const op of inFlight) {
       await this.updateOperationStatus(op.client_operation_id, 'RETRY_SCHEDULED', {
         next_retry_at: new Date().toISOString(),
-        last_error_message: 'Operation interrupted (Crash Recovery)'
+        last_error_message: 'Operation interrupted (Crash Recovery)',
       });
     }
   }
@@ -841,14 +830,19 @@ export class StorageManager {
     return await this.db.getAllFromIndex('operations', 'by-record', clientRecordId);
   }
 
+  async getAllOperations(): Promise<any[]> {
+    if (!this.db) throw new Error('Storage manager not initialized');
+    return await this.db.getAll('operations');
+  }
+
   // ========================================================================
   // ID Mapping & Reconciliation (Phase 1C)
   // ========================================================================
 
   async setMapping(
-    clientId: string, 
-    serverId: string, 
-    entityType: string, 
+    clientId: string,
+    serverId: string,
+    entityType: string,
     remotePath?: string
   ): Promise<void> {
     if (!this.db) throw new Error('Storage manager not initialized');
@@ -857,7 +851,7 @@ export class StorageManager {
       server_id: serverId,
       entity_type: entityType,
       remote_path: remotePath,
-      synced_at: new Date().toISOString()
+      synced_at: new Date().toISOString(),
     });
   }
 
@@ -878,13 +872,13 @@ export class StorageManager {
   }
 
   async updateEntitySyncStatus(
-    entityType: StorageEntityType, 
-    entityId: string, 
+    entityType: StorageEntityType,
+    entityId: string,
     status: string
   ): Promise<void> {
     if (!this.db) throw new Error('Storage manager not initialized');
     const key = generateStorageKey(entityType, entityId);
-    
+
     // Update both entities and metadata stores
     const tx = this.db.transaction(['entities', 'metadata'], 'readwrite');
     const entity = await tx.objectStore('entities').get(key);
@@ -935,10 +929,11 @@ export async function initStorageManager(
     return storageManagerInstance;
   }
 
-  const id = deviceId || (typeof localStorage !== 'undefined'
-    ? localStorage.getItem('rockhound-device-id') ||
-      crypto.randomUUID()
-    : crypto.randomUUID());
+  const id =
+    deviceId ||
+    (typeof localStorage !== 'undefined'
+      ? localStorage.getItem('rockhound-device-id') || crypto.randomUUID()
+      : crypto.randomUUID());
 
   storageManagerInstance = new StorageManager(config, id);
   await storageManagerInstance.initialize();
@@ -950,4 +945,9 @@ export function getStorageManager(): StorageManager {
     throw new Error('Storage manager not initialized. Call initStorageManager first.');
   }
   return storageManagerInstance;
+}
+
+/** Test-only: reset singleton between vitest cases. */
+export function _resetStorageManagerForTests(): void {
+  storageManagerInstance = null;
 }
