@@ -1,6 +1,6 @@
 /**
  * Sync Coordinator - Client-Side Sync Engine
- * 
+ *
  * Handles:
  * - Offline-first batching
  * - Exponential backoff
@@ -82,31 +82,31 @@ interface SyncDB {
 export interface SyncCoordinatorConfig {
   // API endpoint
   api_endpoint: string;
-  
+
   // Batching
   batch_size: number;
   batch_timeout_ms: number;
-  
+
   // Retry configuration
   backoff: BackoffConfig;
   max_retries: number;
-  
+
   // Offline behavior
   max_queue_size: number;
   persist_queue: boolean;
   queue_ttl_ms: number;
-  
+
   // Network detection
   enable_network_detection: boolean;
   network_check_interval_ms: number;
-  
+
   // Sync intervals
   auto_sync_interval_ms: number;
   enable_auto_sync: boolean;
-  
+
   // Conflict resolution
   default_conflict_strategy: 'client_wins' | 'server_wins' | 'manual';
-  
+
   // Telemetry
   enable_telemetry: boolean;
 }
@@ -147,7 +147,7 @@ export class SyncCoordinator {
   private syncTimer: NodeJS.Timeout | null = null;
   private networkCheckTimer: NodeJS.Timeout | null = null;
   private processedKeys: Set<string> = new Set();
-  
+
   // Metrics
   private metrics = {
     queuedOperations: 0,
@@ -161,7 +161,7 @@ export class SyncCoordinator {
   constructor(config: Partial<SyncCoordinatorConfig> = {}) {
     this.config = { ...DEFAULT_CONFIG, ...config };
     this.deviceId = this.getOrCreateDeviceId();
-    
+
     this.initDB();
     if (this.config.enable_network_detection) {
       this.setupNetworkListeners();
@@ -236,7 +236,7 @@ export class SyncCoordinator {
     this.networkCheckTimer = setInterval(() => {
       const wasOnline = this.isOnline;
       this.isOnline = navigator.onLine;
-      
+
       if (!wasOnline && this.isOnline) {
         console.log('[SyncCoordinator] Network reconnected');
         this.sync();
@@ -257,7 +257,7 @@ export class SyncCoordinator {
 
     try {
       const operations = await this.db.getAll('operations');
-      
+
       // Remove expired operations
       const now = Date.now();
       for (const op of operations) {
@@ -317,6 +317,8 @@ export class SyncCoordinator {
     // Get dependencies
     const dependencies = getDependencies(entityType, entityId);
 
+    const clientOperationId = crypto.randomUUID();
+
     // Create sync operation
     const operation: BaseSyncOperation = {
       sync_id: crypto.randomUUID(),
@@ -324,22 +326,29 @@ export class SyncCoordinator {
       device_id: this.deviceId,
       entity_type: entityType,
       entity_id: entityId,
+      client_operation_id: clientOperationId,
+      client_record_id: entityId,
+      client_media_id: null,
       operation_type: operationType,
       priority: finalPriority,
       direction: 'outbound',
       status: 'pending',
+      queue_status: 'PENDING',
       client_version: modified.version || 0,
       server_version: null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       synced_at: null,
+      payload: null,
       delta: delta as any,
       full_entity: fullEntity as any,
-      depends_on: [],
+      depends_on_operation_id: null,
       blocks: [],
       retry_count: 0,
       max_retries: this.config.max_retries,
       next_retry_at: null,
+      last_error_code: null,
+      last_error_message: null,
       error_message: null,
       error_code: null,
       checksum: computeChecksum(modified),
@@ -388,7 +397,7 @@ export class SyncCoordinator {
     try {
       // Get pending operations
       const pending = await this.getPendingOperations();
-      
+
       if (pending.length === 0) {
         console.log('[SyncCoordinator] No pending operations');
         return;
@@ -400,7 +409,9 @@ export class SyncCoordinator {
       // Create batches
       const batches = this.createBatches(sorted);
 
-      console.log(`[SyncCoordinator] Syncing ${sorted.length} operations in ${batches.length} batches`);
+      console.log(
+        `[SyncCoordinator] Syncing ${sorted.length} operations in ${batches.length} batches`
+      );
 
       // Process each batch
       for (const batch of batches) {
@@ -413,7 +424,7 @@ export class SyncCoordinator {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('[SyncCoordinator] Sync failed:', errorMessage);
       this.metrics.lastError = errorMessage;
-      
+
       if (this.config.enable_telemetry) {
         this.recordTelemetry('sync_error', { error: errorMessage });
       }
@@ -432,7 +443,7 @@ export class SyncCoordinator {
         status: 'cancelled',
         updated_at: new Date().toISOString(),
       });
-      
+
       this.metrics.queuedOperations--;
     }
   }
@@ -449,7 +460,7 @@ export class SyncCoordinator {
         next_retry_at: null,
         updated_at: new Date().toISOString(),
       });
-      
+
       this.sync();
     }
   }
@@ -460,11 +471,11 @@ export class SyncCoordinator {
     }
 
     const operations = await this.db.getAll('operations');
-    
-    const pendingCount = operations.filter(op => op.status === 'pending').length;
-    const syncingCount = operations.filter(op => op.status === 'syncing').length;
-    const conflictCount = operations.filter(op => op.status === 'conflict').length;
-    const errorCount = operations.filter(op => op.status === 'error').length;
+
+    const pendingCount = operations.filter((op) => op.status === 'pending').length;
+    const syncingCount = operations.filter((op) => op.status === 'syncing').length;
+    const conflictCount = operations.filter((op) => op.status === 'conflict').length;
+    const errorCount = operations.filter((op) => op.status === 'error').length;
 
     return {
       user_id: this.userId,
@@ -497,7 +508,7 @@ export class SyncCoordinator {
     if (this.networkCheckTimer) {
       clearInterval(this.networkCheckTimer);
     }
-    
+
     // Final sync attempt
     if (this.isOnline) {
       await this.sync();
@@ -516,11 +527,11 @@ export class SyncCoordinator {
     if (!this.db) return [];
 
     const operations = await this.db.getAll('operations');
-    
+
     // Get operations that are pending or ready to retry
     const now = new Date().toISOString();
-    
-    return operations.filter(op => {
+
+    return operations.filter((op) => {
       if (op.status === 'pending') return true;
       if (op.status === 'retry' && op.next_retry_at && op.next_retry_at <= now) {
         return true;
@@ -534,25 +545,25 @@ export class SyncCoordinator {
     const sorted = [...operations].sort((a, b) => {
       const priorityDiff = PRIORITY_VALUES[a.priority] - PRIORITY_VALUES[b.priority];
       if (priorityDiff !== 0) return priorityDiff;
-      
+
       // Then by timestamp
       return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
     });
 
     // TODO: Implement full dependency graph resolution
     // For now, simple priority-based sorting
-    
+
     return sorted;
   }
 
   private createBatches(operations: BaseSyncOperation[]): SyncBatch[] {
     const batches: SyncBatch[] = [];
-    
+
     for (let i = 0; i < operations.length; i += this.config.batch_size) {
       const batchOps = operations.slice(i, i + this.config.batch_size);
-      
+
       if (batchOps.length === 0) continue; // Skip empty batches
-      
+
       const batch: SyncBatch = {
         batch_id: crypto.randomUUID(),
         user_id: this.userId!,
@@ -569,10 +580,10 @@ export class SyncCoordinator {
         conflicted_operations: 0,
         batch_checksum: computeChecksum(batchOps),
       };
-      
+
       batches.push(batch);
     }
-    
+
     return batches;
   }
 
@@ -614,16 +625,17 @@ export class SyncCoordinator {
         this.recordTelemetry('sync_batch_success', {
           batch_id: batch.batch_id,
           operations: batch.total_operations,
-          duration_ms: new Date(batch.completed_at).getTime() - new Date(batch.started_at!).getTime(),
+          duration_ms:
+            new Date(batch.completed_at).getTime() - new Date(batch.started_at!).getTime(),
         });
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('[SyncCoordinator] Batch processing failed:', errorMessage);
-      
+
       // Mark operations for retry
       await this.handleBatchError(batch, errorMessage);
-      
+
       if (this.config.enable_telemetry) {
         this.recordTelemetry('sync_batch_error', {
           batch_id: batch.batch_id,
@@ -637,13 +649,13 @@ export class SyncCoordinator {
     if (!this.db) return;
 
     for (const opResult of result.results || []) {
-      const operation = batch.operations.find(op => op.sync_id === opResult.sync_id);
+      const operation = batch.operations.find((op) => op.sync_id === opResult.sync_id);
       if (!operation) continue;
 
       if (opResult.status === 'success') {
         // Mark as successful and remove from queue
         await this.db.delete('operations', operation.sync_id);
-        
+
         // Add to idempotency cache
         const idempotencyKey = generateIdempotencyKey(operation);
         await this.db.put('idempotency', {
@@ -653,7 +665,7 @@ export class SyncCoordinator {
           expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
         });
         this.processedKeys.add(idempotencyKey);
-        
+
         batch.successful_operations++;
         this.metrics.syncedOperations++;
         this.metrics.queuedOperations--;
@@ -666,13 +678,13 @@ export class SyncCoordinator {
           enqueued_at: operation.created_at,
           last_attempt_at: new Date().toISOString(),
         });
-        
+
         batch.conflicted_operations++;
         this.metrics.conflictedOperations++;
       } else {
         // Mark as error with retry
         const nextRetry = calculateNextRetryTime(operation.retry_count, this.config.backoff);
-        
+
         await this.db.put('operations', {
           ...operation,
           status: operation.retry_count < operation.max_retries ? 'retry' : 'error',
@@ -684,7 +696,7 @@ export class SyncCoordinator {
           enqueued_at: operation.created_at,
           last_attempt_at: new Date().toISOString(),
         });
-        
+
         batch.failed_operations++;
         this.metrics.failedOperations++;
       }
@@ -697,7 +709,7 @@ export class SyncCoordinator {
     // Mark all operations in batch for retry
     for (const operation of batch.operations) {
       const nextRetry = calculateNextRetryTime(operation.retry_count, this.config.backoff);
-      
+
       await this.db.put('operations', {
         ...operation,
         status: operation.retry_count < operation.max_retries ? 'retry' : 'error',
@@ -708,27 +720,33 @@ export class SyncCoordinator {
         enqueued_at: operation.created_at,
         last_attempt_at: new Date().toISOString(),
       });
-      
+
       batch.failed_operations++;
     }
   }
 
   private getConnectionQuality(): 'excellent' | 'good' | 'fair' | 'poor' | 'offline' {
     if (!this.isOnline) return 'offline';
-    
+
     // @ts-ignore - navigator.connection is experimental
-    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    
+    const connection =
+      navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
     if (!connection) return 'good';
-    
+
     const effectiveType = connection.effectiveType;
-    
+
     switch (effectiveType) {
-      case '4g': return 'excellent';
-      case '3g': return 'good';
-      case '2g': return 'fair';
-      case 'slow-2g': return 'poor';
-      default: return 'good';
+      case '4g':
+        return 'excellent';
+      case '3g':
+        return 'good';
+      case '2g':
+        return 'fair';
+      case 'slow-2g':
+        return 'poor';
+      default:
+        return 'good';
     }
   }
 

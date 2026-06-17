@@ -75,9 +75,9 @@ export async function processSyncBatch(
   const results: SyncBatchResponse['results'] = [];
 
   for (const op of batch.operations ?? []) {
-    const clientOperationId = op.client_operation_id!;
-    const entityType = op.entity_type!;
-    const operationType = op.operation_type!;
+    const clientOperationId = op.client_operation_id;
+    const entityType = op.entity_type;
+    const operationType = op.operation_type;
 
     const existingFindId = await resolveExistingFindId(supabase, clientOperationId, userId);
     if (existingFindId) {
@@ -85,7 +85,7 @@ export async function processSyncBatch(
         client_operation_id: clientOperationId,
         server_id: existingFindId,
         status: 'applied',
-        error: undefined,
+        error: null,
       });
       continue;
     }
@@ -103,9 +103,9 @@ export async function processSyncBatch(
 
       results.push({
         client_operation_id: clientOperationId,
-        server_id: serverId ?? undefined,
+        server_id: serverId,
         status: 'applied',
-        error: undefined,
+        error: null,
       });
       continue;
     }
@@ -119,7 +119,7 @@ export async function processSyncBatch(
           userId,
           clientOperationId,
           op.payload as FindCreatePayload,
-          batch.idempotency_key!
+          batch.idempotency_key
         );
       } else {
         throw new Error(`Unsupported operation: ${entityType}/${operationType}`);
@@ -140,9 +140,9 @@ export async function processSyncBatch(
 
       results.push({
         client_operation_id: clientOperationId,
-        server_id: serverId ?? undefined,
+        server_id: serverId,
         status: 'applied',
-        error: undefined,
+        error: null,
       });
 
       await emitSyncProvenanceEvent({
@@ -176,7 +176,7 @@ export async function processSyncBatch(
 
       results.push({
         client_operation_id: clientOperationId,
-        server_id: undefined,
+        server_id: null,
         status: 'failed',
         error: message,
       });

@@ -4,16 +4,20 @@ import { NextRequest } from 'next/server';
 import { GET } from './route';
 
 const mockFrom = vi.fn();
+const mockRpc = vi.fn();
 
 vi.mock('@/lib/supabase/server', () => ({
   createClient: () => ({
     from: mockFrom,
+    rpc: mockRpc,
   }),
 }));
 
 describe('GET /api/v1/locations/:id (API-002)', () => {
   beforeEach(() => {
     mockFrom.mockReset();
+    mockRpc.mockReset();
+    mockRpc.mockResolvedValue({ data: [], error: null });
   });
 
   it('returns 400 for non-uuid id', async () => {
@@ -76,6 +80,17 @@ describe('GET /api/v1/locations/:id (API-002)', () => {
       limit: vi.fn().mockResolvedValue({ data: [], error: null }),
     };
 
+    mockRpc.mockResolvedValue({
+      data: [
+        {
+          id: '550e8400-e29b-41d4-a716-446655440000',
+          fuzzy_lat: 35.51,
+          fuzzy_lon: -120.51,
+        },
+      ],
+      error: null,
+    });
+
     mockFrom
       .mockReturnValueOnce(locationChain)
       .mockReturnValueOnce(materialsChain)
@@ -90,5 +105,6 @@ describe('GET /api/v1/locations/:id (API-002)', () => {
     expect(json.data.name).toBe('Test Site');
     expect(json.data.metadata.trust_category).toBe('verified');
     expect(json.data.materials).toHaveLength(1);
+    expect(json.data.fuzzy_location).toEqual({ lat: 35.51, lon: -120.51, precision: '~1km' });
   });
 });

@@ -72,6 +72,20 @@ export async function GET(
       return NextResponse.json({ error: 'Location not found', code: 'NOT_FOUND' }, { status: 404 });
     }
 
+    const lat = Number(location.latitude);
+    const lon = Number(location.longitude);
+    const pad = 0.02;
+
+    const rpcResult = await supabase.rpc('locations_v1_in_bbox', {
+      p_min_lon: lon - pad,
+      p_min_lat: lat - pad,
+      p_max_lon: lon + pad,
+      p_max_lat: lat + pad,
+      p_limit: 5,
+    });
+    const bboxRows = rpcResult.data as LocationBboxRow[] | null | undefined;
+    const bboxMatch = bboxRows?.find((row) => row.id === id);
+
     const { data: materialRows } = await supabase
       .from('location_materials')
       .select('abundance, materials(id, name)')
@@ -116,8 +130,8 @@ export async function GET(
       description: location.description,
       latitude: Number(location.latitude),
       longitude: Number(location.longitude),
-      fuzzy_lat: null,
-      fuzzy_lon: null,
+      fuzzy_lat: bboxMatch?.fuzzy_lat ?? null,
+      fuzzy_lon: bboxMatch?.fuzzy_lon ?? null,
       access_status: location.access_status,
       difficulty_rating: location.difficulty_rating,
       is_verified: location.is_verified ?? false,

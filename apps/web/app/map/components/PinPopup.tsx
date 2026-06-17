@@ -14,7 +14,7 @@ interface PinPopupProps {
 }
 
 function topMaterial(pin: LocationV1): string | null {
-  const raw: unknown = pin.metadata?.top_materials;
+  const raw: unknown = pin.metadata.top_materials;
   if (!Array.isArray(raw) || raw.length === 0) {
     return null;
   }
@@ -69,6 +69,7 @@ export function PinPopup({ pin, userLat, userLon }: PinPopupProps): JSX.Element 
       <div className="flex gap-2 mt-3">
         <button
           type="button"
+          data-testid="pin-navigate-external"
           onClick={() => {
             const fuzzy = pin.fuzzy_location;
             if (fuzzy?.lat != null && fuzzy.lon != null) {

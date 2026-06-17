@@ -126,7 +126,7 @@ describe('processSyncBatch (TEST-002)', () => {
       client_operation_id: CLIENT_OP_ID,
       server_id: FIND_ID,
       status: 'applied',
-      error: undefined,
+      error: null,
     });
 
     const insertCall = mock.insertSpy;

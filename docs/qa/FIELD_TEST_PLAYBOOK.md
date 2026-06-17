@@ -29,6 +29,24 @@ For closed beta testers. Complete in the field with poor signal.
 
 **Pass:** You can state allowed/caution/prohibited and trust level within 10 seconds
 
+## Known risk — KR-001 (offline prohibited logging)
+
+**Accepted for closed beta** with informed tester consent.
+
+While **online**, Quick Log calls `/api/v1/access/check` and **blocks** submission when `legalState=prohibited`.
+
+While **offline**, the access API is unavailable. Quick Log:
+
+1. Sets access state to `unknown`
+2. **Allows** enqueue to the local StorageManager ledger
+3. Defers prohibited-site enforcement until sync (no geohash cache in Sprint 4)
+
+**Tester action:** Do not intentionally log at known prohibited sites while offline. If you do, note it in feedback — ops may flag at sync time.
+
+**Online verification (required):** Complete Test 3 while connected to LTE/Wi‑Fi.
+
+---
+
 ## Test 3 — Prohibited gating (3 min)
 
 1. Open a known prohibited seed site

@@ -167,7 +167,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ onClose }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-6 space-y-4" data-testid="quick-add-form">
           {queued && (
             <div className="p-3 bg-emerald-500/20 border border-emerald-500/40 rounded-xl text-emerald-200 text-sm">
               Queued for sync{isOffline ? ' — will upload when back online' : ''}.
@@ -175,7 +175,10 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ onClose }) => {
           )}
 
           {isProhibited && (
-            <div className="p-3 bg-rose-500/20 border border-rose-500/40 rounded-xl text-rose-200 text-sm">
+            <div
+              className="p-3 bg-rose-500/20 border border-rose-500/40 rounded-xl text-rose-200 text-sm"
+              data-testid="quick-add-prohibited-banner"
+            >
               Collection is prohibited at this location. Quick Log is disabled.
             </div>
           )}
@@ -258,6 +261,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ onClose }) => {
           <button
             type="submit"
             disabled={isSubmitting || !canSubmit || queued}
+            data-testid="quick-add-submit"
             className="w-full py-4 bg-blue-600 hover:bg-blue-500 disabled:bg-zinc-700 text-white font-bold rounded-xl shadow-lg shadow-blue-900/40 transition-all flex items-center justify-center gap-2"
           >
             {isSubmitting ? (

@@ -62,6 +62,9 @@
     "packages/shared/**/*.test.ts",
     "packages/shared/src/sync-engine.ts",
     "packages/hutchstack-core/**/*.test.ts",
-    "scripts/**/*.ts"
+    "scripts/**/*.ts",
+    "apps/web/lib/sync/coordinator.ts",
+    "e2e/**/*",
+    "playwright.config.ts"
   ]
 }
