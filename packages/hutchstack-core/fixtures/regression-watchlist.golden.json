@@ -1,0 +1,24 @@
+{
+  "id": "hutchstack-core-regression-base",
+  "version": "0.0.0-phase0",
+  "items": [
+    {
+      "id": "R-01",
+      "area": "offline",
+      "verify": "Queue persists across reload",
+      "how": "automated",
+      "owner": "field-systems",
+      "blockPromote": true,
+      "ciTag": "@watchlist R-01"
+    },
+    {
+      "id": "R-02",
+      "area": "sync",
+      "verify": "Idempotent replay does not duplicate entities",
+      "how": "automated",
+      "owner": "release-sre",
+      "blockPromote": true,
+      "ciTag": "@watchlist R-02"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 /**
  * Sync Engine - Data Model & Protocol
- * 
+ *
  * Complete sync protocol with:
  * - Deterministic sync operations
  * - Conflict resolution rules
@@ -10,6 +10,13 @@
  */
 
 import { z } from 'zod';
+
+import { QueueItemStatusSchema } from '@hutchstack/core-offline-ledger';
+
+/** @deprecated Use QueueItemStatusSchema — kept for backward compatibility. */
+export const QueueItemStatus = QueueItemStatusSchema;
+export { QueueItemStatusSchema };
+export type QueueItemStatus = z.infer<typeof QueueItemStatusSchema>;
 
 // ============================================================================
 // Sync Entity Types
@@ -51,34 +58,23 @@ export type SyncOperationType = z.infer<typeof SyncOperationType>;
 // Record Sync States (Hard Truth)
 // ============================================================================
 
-export const RecordSyncState = z.preprocess((val) => {
-  if (val === 'METADATA_SYNCED_MEDIA_PENDING') return 'METADATA_APPLIED_MEDIA_PENDING';
-  if (val === 'SYNCED') return 'APPLIED';
-  return val;
-}, z.enum([
-  'LOCAL_ONLY',
-  'SYNCING_METADATA',
-  'METADATA_APPLIED_MEDIA_PENDING',
-  'SYNCING_MEDIA',
-  'APPLIED',
-  'SYNC_FAILED',
-]));
+export const RecordSyncState = z.preprocess(
+  (val) => {
+    if (val === 'METADATA_SYNCED_MEDIA_PENDING') return 'METADATA_APPLIED_MEDIA_PENDING';
+    if (val === 'SYNCED') return 'APPLIED';
+    return val;
+  },
+  z.enum([
+    'LOCAL_ONLY',
+    'SYNCING_METADATA',
+    'METADATA_APPLIED_MEDIA_PENDING',
+    'SYNCING_MEDIA',
+    'APPLIED',
+    'SYNC_FAILED',
+  ])
+);
 
 export type RecordSyncState = z.infer<typeof RecordSyncState>;
-
-// ============================================================================
-// Queue Item Status
-// ============================================================================
-
-export const QueueItemStatus = z.enum([
-  'PENDING',
-  'IN_FLIGHT',
-  'RETRY_SCHEDULED',
-  'FAILED_TERMINAL',
-  'DONE',
-]);
-
-export type QueueItemStatus = z.infer<typeof QueueItemStatus>;
 
 // ============================================================================
 // State Machine Transitions
@@ -103,17 +99,15 @@ export function transition(current: QueueItemStatus, next: QueueItemStatus): voi
   }
 }
 
-
-
 // ============================================================================
 // Sync Status
 // ============================================================================
 
 export const SyncStatus = z.enum([
-  'pending',      // Queued locally
-  'accepted',     // Received by server batch handler
-  'applied',      // Committed to server database
-  'failed',       // Terminal error
+  'pending', // Queued locally
+  'accepted', // Received by server batch handler
+  'applied', // Committed to server database
+  'failed', // Terminal error
 ]);
 
 export type SyncStatus = z.infer<typeof SyncStatus>;
@@ -123,12 +117,12 @@ export type SyncStatus = z.infer<typeof SyncStatus>;
 // ============================================================================
 
 export const ConflictResolutionStrategy = z.enum([
-  'client_wins',      // Client version overwrites server
-  'server_wins',      // Server version overwrites client
-  'manual',           // Require user intervention
-  'merge',            // Attempt automatic merge
+  'client_wins', // Client version overwrites server
+  'server_wins', // Server version overwrites client
+  'manual', // Require user intervention
+  'merge', // Attempt automatic merge
   'latest_timestamp', // Use most recent timestamp
-  'field_level',      // Merge at field level
+  'field_level', // Merge at field level
 ]);
 
 export type ConflictResolutionStrategy = z.infer<typeof ConflictResolutionStrategy>;
@@ -138,10 +132,10 @@ export type ConflictResolutionStrategy = z.infer<typeof ConflictResolutionStrate
 // ============================================================================
 
 export const SyncPriority = z.enum([
-  'critical',   // 0 - User-initiated, blocking operations
-  'high',       // 1 - Field session data, captures
-  'normal',     // 2 - Regular CRUD operations
-  'low',        // 3 - Analytics, non-critical updates
+  'critical', // 0 - User-initiated, blocking operations
+  'high', // 1 - Field session data, captures
+  'normal', // 2 - Regular CRUD operations
+  'low', // 3 - Analytics, non-critical updates
   'background', // 4 - Cleanup, maintenance
 ]);
 
@@ -160,8 +154,8 @@ export const PRIORITY_VALUES: Record<SyncPriority, number> = {
 // ============================================================================
 
 export const SyncDirection = z.enum([
-  'outbound',     // Client → Server
-  'inbound',      // Server → Client
+  'outbound', // Client → Server
+  'inbound', // Server → Client
   'bidirectional', // Both directions
 ]);
 
@@ -175,7 +169,7 @@ export const BaseSyncOperationSchema = z.object({
   sync_id: z.string().uuid(),
   user_id: z.string().uuid(),
   device_id: z.string().uuid(),
-  
+
   // Entity information
   entity_type: SyncEntityType,
   entity_id: z.string().uuid(), // Legacy support
@@ -183,42 +177,42 @@ export const BaseSyncOperationSchema = z.object({
   client_record_id: z.string().uuid(),
   client_media_id: z.string().uuid().nullable(),
   operation_type: SyncOperationType,
-  
+
   // Sync metadata
   priority: SyncPriority,
   direction: SyncDirection,
   status: SyncStatus,
   queue_status: QueueItemStatus.default('PENDING'),
-  
+
   // Versioning
   client_version: z.number().int().nonnegative(),
   server_version: z.number().int().nonnegative().nullable(),
-  
+
   // Timestamps
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
   synced_at: z.string().datetime().nullable(),
-  
+
   // Data payload
   payload: z.record(z.unknown()).nullable(),
   delta: z.record(z.unknown()).nullable(), // Changed fields only
   full_entity: z.record(z.unknown()).nullable(), // Complete entity (for creates)
-  
+
   // Dependencies
   depends_on_operation_id: z.string().uuid().nullable(),
   blocks: z.array(z.string().uuid()).default([]),
-  
+
   // Retry information
   retry_count: z.number().int().nonnegative().default(0),
   max_retries: z.number().int().positive().default(5),
   next_retry_at: z.string().datetime().nullable(),
-  
+
   // Error tracking
   last_error_code: z.string().max(50).nullable(),
   last_error_message: z.string().max(1000).nullable(),
   error_message: z.string().max(1000).nullable(), // Legacy support
   error_code: z.string().max(50).nullable(), // Legacy support
-  
+
   // Integrity
   checksum: z.string().max(64).nullable(),
 });
@@ -232,27 +226,27 @@ export type BaseSyncOperation = z.infer<typeof BaseSyncOperationSchema>;
 export const SyncConflictSchema = z.object({
   conflict_id: z.string().uuid(),
   sync_id: z.string().uuid(),
-  
+
   // Conflict details
   entity_type: SyncEntityType,
   entity_id: z.string().uuid(),
-  
+
   // Versions
   client_version: z.number().int().nonnegative(),
   server_version: z.number().int().nonnegative(),
-  
+
   // Conflicting data
   client_data: z.record(z.unknown()),
   server_data: z.record(z.unknown()),
   conflicting_fields: z.array(z.string()),
-  
+
   // Resolution
   resolution_strategy: ConflictResolutionStrategy,
   resolved: z.boolean().default(false),
   resolved_at: z.string().datetime().nullable(),
   resolved_by: z.string().uuid().nullable(),
   resolution_data: z.record(z.unknown()).nullable(),
-  
+
   // Timestamps
   detected_at: z.string().datetime(),
   created_at: z.string().datetime(),
@@ -268,25 +262,25 @@ export const SyncBatchSchema = z.object({
   batch_id: z.string().uuid(),
   user_id: z.string().uuid(),
   device_id: z.string().uuid(),
-  
+
   // Batch metadata
   direction: SyncDirection,
   priority: SyncPriority,
-  
+
   // Operations in batch
   operations: z.array(BaseSyncOperationSchema).min(1).max(100),
-  
+
   // Timestamps
   created_at: z.string().datetime(),
   started_at: z.string().datetime().nullable(),
   completed_at: z.string().datetime().nullable(),
-  
+
   // Status
   total_operations: z.number().int().positive(),
   successful_operations: z.number().int().nonnegative().default(0),
   failed_operations: z.number().int().nonnegative().default(0),
   conflicted_operations: z.number().int().nonnegative().default(0),
-  
+
   // Integrity
   batch_checksum: z.string().max(64).nullable(),
 });
@@ -325,30 +319,30 @@ export type SyncBatch = z.infer<typeof SyncBatchSchema>;
 export const SyncStateSchema = z.object({
   user_id: z.string().uuid(),
   device_id: z.string().uuid(),
-  
+
   // Current sync status
   is_syncing: z.boolean().default(false),
   is_online: z.boolean().default(true),
-  
+
   // Queue statistics
   pending_count: z.number().int().nonnegative().default(0),
   syncing_count: z.number().int().nonnegative().default(0),
   conflict_count: z.number().int().nonnegative().default(0),
   error_count: z.number().int().nonnegative().default(0),
-  
+
   // Last sync info
   last_sync_at: z.string().datetime().nullable(),
   last_successful_sync_at: z.string().datetime().nullable(),
   last_error: z.string().max(500).nullable(),
-  
+
   // Sync progress
   current_batch_id: z.string().uuid().nullable(),
   operations_completed: z.number().int().nonnegative().default(0),
   operations_total: z.number().int().nonnegative().default(0),
-  
+
   // Network status
   connection_quality: z.enum(['excellent', 'good', 'fair', 'poor', 'offline']),
-  
+
   // Timestamps
   updated_at: z.string().datetime(),
 });
@@ -362,19 +356,23 @@ export type SyncState = z.infer<typeof SyncStateSchema>;
 export const EntityDependencySchema = z.object({
   entity_type: SyncEntityType,
   entity_id: z.string().uuid(),
-  
+
   // Parent dependencies (must sync before this)
-  parent_dependencies: z.array(z.object({
-    entity_type: SyncEntityType,
-    entity_id: z.string().uuid(),
-  })),
-  
+  parent_dependencies: z.array(
+    z.object({
+      entity_type: SyncEntityType,
+      entity_id: z.string().uuid(),
+    })
+  ),
+
   // Child dependencies (must sync after this)
-  child_dependencies: z.array(z.object({
-    entity_type: SyncEntityType,
-    entity_id: z.string().uuid(),
-  })),
-  
+  child_dependencies: z.array(
+    z.object({
+      entity_type: SyncEntityType,
+      entity_id: z.string().uuid(),
+    })
+  ),
+
   // Sync requirements
   requires_online: z.boolean().default(true),
   can_batch: z.boolean().default(true),
@@ -420,10 +418,7 @@ export function computeDelta<T extends Record<string, any>>(
   };
 }
 
-export function applyDelta<T extends Record<string, any>>(
-  original: T,
-  delta: Partial<T>
-): T {
+export function applyDelta<T extends Record<string, any>>(original: T, delta: Partial<T>): T {
   return { ...original, ...delta };
 }
 
@@ -433,7 +428,7 @@ export function computeChecksum(data: any): string {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash = hash & hash; // Convert to 32-bit integer
   }
   return Math.abs(hash).toString(16);
@@ -502,8 +497,12 @@ export function resolveConflict<T extends Record<string, any>>(
     case 'field_level':
       const mergedData: Record<string, any> = { ...server };
       for (const field of conflictingFields) {
-        const clientTime = new Date(client[`${field}_updated_at`] || client.updated_at || 0).getTime();
-        const serverTime = new Date(server[`${field}_updated_at`] || server.updated_at || 0).getTime();
+        const clientTime = new Date(
+          client[`${field}_updated_at`] || client.updated_at || 0
+        ).getTime();
+        const serverTime = new Date(
+          server[`${field}_updated_at`] || server.updated_at || 0
+        ).getTime();
         if (clientTime > serverTime) {
           mergedData[field] = client[field];
         }
@@ -575,10 +574,7 @@ export function calculateBackoff(
   return delay;
 }
 
-export function calculateNextRetryTime(
-  retryCount: number,
-  config?: BackoffConfig
-): Date {
+export function calculateNextRetryTime(retryCount: number, config?: BackoffConfig): Date {
   const delay = calculateBackoff(retryCount, config);
   return new Date(Date.now() + delay);
 }
@@ -593,14 +589,21 @@ export interface SyncQueueEntry extends BaseSyncOperation {
   last_attempt_at: string | null;
 }
 
-export function getSyncPriority(entityType: SyncEntityType, operationType: SyncOperationType): SyncPriority {
+export function getSyncPriority(
+  entityType: SyncEntityType,
+  operationType: SyncOperationType
+): SyncPriority {
   // Critical: User-initiated blocking operations
   if (operationType === 'delete') {
     return 'critical';
   }
 
   // High: Real-time field data
-  if (entityType === 'field_session' || entityType === 'find_log' || entityType === 'capture_session') {
+  if (
+    entityType === 'field_session' ||
+    entityType === 'find_log' ||
+    entityType === 'capture_session'
+  ) {
     return 'high';
   }
 
@@ -629,12 +632,8 @@ export function getDependencies(entityType: SyncEntityType, entityId: string): E
       priority: 'high',
     },
     find_log: {
-      parent_dependencies: [
-        { entity_type: 'field_session', entity_id: '*' },
-      ],
-      child_dependencies: [
-        { entity_type: 'specimen', entity_id: '*' },
-      ],
+      parent_dependencies: [{ entity_type: 'field_session', entity_id: '*' }],
+      child_dependencies: [{ entity_type: 'specimen', entity_id: '*' }],
       priority: 'high',
     },
     specimen: {
@@ -643,37 +642,23 @@ export function getDependencies(entityType: SyncEntityType, entityId: string): E
       priority: 'normal',
     },
     capture_session: {
-      parent_dependencies: [
-        { entity_type: 'field_session', entity_id: '*' },
-      ],
-      child_dependencies: [
-        { entity_type: 'raw_capture', entity_id: '*' },
-      ],
+      parent_dependencies: [{ entity_type: 'field_session', entity_id: '*' }],
+      child_dependencies: [{ entity_type: 'raw_capture', entity_id: '*' }],
       priority: 'high',
     },
     raw_capture: {
-      parent_dependencies: [
-        { entity_type: 'capture_session', entity_id: '*' },
-      ],
-      child_dependencies: [
-        { entity_type: 'processed_capture', entity_id: '*' },
-      ],
+      parent_dependencies: [{ entity_type: 'capture_session', entity_id: '*' }],
+      child_dependencies: [{ entity_type: 'processed_capture', entity_id: '*' }],
       priority: 'normal',
     },
     processed_capture: {
-      parent_dependencies: [
-        { entity_type: 'raw_capture', entity_id: '*' },
-      ],
-      child_dependencies: [
-        { entity_type: 'specimen', entity_id: '*' },
-      ],
+      parent_dependencies: [{ entity_type: 'raw_capture', entity_id: '*' }],
+      child_dependencies: [{ entity_type: 'specimen', entity_id: '*' }],
       priority: 'normal',
     },
     storage_location: {
       parent_dependencies: [],
-      child_dependencies: [
-        { entity_type: 'specimen', entity_id: '*' },
-      ],
+      child_dependencies: [{ entity_type: 'specimen', entity_id: '*' }],
       priority: 'normal',
     },
     collection_group: {
@@ -703,7 +688,7 @@ export function getDependencies(entityType: SyncEntityType, entityId: string): E
   };
 
   const base = dependencies[entityType] || {};
-  
+
   return {
     entity_type: entityType,
     entity_id: entityId,
@@ -725,19 +710,19 @@ export const SyncMetricsSchema = z.object({
   successful_operations: z.number().int().nonnegative(),
   failed_operations: z.number().int().nonnegative(),
   conflicted_operations: z.number().int().nonnegative(),
-  
+
   // Timings
   avg_sync_duration_ms: z.number().nonnegative(),
   total_sync_time_ms: z.number().nonnegative(),
-  
+
   // Network
   bytes_uploaded: z.number().int().nonnegative(),
   bytes_downloaded: z.number().int().nonnegative(),
-  
+
   // Errors
   error_rate: z.number().min(0).max(1),
   conflict_rate: z.number().min(0).max(1),
-  
+
   // Timestamps
   period_start: z.string().datetime(),
   period_end: z.string().datetime(),
@@ -820,23 +805,17 @@ export function isReplayedOperation(
 // ============================================================================
 
 export function isSyncable(entity: any): boolean {
-  return (
-    entity &&
-    typeof entity === 'object' &&
-    'id' in entity &&
-    'updated_at' in entity
-  );
+  return entity && typeof entity === 'object' && 'id' in entity && 'updated_at' in entity;
 }
 
-export function requiresSync(
-  localVersion: number,
-  remoteVersion: number | null
-): boolean {
+export function requiresSync(localVersion: number, remoteVersion: number | null): boolean {
   return remoteVersion === null || localVersion > remoteVersion;
 }
 
 export function canRetry(operation: BaseSyncOperation): boolean {
-  return operation.retry_count < operation.max_retries &&
-         operation.status !== 'applied' &&
-         operation.status !== 'failed';
+  return (
+    operation.retry_count < operation.max_retries &&
+    operation.status !== 'applied' &&
+    operation.status !== 'failed'
+  );
 }

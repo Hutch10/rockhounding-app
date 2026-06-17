@@ -4,7 +4,12 @@
   "parserOptions": {
     "ecmaVersion": 2022,
     "sourceType": "module",
-    "project": ["./tsconfig.json", "./apps/*/tsconfig.json", "./packages/*/tsconfig.json"]
+    "project": [
+      "./tsconfig.json",
+      "./apps/*/tsconfig.json",
+      "./packages/*/tsconfig.json",
+      "./packages/hutchstack-core/*/tsconfig.json"
+    ]
   },
   "plugins": ["@typescript-eslint", "import"],
   "extends": [
@@ -55,6 +60,8 @@
     "apps/web/**/*.test.ts",
     "apps/web/**/*.test.tsx",
     "packages/shared/**/*.test.ts",
+    "packages/shared/src/sync-engine.ts",
+    "packages/hutchstack-core/**/*.test.ts",
     "scripts/**/*.ts"
   ]
 }

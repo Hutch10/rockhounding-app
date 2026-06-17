@@ -1,0 +1,23 @@
+id: hutchstack-core-regression-base
+version: 0.1.0-phase1
+items:
+  - id: R-01
+    area: offline
+    verify: Quick Log survives refresh; queue visible in /offline
+    how: automated
+    owner: qa
+    blockPromote: true
+    ciTag: '@watchlist R-01'
+  - id: R-02
+    area: sync
+    verify: Same client_operation_id → one find
+    how: automated
+    owner: release-sre
+    blockPromote: true
+    ciTag: '@watchlist R-02'
+  - id: R-09
+    area: sync
+    verify: No second sync path introduced
+    how: manual
+    owner: release
+    blockPromote: true

@@ -1,0 +1,17 @@
+extends: regression-base.yaml
+id: rockhound-regression-ext
+version: 0.1.0-phase1
+items:
+  - id: R-03
+    area: rendering
+    verify: Map pins and access colors visible in sunlight
+    how: manual
+    owner: field-systems
+    blockPromote: false
+  - id: R-07
+    area: compliance
+    verify: Prohibited → Quick Log disabled online
+    how: automated
+    owner: qa
+    blockPromote: true
+    ciTag: '@watchlist R-07'

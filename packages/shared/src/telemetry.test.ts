@@ -1,6 +1,6 @@
 /**
  * Telemetry System - Type Safety Tests
- * 
+ *
  * Verifies that all telemetry types are properly exported and type-safe
  */
 
@@ -9,7 +9,7 @@ import {
   // Event Categories
   TelemetryEventCategory,
   EventSeverity,
-  
+
   // Event Types
   BaseTelemetryEvent,
   PerformanceMetric,
@@ -21,23 +21,23 @@ import {
   NetworkEvent,
   DatabaseEvent,
   TelemetryEvent,
-  
+
   // Batch Types
   TelemetryBatch,
   AggregatedMetrics,
   TelemetrySummary,
-  
+
   // Config Types
   TelemetryConfig,
   TelemetryQueryFilters,
-  
+
   // Schemas
   TelemetryEventSchema,
   TelemetryBatchSchema,
   PerformanceMetricSchema,
   SyncEventSchema,
   CacheEventSchema,
-  
+
   // Helper Functions
   createEventId,
   createSessionId,
@@ -45,6 +45,11 @@ import {
   getNetworkContext,
   shouldSampleEvent,
 } from '@rockhounding/shared';
+
+const TEST_EVENT_ID = 'b2c3d4e5-f6a7-4890-b123-456789abcdef';
+const TEST_USER_ID = 'c3d4e5f6-a7b8-4901-c234-56789abcdef0';
+const TEST_SESSION_ID = 'd4e5f6a7-b8c9-4012-d345-6789abcdef01';
+const TEST_BATCH_ID = 'e5f6a7b8-c9d0-4123-e456-789abcdef012';
 
 describe('Telemetry Type Exports', () => {
   it('should export all event category enums', () => {
@@ -68,9 +73,9 @@ describe('Telemetry Type Exports', () => {
 
   it('should validate performance metric schema', () => {
     const validMetric: PerformanceMetric = {
-      event_id: 'test-id',
-      user_id: 'user-123',
-      session_id: 'session-123',
+      event_id: TEST_EVENT_ID,
+      user_id: TEST_USER_ID,
+      session_id: TEST_SESSION_ID,
       category: 'performance',
       event_name: 'page_load',
       timestamp: new Date().toISOString(),
@@ -104,9 +109,9 @@ describe('Telemetry Type Exports', () => {
 
   it('should validate sync event schema', () => {
     const validSync: SyncEvent = {
-      event_id: 'test-id',
-      user_id: 'user-123',
-      session_id: 'session-123',
+      event_id: TEST_EVENT_ID,
+      user_id: TEST_USER_ID,
+      session_id: TEST_SESSION_ID,
       category: 'sync',
       event_name: 'data_sync',
       timestamp: new Date().toISOString(),
@@ -141,9 +146,9 @@ describe('Telemetry Type Exports', () => {
 
   it('should validate cache event schema', () => {
     const validCache: CacheEvent = {
-      event_id: 'test-id',
-      user_id: 'user-123',
-      session_id: 'session-123',
+      event_id: TEST_EVENT_ID,
+      user_id: TEST_USER_ID,
+      session_id: TEST_SESSION_ID,
       category: 'cache',
       event_name: 'cache_lookup',
       timestamp: new Date().toISOString(),
@@ -175,12 +180,12 @@ describe('Telemetry Type Exports', () => {
 
   it('should validate telemetry batch schema', () => {
     const validBatch: TelemetryBatch = {
-      batch_id: 'batch-123',
+      batch_id: TEST_BATCH_ID,
       events: [
         {
-          event_id: 'event-1',
-          user_id: 'user-123',
-          session_id: 'session-123',
+          event_id: TEST_EVENT_ID,
+          user_id: TEST_USER_ID,
+          session_id: TEST_SESSION_ID,
           category: 'performance',
           event_name: 'test',
           timestamp: new Date().toISOString(),
@@ -220,7 +225,7 @@ describe('Telemetry Type Exports', () => {
   it('should generate unique event IDs', () => {
     const id1 = createEventId();
     const id2 = createEventId();
-    
+
     expect(id1).toBeTruthy();
     expect(id2).toBeTruthy();
     expect(id1).not.toBe(id2);
@@ -229,7 +234,7 @@ describe('Telemetry Type Exports', () => {
 
   it('should get device context', () => {
     const context = getDeviceContext();
-    
+
     // Should return object with expected keys
     expect(context).toHaveProperty('device_type');
     expect(context).toHaveProperty('platform');
@@ -240,7 +245,7 @@ describe('Telemetry Type Exports', () => {
 
   it('should get network context', () => {
     const context = getNetworkContext();
-    
+
     expect(context).toHaveProperty('connection_type');
     expect(context).toHaveProperty('is_online');
     expect(typeof context.is_online).toBe('boolean');
@@ -287,7 +292,7 @@ describe('Telemetry Type Exports', () => {
 
   it('should reject invalid batch size', () => {
     const invalidBatch = {
-      batch_id: 'batch-123',
+      batch_id: TEST_BATCH_ID,
       events: [], // Empty array (min 1)
       batch_timestamp: new Date().toISOString(),
       client_timestamp: new Date().toISOString(),
@@ -300,9 +305,9 @@ describe('Telemetry Type Exports', () => {
 
   it('should enforce max batch size', () => {
     const events = Array(101).fill({
-      event_id: 'event-1',
-      user_id: 'user-123',
-      session_id: 'session-123',
+      event_id: TEST_EVENT_ID,
+      user_id: TEST_USER_ID,
+      session_id: TEST_SESSION_ID,
       category: 'performance',
       event_name: 'test',
       timestamp: new Date().toISOString(),
@@ -331,7 +336,7 @@ describe('Telemetry Type Exports', () => {
     });
 
     const oversizedBatch = {
-      batch_id: 'batch-123',
+      batch_id: TEST_BATCH_ID,
       events,
       batch_timestamp: new Date().toISOString(),
       client_timestamp: new Date().toISOString(),

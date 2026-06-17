@@ -1,0 +1,22 @@
+{
+  "id": "META-003",
+  "milestone": "M3 Closed Beta",
+  "entryCriteria": ["G2-A TEST-007 green", "G2-B FE-010 certified"],
+  "exitCriteria": ["certification-closed-beta.md sections 1,2,3,6 complete"],
+  "sections": [
+    {
+      "id": "engineering",
+      "title": "Engineering gates",
+      "items": [
+        { "id": "TEST-007", "description": "Playwright offline sync E2E green", "required": true }
+      ]
+    }
+  ],
+  "blockers": [
+    {
+      "id": "P0-sync-drop",
+      "description": "Sync silently drops queue",
+      "failClosed": true
+    }
+  ]
+}

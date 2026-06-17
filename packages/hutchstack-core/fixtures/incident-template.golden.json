@@ -1,0 +1,21 @@
+{
+  "id": "incident-p0-sync",
+  "severity": "P0",
+  "responseTimeMinutes": 15,
+  "sections": [
+    {
+      "id": "acknowledge",
+      "title": "Acknowledge",
+      "checklist": ["Page on-call", "Open incident channel", "Record start time"]
+    },
+    {
+      "id": "triage",
+      "title": "Triage sync path",
+      "checklist": [
+        "Verify StorageManager → SyncManager → POST /api/v1/sync/batch",
+        "Check sync_operations table for failed batches",
+        "Assess rollback criteria"
+      ]
+    }
+  ]
+}

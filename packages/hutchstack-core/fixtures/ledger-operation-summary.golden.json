@@ -1,0 +1,10 @@
+{
+  "client_operation_id": "a1b2c3d4-e5f6-4789-a012-3456789abcde",
+  "entity_type": "find",
+  "operation_type": "create",
+  "queue_status": "PENDING",
+  "priority": 1,
+  "depends_on_operation_id": null,
+  "retry_count": 0,
+  "created_at": "2026-01-15T18:00:00.000Z"
+}

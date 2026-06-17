@@ -1,0 +1,23 @@
+{
+  "event_id": "b2c3d4e5-f6a7-4890-b123-456789abcdef",
+  "user_id": "c3d4e5f6-a7b8-4901-c234-56789abcdef0",
+  "session_id": "d4e5f6a7-b8c9-4012-d345-6789abcdef01",
+  "category": "sync",
+  "event_name": "sync_queue_depth",
+  "timestamp": "2026-01-15T18:05:00.000Z",
+  "severity": "info",
+  "device_type": "mobile",
+  "platform": "web",
+  "browser": "chrome",
+  "viewport_width": 390,
+  "viewport_height": 844,
+  "connection_type": "4g",
+  "is_online": true,
+  "app_version": "0.1.0",
+  "page_url": "/field",
+  "metadata": {
+    "pending_count": 2,
+    "failed_count": 0,
+    "in_flight_count": 0
+  }
+}

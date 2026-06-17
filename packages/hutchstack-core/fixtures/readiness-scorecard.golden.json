@@ -1,0 +1,21 @@
+{
+  "id": "rockhound-v1-readiness",
+  "version": "0.0.0-phase0",
+  "targetRelease": "V1.0",
+  "gates": [
+    {
+      "id": "V1-R1",
+      "group": "reliability",
+      "description": "Crash-free sessions >= 98% (7d)",
+      "critical": true,
+      "status": "PENDING"
+    },
+    {
+      "id": "V1-F1",
+      "group": "field",
+      "description": "50 field sessions without data loss",
+      "critical": true,
+      "status": "PENDING"
+    }
+  ]
+}

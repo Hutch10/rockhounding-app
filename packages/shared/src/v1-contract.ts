@@ -1,5 +1,14 @@
 import { z } from 'zod';
 
+export {
+  SyncOperationStatusSchema,
+  SyncBatchRequestSchema,
+  SyncBatchResponseSchema,
+  type SyncOperationStatus,
+  type SyncBatchRequest,
+  type SyncBatchResponse,
+} from '@hutchstack/core-sync-v1';
+
 /**
  * =====================================================
  * CORE DOMAIN ENUMS
@@ -17,15 +26,6 @@ export type AccessStatus = z.infer<typeof AccessStatusSchema>;
 
 export const AdvisoryLevelSchema = z.enum(['safe', 'caution', 'warning', 'critical']);
 export type AdvisoryLevel = z.infer<typeof AdvisoryLevelSchema>;
-
-export const SyncOperationStatusSchema = z.enum(['pending', 'accepted', 'applied', 'failed']);
-export type SyncOperationStatus = z.infer<typeof SyncOperationStatusSchema>;
-
-/**
- * =====================================================
- * COMMON STRUCTURES
- * =====================================================
- */
 
 export const ConfidenceBreakdownSchema = z.object({
   total: z.number().min(0).max(1),
@@ -172,30 +172,6 @@ export const TripsListResponseSchema = z.object({
   count: z.number().int().nonnegative(),
 });
 
-export const SyncBatchRequestSchema = z.object({
-  operations: z.array(
-    z.object({
-      client_operation_id: z.string().uuid(),
-      entity_type: z.enum(['find', 'trip', 'profile', 'location_suggest']),
-      operation_type: z.enum(['create', 'update', 'delete']),
-      payload: z.any(),
-      timestamp: z.string().datetime(),
-    })
-  ),
-  idempotency_key: z.string(),
-});
-
-export const SyncBatchResponseSchema = z.object({
-  results: z.array(
-    z.object({
-      client_operation_id: z.string().uuid(),
-      server_id: z.string().uuid().nullable(),
-      status: SyncOperationStatusSchema,
-      error: z.string().nullable(),
-    })
-  ),
-});
-
 export const AccessCheckRequestSchema = z.object({
   lat: z.number().min(-90).max(90),
   lon: z.number().min(-180).max(180),
@@ -246,8 +222,6 @@ export const AccessCheckResponseSchema = z.object({
 
 export type AccessCheckRequest = z.infer<typeof AccessCheckRequestSchema>;
 export type AccessCheckResponse = z.infer<typeof AccessCheckResponseSchema>;
-export type SyncBatchRequest = z.infer<typeof SyncBatchRequestSchema>;
-export type SyncBatchResponse = z.infer<typeof SyncBatchResponseSchema>;
 export type ProfileV1 = z.infer<typeof ProfileV1Schema>;
 export type FindV1 = z.infer<typeof FindV1Schema>;
 export type TripV1 = z.infer<typeof TripV1Schema>;

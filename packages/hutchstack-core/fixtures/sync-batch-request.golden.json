@@ -1,0 +1,17 @@
+{
+  "operations": [
+    {
+      "client_operation_id": "a1b2c3d4-e5f6-4789-a012-3456789abcde",
+      "entity_type": "find",
+      "operation_type": "create",
+      "payload": {
+        "material_name": "Quartz",
+        "notes": "Golden fixture — Phase 0 compatibility only",
+        "is_fuzzy": true,
+        "fuzzy_location": { "lat": 44.0582, "lon": -121.3153, "precision": "~1km" }
+      },
+      "timestamp": "2026-01-15T18:00:00.000Z"
+    }
+  ],
+  "idempotency_key": "golden-batch-001"
+}

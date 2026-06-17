@@ -1,0 +1,18 @@
+version: 0.1.0-phase1
+alerts:
+  - id: A-01
+    condition: sync_success_rate_24h < 90
+    window: 2h
+    severity: P1
+    runbookUrl: docs/operations/production-operations-plan-public-beta.md
+    blockPromote: false
+  - id: A-02
+    condition: sync_success_rate_24h < 80
+    window: 1h
+    severity: P0
+    blockPromote: true
+  - id: A-03
+    condition: duplicate_client_operation_id_applied
+    window: instant
+    severity: P0
+    blockPromote: true

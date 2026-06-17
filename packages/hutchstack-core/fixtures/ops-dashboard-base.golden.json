@@ -1,0 +1,23 @@
+{
+  "id": "hutchstack-core-dashboard-base",
+  "version": "0.0.0-phase0",
+  "panels": [
+    {
+      "id": "D1",
+      "title": "Offline queue depth",
+      "description": "Pending + failed ops on device",
+      "source": "telemetry",
+      "eventName": "sync_queue_depth",
+      "targets": [
+        { "metricId": "pending_count_p95", "target": 10, "unit": "count", "comparison": "lte" }
+      ]
+    },
+    {
+      "id": "D2",
+      "title": "Sync success rate",
+      "description": "Applied / total in rolling 24h",
+      "source": "supabase",
+      "query": "SELECT count(*) FILTER (WHERE status='applied') * 100.0 / NULLIF(count(*),0) FROM sync_operations WHERE processed_at > now() - interval '24 hours'"
+    }
+  ]
+}

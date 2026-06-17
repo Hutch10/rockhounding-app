@@ -4,6 +4,12 @@ Governance, policies, and operational playbooks for Rockhound's field discovery 
 
 ## Document Index
 
+### Platform architecture
+
+| Document                                                                  | Purpose                                                 |
+| ------------------------------------------------------------------------- | ------------------------------------------------------- |
+| [Core Platform Extraction Plan](./HUTCHSTACK_CORE_PLATFORM_EXTRACTION.md) | Offline/sync/telemetry/ops promotion to HutchStack Core |
+
 ### Governance
 
 | Document                                                          | Purpose                           |
@@ -53,10 +59,12 @@ Current: **`hutchstack-v1.1.0`** (Harness **`1.1.0`** — Tier-0 remediation)
 
 ## Rollout Status
 
-| Phase                            | Status               |
-| -------------------------------- | -------------------- |
-| P0 — Docs + shared package + API | Complete             |
-| Tier-0 — Hardening remediation   | Complete (no gating) |
-| P1 — Staging pre-score wiring    | Planned              |
-| P2 — Admin UI harness panel      | Planned              |
-| P3 — Nightly trust recompute     | Planned              |
+| Phase                                  | Status                                                                                 |
+| -------------------------------------- | -------------------------------------------------------------------------------------- |
+| P0 — Docs + shared package + API       | Complete                                                                               |
+| **Core Phase 0 — Package scaffold**    | Complete (see [Core Phase 0](../../packages/hutchstack-core/docs/PHASE_0.md))          |
+| **Core Phase 1 — Contract extraction** | Complete (see [Phase 1 Report](../../packages/hutchstack-core/docs/PHASE_1_REPORT.md)) |
+| Tier-0 — Hardening remediation         | Complete (no gating)                                                                   |
+| P1 — Staging pre-score wiring          | Planned                                                                                |
+| P2 — Admin UI harness panel            | Planned                                                                                |
+| P3 — Nightly trust recompute           | Planned                                                                                |
