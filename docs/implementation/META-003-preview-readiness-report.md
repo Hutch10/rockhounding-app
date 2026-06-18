@@ -182,8 +182,8 @@ Do **not** disable protection globally; use exceptions or shareable links for be
 
 ## Sign-off
 
-| Role               | Verdict                                        |
-| ------------------ | ---------------------------------------------- |
-| Release Guardian   | **PREVIEW READY (engineering)** @ `15214da`    |
-| Closed Beta Ops    | **COHORT NOT INVITED** — env + protection gaps |
-| META-003 full PASS | **NOT CLAIMED**                                |
+| Role               | Verdict                                                |
+| ------------------ | ------------------------------------------------------ |
+| Release Guardian   | **PREVIEW READY (engineering)** @ `15214da`            |
+| Closed Beta Ops    | **COHORT NOT EXECUTED** — ops blockers remain          |
+| META-003 full PASS | **FAIL** (2026-06-18) — see final certification report |

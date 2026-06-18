@@ -5,7 +5,8 @@
 **Exit:** META-003 closed beta certification (Gate G2)  
 **Prerequisite:** Sprint 3 META-001A **PASS** — commit `7d9a807`  
 **Deploy-gate hotfix:** `15214da` (2026-06-18)  
-**Engineering verdict (2026-06-18):** **GATES PASS @ 15214da / PREVIEW READY / META-003 NOT PASS**
+**Engineering verdict:** **GATES PASS @ `15214da`**  
+**META-003 verdict (2026-06-18):** **FAIL** — [`META-003-final-certification-report.md`](../META-003-final-certification-report.md)
 
 **Planning artifacts:**
 
@@ -32,19 +33,19 @@
 
 ## Execution Order
 
-| #   | ID         | Title                       | Status       | Notes                                    |
-| --- | ---------- | --------------------------- | ------------ | ---------------------------------------- |
-| 1   | FE-010     | Field Mode shell            | **done**     | E2E CB-F1–F5 PASS                        |
-| 2   | TEST-009   | Field test playbook         | **done**     | KR-001 notice added                      |
-| 3   | TEST-007   | Playwright E2E offline sync | **done**     | 6/6 PASS                                 |
-| 4   | FE-009     | Collection My Finds polish  | **done**     | `/finds` ledger                          |
-| 5   | DEPLOY-004 | Sentry release tracking     | **done**     | env-gated; DSN on preview pending        |
-| 6   | FE-022     | Offline fallback polish     | **done**     | `/offline` queue UI                      |
-| 7   | API-005    | GET /api/v1/me              | **done**     | ProfileV1 + tests                        |
-| 8   | FE-023     | Profile page                | **done**     | `/profile`                               |
-| 9   | META-002   | Beta cohort onboarding      | **blocked**  | preview URL ready; protection + env gaps |
-| 10  | —          | Bug bash buffer (20%)       | reserved     | P1 from cohort                           |
-| 11  | META-003   | Closed beta certification   | **not pass** | see META-003-preview-readiness-report.md |
+| #   | ID         | Title                       | Status   | Notes                                      |
+| --- | ---------- | --------------------------- | -------- | ------------------------------------------ |
+| 1   | FE-010     | Field Mode shell            | **done** | E2E CB-F1–F5 PASS                          |
+| 2   | TEST-009   | Field test playbook         | **done** | KR-001 notice added                        |
+| 3   | TEST-007   | Playwright E2E offline sync | **done** | 6/6 PASS                                   |
+| 4   | FE-009     | Collection My Finds polish  | **done** | `/finds` ledger                            |
+| 5   | DEPLOY-004 | Sentry release tracking     | **done** | env-gated; DSN on preview pending          |
+| 6   | FE-022     | Offline fallback polish     | **done** | `/offline` queue UI                        |
+| 7   | API-005    | GET /api/v1/me              | **done** | ProfileV1 + tests                          |
+| 8   | FE-023     | Profile page                | **done** | `/profile`                                 |
+| 9   | META-002   | Beta cohort onboarding      | **fail** | 0/5 onboarded; invites blocked             |
+| 10  | —          | Bug bash buffer (20%)       | reserved | P1 from cohort                             |
+| 11  | META-003   | Closed beta certification   | **fail** | see META-003-final-certification-report.md |
 
 ---
 

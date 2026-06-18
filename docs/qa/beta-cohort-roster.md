@@ -1,83 +1,70 @@
-# Beta Cohort Roster — META-002 (Sprint 4)
+# Beta Cohort Roster — META-002 / META-003 (Sprint 4)
 
-**Status:** **INVITES BLOCKED** — env mirror + Deployment Protection; playbook ready  
-**Branch:** `feat/sprint-4-field-mode` @ `15214da` (hotfix on `c8ca2b9`)  
-**Preview:** https://rockhound-adaoibe3b-hutchs-projects-ef99514e.vercel.app
+**Certification date:** 2026-06-18  
+**META-003 verdict:** **FAIL** (see [`META-003-final-certification-report.md`](../implementation/META-003-final-certification-report.md))  
+**Branch:** `feat/sprint-4-field-mode` @ `15214da`  
+**Preview:** https://rockhound-adaoibe3b-hutchs-projects-ef99514e.vercel.app (**not accessible to testers — Deployment Protection**)
 
 ---
 
 ## Cohort roster
 
-| ID  | Profile               | Geography | Device         | Invite | Playbook | KR-001 ack |
-| --- | --------------------- | --------- | -------------- | ------ | -------- | ---------- |
-| T1  | Power user / engineer | AZ seed   | iOS Safari     | ready  | pending  | pending    |
-| T2  | Weekend rockhound     | AZ seed   | Android Chrome | ready  | pending  | pending    |
-| T3  | Oregon collector      | OR seed   | iOS Safari     | ready  | pending  | pending    |
-| T4  | Poor-coverage user    | AZ rural  | Android Chrome | ready  | pending  | pending    |
-| T5  | Skeptic / QA mindset  | Either    | Desktop+mobile | ready  | pending  | pending    |
+| ID  | Profile               | Geography | Device         | Invite | Playbook | KR-001 ack | Feedback |
+| --- | --------------------- | --------- | -------------- | ------ | -------- | ---------- | -------- |
+| T1  | Power user / engineer | AZ seed   | iOS Safari     | **No** | **No**   | **No**     | —        |
+| T2  | Weekend rockhound     | AZ seed   | Android Chrome | **No** | **No**   | **No**     | —        |
+| T3  | Oregon collector      | OR seed   | iOS Safari     | **No** | **No**   | **No**     | —        |
+| T4  | Poor-coverage user    | AZ rural  | Android Chrome | **No** | **No**   | **No**     | —        |
+| T5  | Skeptic / QA mindset  | Either    | Desktop+mobile | **No** | **No**   | **No**     | —        |
 
-**Invite status:** Blocked on Deployment Protection + Mapbox/Sentry DSN + Supabase env on `rockhound-web` (see [`META-003-preview-readiness-report.md`](../implementation/META-003-preview-readiness-report.md)).
+**Completions:** **0 / 5**
 
-**Playbook:** [`FIELD_TEST_PLAYBOOK.md`](FIELD_TEST_PLAYBOOK.md) (includes KR-001 notice)
-
----
-
-## Day 0 onboarding packet (per tester)
-
-- [x] Playbook link: `docs/qa/FIELD_TEST_PLAYBOOK.md`
-- [x] KR-001 known-risk notice embedded in playbook
-- [ ] Preview URL shared (Ready — protection bypass required)
-- [ ] Magic-link login instructions with live URL
-- [ ] KR-001 informed-consent checkbox in feedback form
+**Playbook:** [`FIELD_TEST_PLAYBOOK.md`](FIELD_TEST_PLAYBOOK.md)
 
 ---
 
-## Distribution checklist
+## Blockers (2026-06-18 audit)
 
-| Item                                   | Owner   | Status                                                             |
-| -------------------------------------- | ------- | ------------------------------------------------------------------ |
-| Preview deploy from `c8ca2b9`          | Release | **PARTIAL** — Ready on `rockhound-web`; hotfix uncommitted         |
-| Supabase + Sentry + Mapbox preview env | Release | **PARTIAL** — Supabase on `rockhounding-web`; Mapbox + DSN missing |
-| Email/Slack kickoff with URL           | Beta PM | Pending preview                                                    |
-| Playbook PDF or doc link               | QA      | **READY**                                                          |
-| KR-001 notice                          | QA      | **READY** (playbook § Known risk)                                  |
-| Roster tracking                        | Beta PM | This file                                                          |
-
----
-
-## META-002 gate
-
-| Criterion               | Status                           |
-| ----------------------- | -------------------------------- |
-| 5 testers identified    | **PASS** (T1–T5)                 |
-| Playbook distributed    | **READY** (awaiting preview URL) |
-| ≥5 onboarded            | **PENDING**                      |
-| ≥5 playbook completions | **PENDING**                      |
-
-**META-002:** **BETA COHORT PENDING**
+| Blocker                                                            | Status       |
+| ------------------------------------------------------------------ | ------------ |
+| `rockhound-web` Preview env empty (Supabase not on deploy project) | Open         |
+| `NEXT_PUBLIC_MAPBOX_TOKEN` missing                                 | Open         |
+| `NEXT_PUBLIC_SENTRY_DSN` missing                                   | Open         |
+| Supabase auth redirect URLs for preview                            | Not verified |
+| Deployment Protection (401 / Vercel SSO wall)                      | Open         |
+| Invites not sent                                                   | Open         |
 
 ---
 
-## Planned preview smoke routes (Release Engineer)
+## Operational evidence log
 
-Run on live preview URL once deploy succeeds:
-
-| Route                                            | Seed / expectation              |
-| ------------------------------------------------ | ------------------------------- |
-| `/login`                                         | Auth shell loads                |
-| `/`                                              | Home + Field Mode entry         |
-| `/map`                                           | Mapbox token required           |
-| `/field`                                         | Field Mode shell                |
-| `/offline`                                       | Offline fallback                |
-| `/finds`                                         | Read-only ledger                |
-| `/profile`                                       | ProfileV1 surface               |
-| `/location/22222222-2222-2222-2222-222222222205` | AZ Prohibited — Grand Canyon NP |
-| `/location/22222222-2222-2222-2222-222222222201` | AZ Official — Quartzsite        |
+| Metric                            | Target        | Actual  | Notes                |
+| --------------------------------- | ------------- | ------- | -------------------- |
+| Sync success rate (24h)           | ≥95%          | **N/A** | No cohort operations |
+| Offline queue flush               | Playbook pass | **N/A** |                      |
+| Quick Log completions             | ≥5            | **0**   |                      |
+| Sentry events (release `15214da`) | Live capture  | **0**   | DSN not set          |
+| P0 bugs from cohort               | 0             | **0**   | Cohort not run       |
 
 ---
 
-## Issue collection
+## META-002 / META-003 status
 
-Feedback route: form fields per [`beta-cohort-plan-5-testers.md`](beta-cohort-plan-5-testers.md) — device, OS, browser, online/offline, `client_operation_id` for sync issues.
+| Criterion               | Status         |
+| ----------------------- | -------------- |
+| 5 testers identified    | PASS (T1–T5)   |
+| Playbook ready          | PASS           |
+| ≥5 onboarded            | **FAIL (0/5)** |
+| ≥5 playbook completions | **FAIL (0/5)** |
+| META-003 certification  | **FAIL**       |
 
-**P0 queue:** empty at engineering handoff.
+---
+
+## Re-run checklist (before next certification attempt)
+
+1. Complete preview env on `rockhound-web` + redeploy
+2. Add Mapbox + Sentry DSN
+3. Supabase redirect URLs + Site URL
+4. Deployment Protection exception for testers
+5. Send Day 0 invite with playbook + KR-001 consent
+6. Record completions and `client_operation_id` for sync issues in this file
