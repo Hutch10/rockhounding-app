@@ -108,7 +108,6 @@ export {
   type AlternativePrediction,
   type AttentionRegion,
   type SimilarSpecimen,
-  type ConfidenceBreakdown,
   type CreateFindLogFromCapture,
   // Event types
   type PipelineEvent,
@@ -394,3 +393,5 @@ export type {
   HarnessEvaluationRequest,
   HarnessEvaluationResponse,
 } from './hutchstack';
+
+export * from './v1-contract';

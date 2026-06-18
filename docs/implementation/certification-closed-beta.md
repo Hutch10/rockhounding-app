@@ -2,37 +2,39 @@
 
 **Gate:** G2  
 **Sprint:** 4  
-**Prerequisite:** Sprint 3 `7d9a807` META-001A PASS  
-**Branch:** `feat/sprint-4-field-mode` (uncommitted)
+**Prerequisite:** Sprint 3 META-001A PASS  
+**Branch:** `feat/sprint-4-field-mode`  
+**Release commit:** `c8ca2b9`
 
 ```
 Certified by: Principal Release Engineer / Closed Beta Coordinator / QA Lead
-Date: 2026-06-07
-Git SHA: (uncommitted — feat/sprint-4-field-mode)
+Date: 2026-06-18
+Git SHA: c8ca2b9aa3e1fa8209f3388064e225d33167e46d
 Beta cohort size: 0 / 5 completions (5 identified, invites ready)
+Preview URL: PARTIAL — https://rockhound-468m6ceye-hutchs-projects-ef99514e.vercel.app (Deployment Protection)
 ```
 
 ---
 
 ## Verdict
 
-### **PASS FOR ENGINEERING / BETA COHORT PENDING**
+### **NOT PASS — PREVIEW DEPLOY BLOCKED / COHORT PENDING**
 
-Engineering and automated certification gates are complete. **Full META-003 Closed Beta PASS is not claimed** because live tester playbook completions and preview URL distribution are pending.
+Engineering gates pass locally at `c8ca2b9`. **Full META-003 Closed Beta PASS is not claimed** because preview deployment failed, live smoke tests were not run on a Sprint 4 preview, and zero playbook completions are recorded.
 
 ---
 
 ## 1. Field Mode
 
-| ID    | Criterion                                    | Pass    |
-| ----- | -------------------------------------------- | ------- |
-| CB-F1 | Field Mode enters in 1 tap from Home         | [x] E2E |
-| CB-F2 | GPS accuracy indicator visible               | [x] E2E |
-| CB-F3 | Quick Log FAB reachable one-handed (390×844) | [x] E2E |
-| CB-F4 | Nearest site card shows when GPS granted     | [x] E2E |
-| CB-F5 | Touch targets ≥44px on primary actions       | [x] E2E |
+| ID    | Criterion                                    | Pass                                   |
+| ----- | -------------------------------------------- | -------------------------------------- |
+| CB-F1 | Field Mode enters in 1 tap from Home         | [x] E2E (1 flaky retry in CI parallel) |
+| CB-F2 | GPS accuracy indicator visible               | [x] E2E                                |
+| CB-F3 | Quick Log FAB reachable one-handed (390×844) | [x] E2E                                |
+| CB-F4 | Nearest site card shows when GPS granted     | [x] E2E                                |
+| CB-F5 | Touch targets ≥44px on primary actions       | [x] E2E                                |
 
-**Section 1:** **PASS**
+**Section 1:** **PASS (engineering)**
 
 ---
 
@@ -40,12 +42,12 @@ Engineering and automated certification gates are complete. **Full META-003 Clos
 
 | ID    | Criterion                                          | Pass                             |
 | ----- | -------------------------------------------------- | -------------------------------- |
-| CB-E1 | TEST-007 Playwright E2E pass                       | [x] 6/6                          |
-| CB-E2 | Journey: login → map → site → log → offline → sync | [x] E2E partial + cohort pending |
+| CB-E1 | TEST-007 Playwright E2E pass                       | [x] 6/6 (5 pass + 1 flaky CB-F1) |
+| CB-E2 | Journey: login → map → site → log → offline → sync | [ ] preview smoke pending        |
 | CB-E3 | Journey: prohibited site blocks collection CTA     | [x] E2E online                   |
 | CB-E4 | External navigate opens maps with fuzzy coords     | [x] unit + API fuzzy_location    |
 
-**Section 2:** **PASS**
+**Section 2:** **PARTIAL** — automated E2E PASS; live preview journey pending
 
 ---
 
@@ -59,19 +61,19 @@ Engineering and automated certification gates are complete. **Full META-003 Clos
 | CB-B4 | No unresolved P0 bugs                  | [x]                        |
 | CB-B5 | Sync success ≥95% within 24h           | [ ] needs cohort telemetry |
 
-**Section 3:** **PENDING** — roster ready, invites await preview URL
+**Section 3:** **PENDING**
 
 ---
 
 ## 4. Observability (DEPLOY-004)
 
-| ID    | Criterion                                | Pass                                           |
-| ----- | ---------------------------------------- | ---------------------------------------------- |
-| CB-O1 | Sentry captures client errors            | [x] env-gated (`NEXT_PUBLIC_SENTRY_DSN`)       |
-| CB-O2 | Errors tagged with release version       | [x] `VERCEL_GIT_COMMIT_SHA` / `SENTRY_RELEASE` |
-| CB-O3 | /offline fallback renders when SW active | [x]                                            |
+| ID    | Criterion                                | Pass                                            |
+| ----- | ---------------------------------------- | ----------------------------------------------- |
+| CB-O1 | Sentry captures client errors            | [ ] `NEXT_PUBLIC_SENTRY_DSN` not set on preview |
+| CB-O2 | Errors tagged with release version       | [x] code + `SENTRY_RELEASE=c8ca2b9` env intent  |
+| CB-O3 | /offline fallback renders when SW active | [x] engineering                                 |
 
-**Section 4:** **PASS FOR ENGINEERING** (live capture requires DSN on preview)
+**Section 4:** **PARTIAL** — release tagging ready; live DSN pending
 
 ---
 
@@ -83,7 +85,7 @@ Engineering and automated certification gates are complete. **Full META-003 Clos
 | CB-P2 | Profile page shows display name / reputation | [x] `/profile`           |
 | CB-P3 | Logout clears session                        | [ ] cohort manual verify |
 
-**Section 5:** **PASS FOR ENGINEERING**
+**Section 5:** **PASS (engineering)**
 
 ---
 
@@ -98,28 +100,20 @@ Engineering and automated certification gates are complete. **Full META-003 Clos
 
 ---
 
-## Known-risk acceptance (KR-001)
-
-| Risk                       | Sprint 4 action             | Accepted                                      |
-| -------------------------- | --------------------------- | --------------------------------------------- |
-| Offline prohibited logging | Playbook + online E2E block | **Yes** (informed consent required at invite) |
-
----
-
 ## Gate summary
 
-| Gate               | Result                           |
-| ------------------ | -------------------------------- |
-| G2-A TEST-007      | **PASS**                         |
-| G2-B FE-010        | **PASS**                         |
-| G2-C META-002      | **BETA COHORT PENDING**          |
-| G2-D META-003 full | **NOT PASS** (section 3 + CB-D2) |
+| Gate               | Result                  |
+| ------------------ | ----------------------- |
+| G2-A TEST-007      | **PASS**                |
+| G2-B FE-010        | **PASS**                |
+| G2-C META-002      | **BETA COHORT PENDING** |
+| G2-D META-003 full | **NOT PASS**            |
 
 ---
 
 ## Full META-003 PASS requires
 
-1. Preview deployed and URL shared (`sprint-04-preview-deployment.md`)
-2. ≥5 playbook completions (`beta-cohort-roster.md`)
-3. Sentry DSN set on preview environment
-4. Commit + SHA recorded after full PASS only
+1. Successful preview deploy from `c8ca2b9` + URL shared
+2. Preview smoke (§ routes below) on live URL
+3. `NEXT_PUBLIC_MAPBOX_TOKEN` + `NEXT_PUBLIC_SENTRY_DSN` on preview
+4. ≥5 playbook completions + sync ≥95% evidence (`beta-cohort-roster.md`)

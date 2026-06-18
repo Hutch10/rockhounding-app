@@ -15,6 +15,10 @@ build/
 
 # Testing
 coverage/
+playwright-report/
+test-results/
+**/*.js.map
+apps/web/public/*.js.map
 
 # Editor
 .vscode/

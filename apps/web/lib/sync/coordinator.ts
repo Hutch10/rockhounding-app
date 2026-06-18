@@ -728,9 +728,12 @@ export class SyncCoordinator {
   private getConnectionQuality(): 'excellent' | 'good' | 'fair' | 'poor' | 'offline' {
     if (!this.isOnline) return 'offline';
 
-    // @ts-ignore - navigator.connection is experimental
-    const connection =
-      navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const nav = navigator as Navigator & {
+      connection?: { effectiveType?: string };
+      mozConnection?: { effectiveType?: string };
+      webkitConnection?: { effectiveType?: string };
+    };
+    const connection = nav.connection ?? nav.mozConnection ?? nav.webkitConnection;
 
     if (!connection) return 'good';
 

@@ -92,7 +92,7 @@ function buildRecommendations(components: HarnessComponentResults): string[] {
     recs.push('Material ID requires user validation before canon linkage.');
   }
   if ((components.community_trust?.flags.length ?? 0) > 0) {
-    recs.push(`Trust flags: ${components.community_trust.flags.join(', ')}`);
+    recs.push(`Trust flags: ${components.community_trust?.flags.join(', ') ?? ''}`);
   }
   if (components.duplicate_detection?.is_duplicate_candidate === true) {
     recs.push('Duplicate site candidate detected: review before promotion.');
@@ -131,17 +131,19 @@ export function runHarnessEvaluation(request: HarnessEvaluationRequest): Harness
       components.duplicate_detection = components.user_submission.duplicate_signal;
     }
   }
+  const submission = request.submission;
   if (
-    (request.submission?.nearby_sites?.length ?? 0) > 0 &&
-    components.duplicate_detection == null
+    (submission?.nearby_sites?.length ?? 0) > 0 &&
+    components.duplicate_detection == null &&
+    submission != null
   ) {
     components.duplicate_detection = detectDuplicateSite({
-      latitude: request.submission.latitude,
-      longitude: request.submission.longitude,
-      name: request.submission.name,
-      state: request.submission.state,
-      geohash: request.submission.geohash,
-      nearby_sites: request.submission.nearby_sites,
+      latitude: submission.latitude,
+      longitude: submission.longitude,
+      name: submission.name,
+      state: submission.state,
+      geohash: submission.geohash,
+      nearby_sites: submission.nearby_sites ?? [],
     });
   }
   if (request.material != null) {

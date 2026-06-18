@@ -1,7 +1,7 @@
 # Beta Cohort Roster — META-002 (Sprint 4)
 
-**Status:** **READY FOR INVITE** — engineering gates pass; live completions pending  
-**Branch:** `feat/sprint-4-field-mode`  
+**Status:** **INVITES BLOCKED** — preview deploy failed; playbook ready  
+**Branch:** `feat/sprint-4-field-mode` @ `c8ca2b9`  
 **Playbook:** [`FIELD_TEST_PLAYBOOK.md`](FIELD_TEST_PLAYBOOK.md) (includes KR-001 notice)
 
 ---
@@ -16,7 +16,7 @@
 | T4  | Poor-coverage user    | AZ rural  | Android Chrome | ready  | pending  | pending    |
 | T5  | Skeptic / QA mindset  | Either    | Desktop+mobile | ready  | pending  | pending    |
 
-**Invite status:** Packet prepared; preview URL blocked on Vercel link (see [`sprint-04-preview-deployment.md`](../implementation/sprint-04-preview-deployment.md)).
+**Invite status:** Blocked on Deployment Protection bypass + Mapbox/Sentry DSN + deploy-gate commit (see [`META-003-preview-readiness-report.md`](../implementation/META-003-preview-readiness-report.md)).
 
 ---
 
@@ -24,7 +24,7 @@
 
 - [x] Playbook link: `docs/qa/FIELD_TEST_PLAYBOOK.md`
 - [x] KR-001 known-risk notice embedded in playbook
-- [ ] Preview URL (blocked — deploy pending)
+- [ ] Preview URL (blocked — Vercel root directory + build gates)
 - [ ] Magic-link login instructions with live URL
 - [ ] KR-001 informed-consent checkbox in feedback form
 
@@ -32,13 +32,14 @@
 
 ## Distribution checklist
 
-| Item                                           | Owner   | Status                                                        |
-| ---------------------------------------------- | ------- | ------------------------------------------------------------- |
-| Preview deploy from `feat/sprint-4-field-mode` | Release | **BLOCKED** — manual `vercel link --project rockhounding-web` |
-| Email/Slack kickoff with URL                   | Beta PM | Pending preview                                               |
-| Playbook PDF or doc link                       | QA      | **READY**                                                     |
-| KR-001 notice                                  | QA      | **READY** (playbook § Known risk)                             |
-| Roster tracking                                | Beta PM | This file                                                     |
+| Item                                   | Owner   | Status                                                             |
+| -------------------------------------- | ------- | ------------------------------------------------------------------ |
+| Preview deploy from `c8ca2b9`          | Release | **PARTIAL** — Ready on `rockhound-web`; hotfix uncommitted         |
+| Supabase + Sentry + Mapbox preview env | Release | **PARTIAL** — Supabase on `rockhounding-web`; Mapbox + DSN missing |
+| Email/Slack kickoff with URL           | Beta PM | Pending preview                                                    |
+| Playbook PDF or doc link               | QA      | **READY**                                                          |
+| KR-001 notice                          | QA      | **READY** (playbook § Known risk)                                  |
+| Roster tracking                        | Beta PM | This file                                                          |
 
 ---
 
@@ -52,6 +53,24 @@
 | ≥5 playbook completions | **PENDING**                      |
 
 **META-002:** **BETA COHORT PENDING**
+
+---
+
+## Planned preview smoke routes (Release Engineer)
+
+Run on live preview URL once deploy succeeds:
+
+| Route                                            | Seed / expectation              |
+| ------------------------------------------------ | ------------------------------- |
+| `/login`                                         | Auth shell loads                |
+| `/`                                              | Home + Field Mode entry         |
+| `/map`                                           | Mapbox token required           |
+| `/field`                                         | Field Mode shell                |
+| `/offline`                                       | Offline fallback                |
+| `/finds`                                         | Read-only ledger                |
+| `/profile`                                       | ProfileV1 surface               |
+| `/location/22222222-2222-2222-2222-222222222205` | AZ Prohibited — Grand Canyon NP |
+| `/location/22222222-2222-2222-2222-222222222201` | AZ Official — Quartzsite        |
 
 ---
 

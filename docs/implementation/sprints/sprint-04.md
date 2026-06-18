@@ -4,7 +4,8 @@
 **Goal:** Field Mode hardening + E2E + 5-tester cohort  
 **Exit:** META-003 closed beta certification (Gate G2)  
 **Prerequisite:** Sprint 3 META-001A **PASS** — commit `7d9a807`  
-**Engineering verdict (2026-06-07):** **PASS FOR ENGINEERING / BETA COHORT PENDING**
+**Release commit (tag intent):** `c8ca2b9` (2026-06-18)  
+**Engineering verdict (2026-06-18):** **GATES PASS WITH DEPLOY HOTFIX / PREVIEW PARTIAL / META-003 NOT PASS**
 
 **Planning artifacts:**
 
@@ -31,19 +32,19 @@
 
 ## Execution Order
 
-| #   | ID         | Title                       | Status       | Notes                             |
-| --- | ---------- | --------------------------- | ------------ | --------------------------------- |
-| 1   | FE-010     | Field Mode shell            | **done**     | E2E CB-F1–F5 PASS                 |
-| 2   | TEST-009   | Field test playbook         | **done**     | KR-001 notice added               |
-| 3   | TEST-007   | Playwright E2E offline sync | **done**     | 6/6 PASS                          |
-| 4   | FE-009     | Collection My Finds polish  | **done**     | `/finds` ledger                   |
-| 5   | DEPLOY-004 | Sentry release tracking     | **done**     | env-gated; DSN on preview pending |
-| 6   | FE-022     | Offline fallback polish     | **done**     | `/offline` queue UI               |
-| 7   | API-005    | GET /api/v1/me              | **done**     | ProfileV1 + tests                 |
-| 8   | FE-023     | Profile page                | **done**     | `/profile`                        |
-| 9   | META-002   | Beta cohort onboarding      | **pending**  | roster ready; preview blocked     |
-| 10  | —          | Bug bash buffer (20%)       | reserved     | P1 from cohort                    |
-| 11  | META-003   | Closed beta certification   | **eng pass** | full PASS pending cohort          |
+| #   | ID         | Title                       | Status       | Notes                                    |
+| --- | ---------- | --------------------------- | ------------ | ---------------------------------------- |
+| 1   | FE-010     | Field Mode shell            | **done**     | E2E CB-F1–F5 PASS                        |
+| 2   | TEST-009   | Field test playbook         | **done**     | KR-001 notice added                      |
+| 3   | TEST-007   | Playwright E2E offline sync | **done**     | 6/6 PASS                                 |
+| 4   | FE-009     | Collection My Finds polish  | **done**     | `/finds` ledger                          |
+| 5   | DEPLOY-004 | Sentry release tracking     | **done**     | env-gated; DSN on preview pending        |
+| 6   | FE-022     | Offline fallback polish     | **done**     | `/offline` queue UI                      |
+| 7   | API-005    | GET /api/v1/me              | **done**     | ProfileV1 + tests                        |
+| 8   | FE-023     | Profile page                | **done**     | `/profile`                               |
+| 9   | META-002   | Beta cohort onboarding      | **blocked**  | preview URL ready; protection + env gaps |
+| 10  | —          | Bug bash buffer (20%)       | reserved     | P1 from cohort                           |
+| 11  | META-003   | Closed beta certification   | **not pass** | see META-003-preview-readiness-report.md |
 
 ---
 
@@ -57,9 +58,19 @@ FE-010 ✅ → TEST-007 ✅ → META-002 ⏳ → META-003 (engineering ✅ / coh
 
 ## Preview deployment
 
-See [`sprint-04-preview-deployment.md`](../sprint-04-preview-deployment.md).
+See [`sprint-04-preview-deployment.md`](../sprint-04-preview-deployment.md) and [`META-003-preview-readiness-report.md`](../META-003-preview-readiness-report.md).
 
-**Blocker:** Vercel auto-link fails on workspace path with spaces. Manual link required.
+**Ready preview (2026-06-18):** https://rockhound-468m6ceye-hutchs-projects-ef99514e.vercel.app (`rockhound-web`)
+
+**Remaining blockers:**
+
+1. `rockhounding-web` Root Directory → `apps/web` (dashboard)
+2. Deploy-gate hotfix commit (v1-contract export + TS fixes) before SHA = `c8ca2b9`
+3. `NEXT_PUBLIC_MAPBOX_TOKEN`, `NEXT_PUBLIC_SENTRY_DSN`, `NEXT_PUBLIC_SITE_URL`
+4. Vercel Deployment Protection (401 for cohort)
+5. ≥5 playbook completions + sync evidence
+
+**Branch pushed:** `origin/feat/sprint-4-field-mode` @ `c8ca2b9`
 
 ---
 
