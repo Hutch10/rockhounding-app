@@ -1,8 +1,8 @@
 # Beta Cohort Roster — META-002 (Sprint 4)
 
-**Status:** **INVITES BLOCKED** — preview deploy failed; playbook ready  
-**Branch:** `feat/sprint-4-field-mode` @ `c8ca2b9`  
-**Playbook:** [`FIELD_TEST_PLAYBOOK.md`](FIELD_TEST_PLAYBOOK.md) (includes KR-001 notice)
+**Status:** **INVITES BLOCKED** — env mirror + Deployment Protection; playbook ready  
+**Branch:** `feat/sprint-4-field-mode` @ `15214da` (hotfix on `c8ca2b9`)  
+**Preview:** https://rockhound-adaoibe3b-hutchs-projects-ef99514e.vercel.app
 
 ---
 
@@ -16,7 +16,9 @@
 | T4  | Poor-coverage user    | AZ rural  | Android Chrome | ready  | pending  | pending    |
 | T5  | Skeptic / QA mindset  | Either    | Desktop+mobile | ready  | pending  | pending    |
 
-**Invite status:** Blocked on Deployment Protection bypass + Mapbox/Sentry DSN + deploy-gate commit (see [`META-003-preview-readiness-report.md`](../implementation/META-003-preview-readiness-report.md)).
+**Invite status:** Blocked on Deployment Protection + Mapbox/Sentry DSN + Supabase env on `rockhound-web` (see [`META-003-preview-readiness-report.md`](../implementation/META-003-preview-readiness-report.md)).
+
+**Playbook:** [`FIELD_TEST_PLAYBOOK.md`](FIELD_TEST_PLAYBOOK.md) (includes KR-001 notice)
 
 ---
 
@@ -24,7 +26,7 @@
 
 - [x] Playbook link: `docs/qa/FIELD_TEST_PLAYBOOK.md`
 - [x] KR-001 known-risk notice embedded in playbook
-- [ ] Preview URL (blocked — Vercel root directory + build gates)
+- [ ] Preview URL shared (Ready — protection bypass required)
 - [ ] Magic-link login instructions with live URL
 - [ ] KR-001 informed-consent checkbox in feedback form
 

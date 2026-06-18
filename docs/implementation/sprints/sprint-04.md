@@ -4,8 +4,8 @@
 **Goal:** Field Mode hardening + E2E + 5-tester cohort  
 **Exit:** META-003 closed beta certification (Gate G2)  
 **Prerequisite:** Sprint 3 META-001A **PASS** — commit `7d9a807`  
-**Release commit (tag intent):** `c8ca2b9` (2026-06-18)  
-**Engineering verdict (2026-06-18):** **GATES PASS WITH DEPLOY HOTFIX / PREVIEW PARTIAL / META-003 NOT PASS**
+**Deploy-gate hotfix:** `15214da` (2026-06-18)  
+**Engineering verdict (2026-06-18):** **GATES PASS @ 15214da / PREVIEW READY / META-003 NOT PASS**
 
 **Planning artifacts:**
 
@@ -60,15 +60,9 @@ FE-010 ✅ → TEST-007 ✅ → META-002 ⏳ → META-003 (engineering ✅ / coh
 
 See [`sprint-04-preview-deployment.md`](../sprint-04-preview-deployment.md) and [`META-003-preview-readiness-report.md`](../META-003-preview-readiness-report.md).
 
-**Ready preview (2026-06-18):** https://rockhound-468m6ceye-hutchs-projects-ef99514e.vercel.app (`rockhound-web`)
+**Ready preview:** https://rockhound-adaoibe3b-hutchs-projects-ef99514e.vercel.app @ `15214da`
 
-**Remaining blockers:**
-
-1. `rockhounding-web` Root Directory → `apps/web` (dashboard)
-2. Deploy-gate hotfix commit (v1-contract export + TS fixes) before SHA = `c8ca2b9`
-3. `NEXT_PUBLIC_MAPBOX_TOKEN`, `NEXT_PUBLIC_SENTRY_DSN`, `NEXT_PUBLIC_SITE_URL`
-4. Vercel Deployment Protection (401 for cohort)
-5. ≥5 playbook completions + sync evidence
+**Remaining before cohort:** mirror Supabase env to `rockhound-web`, Mapbox/Sentry DSN, Supabase redirects, Deployment Protection exception, ≥5 playbook completions.
 
 **Branch pushed:** `origin/feat/sprint-4-field-mode` @ `c8ca2b9`
 

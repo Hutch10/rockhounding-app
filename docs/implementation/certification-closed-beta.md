@@ -4,23 +4,25 @@
 **Sprint:** 4  
 **Prerequisite:** Sprint 3 META-001A PASS  
 **Branch:** `feat/sprint-4-field-mode`  
-**Release commit:** `c8ca2b9`
+**Release commit:** `c8ca2b9`  
+**Deploy hotfix:** `15214da`
 
 ```
 Certified by: Principal Release Engineer / Closed Beta Coordinator / QA Lead
 Date: 2026-06-18
-Git SHA: c8ca2b9aa3e1fa8209f3388064e225d33167e46d
+Release slice: c8ca2b9aa3e1fa8209f3388064e225d33167e46d
+Deploy hotfix: 15214daf9036112acfa2aaa9b859be99c3d91ff3
 Beta cohort size: 0 / 5 completions (5 identified, invites ready)
-Preview URL: PARTIAL — https://rockhound-468m6ceye-hutchs-projects-ef99514e.vercel.app (Deployment Protection)
+Preview URL: https://rockhound-adaoibe3b-hutchs-projects-ef99514e.vercel.app (Deployment Protection)
 ```
 
 ---
 
 ## Verdict
 
-### **NOT PASS — PREVIEW DEPLOY BLOCKED / COHORT PENDING**
+### **NOT PASS — PREVIEW READY (ENGINEERING) / COHORT PENDING**
 
-Engineering gates pass locally at `c8ca2b9`. **Full META-003 Closed Beta PASS is not claimed** because preview deployment failed, live smoke tests were not run on a Sprint 4 preview, and zero playbook completions are recorded.
+Engineering gates pass at **`15214da`**. Preview is Ready on `rockhound-web`. Full META-003 Closed Beta PASS is not claimed until cohort completions and sync evidence are recorded.
 
 ---
 
