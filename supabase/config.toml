@@ -26,8 +26,14 @@ file_size_limit = "50MiB"
 
 [auth]
 enabled = true
-site_url = "http://localhost:3000"
-additional_redirect_urls = ["http://localhost:3000"]
+site_url = "https://rockhound-715wftgdn-hutchs-projects-ef99514e.vercel.app"
+additional_redirect_urls = [
+  "http://localhost:3000/**",
+  "http://localhost:3000/auth/callback",
+  "https://rockhound-715wftgdn-hutchs-projects-ef99514e.vercel.app/**",
+  "https://rockhound-715wftgdn-hutchs-projects-ef99514e.vercel.app/auth/callback",
+  "https://rockhound-*-hutchs-projects-ef99514e.vercel.app/**",
+]
 jwt_expiry = 3600
 enable_signup = true
 
