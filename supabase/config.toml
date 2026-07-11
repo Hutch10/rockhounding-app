@@ -29,7 +29,8 @@ enabled = true
 site_url = "https://rockhound-9uoy8mpyp-hutchs-projects-ef99514e.vercel.app"
 additional_redirect_urls = [
   "http://localhost:3000/auth/callback",
-  "https://rockhound-9uoy8mpyp-hutchs-projects-ef99514e.vercel.app/auth/callback"
+  "https://rockhound-*-hutchs-projects-ef99514e.vercel.app/auth/callback",
+  "https://rockhound-web-git-*-hutchs-projects-ef99514e.vercel.app/auth/callback"
 ]
 jwt_expiry = 3600
 enable_signup = true

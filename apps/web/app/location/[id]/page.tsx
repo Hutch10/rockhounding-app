@@ -30,7 +30,9 @@ const LocationDetailResponseSchema = z.object({
 });
 
 async function fetchLocation(id: string): Promise<LocationDetailV1 | null> {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+  const base = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000');
   const response = await fetch(`${base}/api/v1/locations/${id}`, { cache: 'no-store' });
 
   if (response.status === 404) {
