@@ -11,6 +11,7 @@ export default defineConfig({
     environment: 'node',
     alias: {
       '@': path.resolve(__dirname, './apps/web'),
+      'server-only': path.resolve(__dirname, './test/mocks/server-only.ts'),
       '@hutchstack/core-offline-ledger': core('offline-ledger'),
       '@hutchstack/core-sync-v1': core('sync-v1'),
       '@hutchstack/core-telemetry': core('telemetry'),
