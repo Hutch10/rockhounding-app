@@ -21,6 +21,7 @@ interface MapClientProps {
 export function MapClient({ config }: MapClientProps): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<MapboxMap | null>(null);
+  const [mapConfigError, setMapConfigError] = useState<string | null>(null);
   const markersRef = useRef<Marker[]>([]);
 
   const { pins, loading, error } = useMapPins({ map });
@@ -32,9 +33,13 @@ export function MapClient({ config }: MapClientProps): JSX.Element {
 
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
     if (mapboxToken == null || mapboxToken === '') {
-      console.error('Missing NEXT_PUBLIC_MAPBOX_TOKEN environment variable');
+      setMapConfigError(
+        'Map unavailable: set NEXT_PUBLIC_MAPBOX_TOKEN in apps/web/.env.local and restart the dev server.'
+      );
       return;
     }
+
+    setMapConfigError(null);
 
     mapboxgl.accessToken = mapboxToken;
 
@@ -110,6 +115,15 @@ export function MapClient({ config }: MapClientProps): JSX.Element {
         <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg px-4 py-2 flex items-center gap-2">
           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600" />
           <span className="text-sm text-gray-700">Loading locations...</span>
+        </div>
+      )}
+
+      {mapConfigError != null && (
+        <div className="absolute inset-0 flex items-center justify-center bg-zinc-950/90 p-6">
+          <div className="max-w-md rounded-2xl border border-amber-500/30 bg-zinc-900 px-6 py-4 text-center">
+            <p className="font-semibold text-amber-300">Map configuration required</p>
+            <p className="mt-2 text-sm text-white/70">{mapConfigError}</p>
+          </div>
         </div>
       )}
 
