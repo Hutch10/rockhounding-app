@@ -107,7 +107,9 @@ export default async function FindsPage(): Promise<React.JSX.Element> {
                   </div>
 
                   {find.notes !== null && find.notes.length > 0 && (
-                    <p className="text-sm text-white/60 mt-3 line-clamp-2 italic">"{find.notes}"</p>
+                    <p className="text-sm text-white/60 mt-3 line-clamp-2 italic">
+                      &quot;{find.notes}&quot;
+                    </p>
                   )}
 
                   <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">

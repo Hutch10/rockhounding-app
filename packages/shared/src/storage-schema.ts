@@ -1,6 +1,6 @@
 /**
  * Offline Storage & Caching - Data Model & Schemas
- * 
+ *
  * Complete schema for:
  * - IndexedDB structure
  * - Storage entity types
@@ -31,12 +31,12 @@ export const COMPACTION_THRESHOLD_BYTES = 40 * 1024 * 1024; // Compact when > 40
 // ============================================================================
 
 export const EvictionPolicy = z.enum([
-  'lru',        // Least Recently Used
-  'lfu',        // Least Frequently Used
-  'fifo',       // First In First Out
-  'ttl',        // Time To Live
-  'priority',   // By priority
-  'none',       // No eviction
+  'lru', // Least Recently Used
+  'lfu', // Least Frequently Used
+  'fifo', // First In First Out
+  'ttl', // Time To Live
+  'priority', // By priority
+  'none', // No eviction
 ]);
 
 export type EvictionPolicy = z.infer<typeof EvictionPolicy>;
@@ -75,38 +75,43 @@ export const StorageMetadataSchema = z.object({
   storage_key: z.string().min(1),
   entity_type: StorageEntityType,
   entity_id: z.string().uuid(),
-  
+
   // Versioning
   version: z.number().int().nonnegative(),
   schema_version: z.number().int().nonnegative(),
-  
+
   // Timestamps
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
   accessed_at: z.string().datetime(),
-  
+
   // Caching
   expires_at: z.string().datetime().optional(),
   ttl_ms: z.number().int().positive().optional(),
   is_stale: z.boolean().default(false),
-  
+
   // Serialization
   encoding: z.enum(['json', 'compressed', 'binary']).default('json'),
   size_bytes: z.number().int().nonnegative(),
   checksum: z.string().max(64),
-  
+
   // Sync tracking
   synced_at: z.string().datetime().optional(),
-  sync_status: z.preprocess((val) => {
-    if (val === 'synced') return 'applied';
-    if (val === 'SYNCED') return 'applied';
-    return val;
-  }, z.enum(['pending', 'syncing', 'applied', 'conflict'])).optional(),
-  
+  sync_status: z
+    .preprocess(
+      (val) => {
+        if (val === 'synced') return 'applied';
+        if (val === 'SYNCED') return 'applied';
+        return val;
+      },
+      z.enum(['pending', 'syncing', 'applied', 'conflict'])
+    )
+    .optional(),
+
   // Access tracking
   access_count: z.number().int().nonnegative().default(0),
   last_write_by_device: z.string().uuid().optional(),
-  
+
   // Eviction info
   eviction_priority: z.number().int().min(0).max(10).default(5),
 });
@@ -136,10 +141,12 @@ export const CachedFieldSessionSchema = z.object({
   user_id: z.string().uuid(),
   title: z.string().min(1).max(200),
   location_name: z.string().max(200),
-  coordinates: z.object({
-    lat: z.number().min(-90).max(90),
-    lng: z.number().min(-180).max(180),
-  }).optional(),
+  coordinates: z
+    .object({
+      lat: z.number().min(-90).max(90),
+      lng: z.number().min(-180).max(180),
+    })
+    .optional(),
   start_time: z.string().datetime(),
   end_time: z.string().datetime().optional(),
   status: z.enum(['active', 'paused', 'completed']),
@@ -238,10 +245,12 @@ export const CachedRawCaptureSchema = z.object({
   file_size_bytes: z.number().int().positive(),
   capture_time: z.string().datetime(),
   camera_metadata: z.record(z.unknown()).optional(),
-  location_coordinates: z.object({
-    lat: z.number().min(-90).max(90),
-    lng: z.number().min(-180).max(180),
-  }).optional(),
+  location_coordinates: z
+    .object({
+      lat: z.number().min(-90).max(90),
+      lng: z.number().min(-180).max(180),
+    })
+    .optional(),
   thumbnail_url: z.string().url().optional(),
   version: z.number().int().nonnegative(),
   updated_at: z.string().datetime(),
@@ -303,7 +312,10 @@ export const CachedTagSchema = z.object({
   id: z.string().uuid(),
   user_id: z.string().uuid(),
   name: z.string().min(1).max(50),
-  color: z.string().regex(/^#[0-9A-Fa-f]{6}$/).optional(),
+  color: z
+    .string()
+    .regex(/^#[0-9A-Fa-f]{6}$/)
+    .optional(),
   description: z.string().max(500).optional(),
   version: z.number().int().nonnegative(),
   updated_at: z.string().datetime(),
@@ -379,27 +391,31 @@ export const StorageConfigSchema = z.object({
   // Size limits
   max_storage_bytes: z.number().int().positive().default(MAX_STORAGE_SIZE_BYTES),
   max_entity_bytes: z.number().int().positive().default(MAX_SINGLE_ENTITY_SIZE_BYTES),
-  
+
   // TTL settings
   default_ttl_ms: z.number().int().positive().default(DEFAULT_TTL_MS),
   field_session_ttl_ms: z.number().int().positive().default(DEFAULT_TTL_MS),
   telemetry_ttl_ms: z.number().int().positive().default(TELEMETRY_TTL_MS),
   analytics_ttl_ms: z.number().int().positive().default(ANALYTICS_CACHE_TTL_MS),
   sync_queue_ttl_ms: z.number().int().positive().default(SYNC_QUEUE_TTL_MS),
-  
+
   // Eviction
   eviction_policy: EvictionPolicy.default('lru'),
   compaction_threshold_bytes: z.number().int().positive().default(COMPACTION_THRESHOLD_BYTES),
-  compaction_interval_ms: z.number().int().positive().default(60 * 60 * 1000), // 1 hour
-  
+  compaction_interval_ms: z
+    .number()
+    .int()
+    .positive()
+    .default(60 * 60 * 1000), // 1 hour
+
   // Compression
   enable_compression: z.boolean().default(true),
   compression_threshold_bytes: z.number().int().positive().default(1024), // 1KB
-  
+
   // Versioning
   schema_version: z.number().int().nonnegative().default(1),
   enable_migrations: z.boolean().default(true),
-  
+
   // Integrity
   enable_checksums: z.boolean().default(true),
   verify_on_read: z.boolean().default(true),
@@ -415,24 +431,24 @@ export const StorageStatsSchema = z.object({
   total_entities: z.number().int().nonnegative(),
   total_size_bytes: z.number().int().nonnegative(),
   available_bytes: z.number().int().nonnegative(),
-  
+
   // By entity type
   entities_by_type: z.record(z.number().int().nonnegative()),
   size_by_type: z.record(z.number().int().nonnegative()),
-  
+
   // Cache stats
   cached_entities: z.number().int().nonnegative(),
   stale_entities: z.number().int().nonnegative(),
   expired_entities: z.number().int().nonnegative(),
-  
+
   // Sync stats
   pending_sync: z.number().int().nonnegative(),
   synced_entities: z.number().int().nonnegative(),
-  
+
   // Performance
   avg_access_time_ms: z.number().nonnegative(),
   cache_hit_rate: z.number().min(0).max(1),
-  
+
   // Timestamps
   measured_at: z.string().datetime(),
   last_compaction_at: z.string().datetime().optional(),
@@ -610,10 +626,7 @@ export function getSerializationRules(entityType: StorageEntityType): Serializat
 // Utility Functions
 // ============================================================================
 
-export function generateStorageKey(
-  entityType: StorageEntityType,
-  entityId: string
-): string {
+export function generateStorageKey(entityType: StorageEntityType, entityId: string): string {
   return `${entityType}:${entityId}`;
 }
 
@@ -622,7 +635,7 @@ export function parseStorageKey(key: string): {
   entityId: string;
 } {
   const [entityType, entityId] = key.split(':');
-  if (!entityType || !entityId) {
+  if (entityType === undefined || entityType === '' || entityId === undefined || entityId === '') {
     throw new Error(`Invalid storage key format: ${key}`);
   }
   return { entityType: entityType as StorageEntityType, entityId };
@@ -633,7 +646,7 @@ export function calculateTTLExpiry(ttlMs: number): Date {
 }
 
 export function isExpired(expiresAt: string | undefined): boolean {
-  if (!expiresAt) return false;
+  if (expiresAt === undefined || expiresAt === '') return false;
   return new Date(expiresAt) < new Date();
 }
 
@@ -641,17 +654,17 @@ export function isStale(accessedAt: string, staleAfterMs: number = 60 * 60 * 100
   return Date.now() - new Date(accessedAt).getTime() > staleAfterMs;
 }
 
-export function computeChecksum(data: any): string {
+export function computeChecksum(data: unknown): string {
   const str = JSON.stringify(data);
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash = hash & hash;
   }
   return Math.abs(hash).toString(16).padStart(16, '0');
 }
 
-export function verifyChecksum(data: any, checksum: string): boolean {
+export function verifyChecksum(data: unknown, checksum: string): boolean {
   return computeChecksum(data) === checksum;
 }

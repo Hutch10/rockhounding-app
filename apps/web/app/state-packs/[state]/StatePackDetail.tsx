@@ -17,16 +17,56 @@ export function StatePackDetail({ pack }: StatePackDetailProps) {
    */
   function getStateName(code: string): string {
     const stateNames: Record<string, string> = {
-      AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California',
-      CO: 'Colorado', CT: 'Connecticut', DE: 'Delaware', FL: 'Florida', GA: 'Georgia',
-      HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois', IN: 'Indiana', IA: 'Iowa',
-      KS: 'Kansas', KY: 'Kentucky', LA: 'Louisiana', ME: 'Maine', MD: 'Maryland',
-      MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota', MS: 'Mississippi', MO: 'Missouri',
-      MT: 'Montana', NE: 'Nebraska', NV: 'Nevada', NH: 'New Hampshire', NJ: 'New Jersey',
-      NM: 'New Mexico', NY: 'New York', NC: 'North Carolina', ND: 'North Dakota', OH: 'Ohio',
-      OK: 'Oklahoma', OR: 'Oregon', PA: 'Pennsylvania', RI: 'Rhode Island', SC: 'South Carolina',
-      SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas', UT: 'Utah', VT: 'Vermont',
-      VA: 'Virginia', WA: 'Washington', WV: 'West Virginia', WI: 'Wisconsin', WY: 'Wyoming',
+      AL: 'Alabama',
+      AK: 'Alaska',
+      AZ: 'Arizona',
+      AR: 'Arkansas',
+      CA: 'California',
+      CO: 'Colorado',
+      CT: 'Connecticut',
+      DE: 'Delaware',
+      FL: 'Florida',
+      GA: 'Georgia',
+      HI: 'Hawaii',
+      ID: 'Idaho',
+      IL: 'Illinois',
+      IN: 'Indiana',
+      IA: 'Iowa',
+      KS: 'Kansas',
+      KY: 'Kentucky',
+      LA: 'Louisiana',
+      ME: 'Maine',
+      MD: 'Maryland',
+      MA: 'Massachusetts',
+      MI: 'Michigan',
+      MN: 'Minnesota',
+      MS: 'Mississippi',
+      MO: 'Missouri',
+      MT: 'Montana',
+      NE: 'Nebraska',
+      NV: 'Nevada',
+      NH: 'New Hampshire',
+      NJ: 'New Jersey',
+      NM: 'New Mexico',
+      NY: 'New York',
+      NC: 'North Carolina',
+      ND: 'North Dakota',
+      OH: 'Ohio',
+      OK: 'Oklahoma',
+      OR: 'Oregon',
+      PA: 'Pennsylvania',
+      RI: 'Rhode Island',
+      SC: 'South Carolina',
+      SD: 'South Dakota',
+      TN: 'Tennessee',
+      TX: 'Texas',
+      UT: 'Utah',
+      VT: 'Vermont',
+      VA: 'Virginia',
+      WA: 'Washington',
+      WV: 'West Virginia',
+      WI: 'Wisconsin',
+      WY: 'Wyoming',
     };
     return stateNames[code] || code;
   }
@@ -47,9 +87,7 @@ export function StatePackDetail({ pack }: StatePackDetailProps) {
         <div className="grid grid-cols-2 gap-4 mt-6">
           <div className="bg-gray-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Version</p>
-            <p className="text-2xl font-bold text-gray-900">
-              {pack.version}
-            </p>
+            <p className="text-2xl font-bold text-gray-900">{pack.version}</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Last Updated</p>
@@ -78,25 +116,28 @@ export function StatePackDetail({ pack }: StatePackDetailProps) {
 
       {/* What's Included */}
       <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">What's Included</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-4">What&apos;s Included</h2>
         <div className="space-y-3 text-gray-700">
           <div className="flex items-start">
             <span className="text-green-600 font-bold mr-3">✓</span>
             <div>
-              <strong>Locations:</strong> All approved rockhounding locations in {getStateName(pack.state)}, 
-              including coordinates (lat/lon), difficulty, legal tags, access models, and kid-friendly status
+              <strong>Locations:</strong> All approved rockhounding locations in{' '}
+              {getStateName(pack.state)}, including coordinates (lat/lon), difficulty, legal tags,
+              access models, and kid-friendly status
             </div>
           </div>
           <div className="flex items-start">
             <span className="text-green-600 font-bold mr-3">✓</span>
             <div>
-              <strong>Rulesets:</strong> Legal information and regulations for locations in this state
+              <strong>Rulesets:</strong> Legal information and regulations for locations in this
+              state
             </div>
           </div>
           <div className="flex items-start">
             <span className="text-green-600 font-bold mr-3">✓</span>
             <div>
-              <strong>Materials:</strong> Types of rocks, minerals, and fossils found at each location
+              <strong>Materials:</strong> Types of rocks, minerals, and fossils found at each
+              location
             </div>
           </div>
         </div>
@@ -104,12 +145,13 @@ export function StatePackDetail({ pack }: StatePackDetailProps) {
 
       {/* What's NOT Included */}
       <div className="bg-yellow-50 rounded-lg border border-yellow-200 p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">What's NOT Included</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-4">What&apos;s NOT Included</h2>
         <div className="space-y-3 text-gray-700">
           <div className="flex items-start">
             <span className="text-yellow-600 font-bold mr-3">✗</span>
             <div>
-              <strong>Map tiles:</strong> This pack is vector-only. Use the online map for visual maps.
+              <strong>Map tiles:</strong> This pack is vector-only. Use the online map for visual
+              maps.
             </div>
           </div>
           <div className="flex items-start">
@@ -138,23 +180,27 @@ export function StatePackDetail({ pack }: StatePackDetailProps) {
         <h2 className="text-xl font-bold text-gray-900 mb-4">How to Use Offline</h2>
         <ol className="space-y-3 text-gray-700 list-decimal list-inside">
           <li>
-            <strong>Download the pack:</strong> Click the download button above to save the JSON file
+            <strong>Download the pack:</strong> Click the download button above to save the JSON
+            file
           </li>
           <li>
-            <strong>Transfer to your device:</strong> Copy the file to your phone, tablet, or GPS device
+            <strong>Transfer to your device:</strong> Copy the file to your phone, tablet, or GPS
+            device
           </li>
           <li>
-            <strong>Use a compatible app:</strong> Open the JSON file in a mapping app that supports custom data layers
+            <strong>Use a compatible app:</strong> Open the JSON file in a mapping app that supports
+            custom data layers
           </li>
           <li>
-            <strong>Navigate offline:</strong> Use the location coordinates (lat/lon) to navigate without internet
+            <strong>Navigate offline:</strong> Use the location coordinates (lat/lon) to navigate
+            without internet
           </li>
         </ol>
 
         <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded">
           <p className="text-sm text-blue-800">
-            <strong>Tip:</strong> State packs are updated nightly. Download fresh packs before each trip 
-            to ensure you have the latest location data.
+            <strong>Tip:</strong> State packs are updated nightly. Download fresh packs before each
+            trip to ensure you have the latest location data.
           </p>
         </div>
       </div>
@@ -163,7 +209,7 @@ export function StatePackDetail({ pack }: StatePackDetailProps) {
       <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
         <h2 className="text-xl font-bold text-gray-900 mb-4">JSON Structure</h2>
         <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
-{`{
+          {`{
   "state": "${pack.state}",
   "generated_at": "2024-01-01T00:00:00Z",
   "locations": [

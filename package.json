@@ -12,7 +12,7 @@
     "type-check:core": "pnpm build:core && pnpm --filter \"@hutchstack/core-*\" type-check",
     "test:ci": "vitest run",
     "test:e2e": "playwright test",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "eslint . --ext .ts,.tsx && pnpm --filter web run lint",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\"",
     "type-check": "pnpm run -r type-check",
