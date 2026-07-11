@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "vitest.config.ts",
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "test/**/*.tsx",
+    "supabase/functions/**/*.ts",
+    "packages/shared/vitest.config.ts"
+  ]
+}

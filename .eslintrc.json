@@ -6,11 +6,29 @@
     "sourceType": "module",
     "project": [
       "./tsconfig.json",
+      "./tsconfig.eslint.json",
       "./apps/*/tsconfig.json",
       "./packages/*/tsconfig.json",
       "./packages/hutchstack-core/*/tsconfig.json"
     ]
   },
+  "overrides": [
+    {
+      "files": ["supabase/functions/**/*.ts", "test/**/*.ts"],
+      "rules": {
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/strict-boolean-expressions": "off",
+        "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    }
+  ],
   "plugins": ["@typescript-eslint", "import"],
   "extends": [
     "eslint:recommended",
