@@ -201,4 +201,15 @@ Rockhound is a mobile-first, offline-capable platform for geological fieldwork, 
 
 ---
 
+---
+
+## 8. Post-V1 Planning
+
+For UX, operational patterns, and feature scopes planned after the V1.0 milestone, refer to:
+
+- [Post-V1 Location Discovery Patterns](product/POST_V1_LOCATION_DISCOVERY_PATTERNS.md)
+- [Post-V1 Candidate Register](product/POST_V1_CANDIDATE_REGISTER.md)
+
+---
+
 **End of Document**
