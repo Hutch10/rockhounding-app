@@ -7,7 +7,7 @@
 
 import { SyncBatchResponseSchema, type SyncBatchResponse } from '@rockhounding/shared';
 
-import { getStorageManager } from '@/lib/storage/manager';
+import { ensureStorageManager, getStorageManager } from '@/lib/storage/manager';
 import { mapLedgerToV1Batch } from '@/lib/sync/batch-mapper';
 
 export class SyncManager {
@@ -50,8 +50,15 @@ export class SyncManager {
     if (this.isProcessing) return;
     if (typeof navigator !== 'undefined' && !navigator.onLine) return;
 
-    const storage = getStorageManager();
-    const readyOps = await storage.getReadyOperations();
+    const storage = await ensureStorageManager();
+    if (!storage) return;
+
+    let readyOps: Awaited<ReturnType<typeof storage.getReadyOperations>>;
+    try {
+      readyOps = await storage.getReadyOperations();
+    } catch {
+      return;
+    }
 
     if (readyOps.length === 0) return;
 

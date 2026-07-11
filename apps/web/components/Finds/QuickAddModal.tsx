@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { getStorageManager } from '@/lib/storage/manager';
+import { ensureStorageManager } from '@/lib/storage/manager';
 import { createClient } from '@/lib/supabase/client';
 import { syncManager } from '@/lib/sync/orchestrator';
 import { enqueueFindCreate } from '@/lib/sync/queue';
@@ -119,7 +119,12 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ onClose }) => {
         return;
       }
 
-      const storage = getStorageManager();
+      const storage = await ensureStorageManager();
+      if (!storage) {
+        setError('Offline storage is still starting. Try again in a moment.');
+        setIsSubmitting(false);
+        return;
+      }
       storage.setUserId(user.id);
 
       await enqueueFindCreate(storage, {

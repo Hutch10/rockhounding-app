@@ -7,7 +7,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-import { getStorageManager } from '@/lib/storage/manager';
+import { ensureStorageManager } from '@/lib/storage/manager';
 import { syncManager } from '@/lib/sync/orchestrator';
 
 export function useSyncState() {
@@ -19,7 +19,9 @@ export function useSyncState() {
 
   const updateStats = useCallback(async () => {
     try {
-      const storage = getStorageManager();
+      const storage = await ensureStorageManager();
+      if (!storage) return;
+
       const ops = await storage.getAllOperations();
 
       setPendingCount(

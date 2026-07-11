@@ -193,6 +193,11 @@ export class StorageManager {
     return this.deviceId;
   }
 
+  /** True once IndexedDB has been opened and migrations have run. */
+  isInitialized(): boolean {
+    return this.db !== null;
+  }
+
   // ========================================================================
   // Core Storage Operations
   // ========================================================================
@@ -920,24 +925,55 @@ export class StorageManager {
 // ============================================================================
 
 let storageManagerInstance: StorageManager | null = null;
+let initPromise: Promise<StorageManager> | null = null;
 
 export async function initStorageManager(
   config?: Partial<StorageConfig>,
   deviceId?: string
 ): Promise<StorageManager> {
-  if (storageManagerInstance) {
-    return storageManagerInstance;
+  if (initPromise) {
+    return initPromise;
   }
 
-  const id =
-    deviceId ||
-    (typeof localStorage !== 'undefined'
-      ? localStorage.getItem('rockhound-device-id') || crypto.randomUUID()
-      : crypto.randomUUID());
+  initPromise = (async () => {
+    const id =
+      deviceId ||
+      (typeof localStorage !== 'undefined'
+        ? localStorage.getItem('rockhound-device-id') || crypto.randomUUID()
+        : crypto.randomUUID());
 
-  storageManagerInstance = new StorageManager(config, id);
-  await storageManagerInstance.initialize();
-  return storageManagerInstance;
+    const manager = new StorageManager(config, id);
+    await manager.initialize();
+    storageManagerInstance = manager;
+    return manager;
+  })();
+
+  try {
+    return await initPromise;
+  } catch (error) {
+    initPromise = null;
+    storageManagerInstance = null;
+    throw error;
+  }
+}
+
+/** Await storage readiness; returns null if init has not started or failed. */
+export async function ensureStorageManager(): Promise<StorageManager | null> {
+  if (initPromise) {
+    try {
+      return await initPromise;
+    } catch {
+      return null;
+    }
+  }
+  if (storageManagerInstance?.isInitialized()) {
+    return storageManagerInstance;
+  }
+  return null;
+}
+
+export function isStorageManagerReady(): boolean {
+  return storageManagerInstance?.isInitialized() ?? false;
 }
 
 export function getStorageManager(): StorageManager {
@@ -950,4 +986,5 @@ export function getStorageManager(): StorageManager {
 /** Test-only: reset singleton between vitest cases. */
 export function _resetStorageManagerForTests(): void {
   storageManagerInstance = null;
+  initPromise = null;
 }
