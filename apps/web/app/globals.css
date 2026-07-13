@@ -15,6 +15,15 @@
   --muted: #64748b;
   --muted-foreground: #94a3b8;
 
+  /* Field Experience Geological Motifs */
+  --slate-900: #0f172a;
+  --slate-800: #1e293b;
+  --warm-off-white: #fafaf9;
+  --sandstone: #d97706;
+  --mineral-teal: #0d9488;
+  --status-amber: #f59e0b;
+  --status-red: #ef4444;
+
   /* Typography */
   --font-body: 'Inter', system-ui, sans-serif;
   --font-heading: 'Outfit', system-ui, sans-serif;

@@ -16,12 +16,15 @@ const TABS = [
 export function BottomTabNav(): JSX.Element | null {
   const pathname = usePathname();
 
+  const isFieldMode = pathname === '/field' || pathname.startsWith('/field/');
+
   const showTabs =
-    TABS.some(
+    !isFieldMode &&
+    (TABS.some(
       (t) => pathname === t.href || (t.href !== '/' && pathname.startsWith(`${t.href}/`))
     ) ||
-    pathname.startsWith('/finds') ||
-    pathname.startsWith('/location/');
+      pathname.startsWith('/finds') ||
+      pathname.startsWith('/location/'));
 
   useEffect(() => {
     if (showTabs) {
