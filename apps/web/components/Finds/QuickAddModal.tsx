@@ -188,17 +188,34 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ onClose }) => {
             </div>
           )}
 
-          <div>
-            <label className="block text-[10px] font-bold text-white/40 uppercase mb-1.5 ml-1">
-              Material
-            </label>
-            <input
-              name="material_name"
-              required
-              disabled={isProhibited}
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/20 focus:outline-none focus:border-blue-500 transition-colors disabled:opacity-50"
-              placeholder="e.g., Smoky Quartz, Geode"
-            />
+          <div className="flex gap-3">
+            <div className="flex-1">
+              <label className="block text-[10px] font-bold text-white/40 uppercase mb-1.5 ml-1">
+                Material
+              </label>
+              <input
+                name="material_name"
+                required
+                disabled={isProhibited}
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/20 focus:outline-none focus:border-blue-500 transition-colors disabled:opacity-50"
+                placeholder="e.g., Smoky Quartz, Geode"
+              />
+            </div>
+            <div className="w-1/3">
+              <label className="block text-[10px] font-bold text-white/40 uppercase mb-1.5 ml-1">
+                Confidence
+              </label>
+              <select
+                name="confidence"
+                defaultValue="possible"
+                disabled={isProhibited}
+                className="w-full px-2 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500 transition-colors disabled:opacity-50 text-sm"
+              >
+                <option value="identified">Identified</option>
+                <option value="possible">Possible ID</option>
+                <option value="unknown">Unknown</option>
+              </select>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">

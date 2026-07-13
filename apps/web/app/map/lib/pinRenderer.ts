@@ -21,25 +21,53 @@ export interface PinStyleOptions {
  */
 export function applyPinStyles(el: HTMLElement, pin: LocationV1, options: PinStyleOptions): void {
   const trust = parseTrustCategory(pin.metadata?.trust_category);
-  const ringColor = TRUST_RING_COLORS[trust];
   const status = pin.access_status ?? 'unknown';
-  const fillColor: string = ACCESS_FILL[status] ?? ACCESS_FILL.unknown ?? '#475569';
 
   const simplified = options.simplified === true || options.zoom < 10;
+
+  // 48px minimum touch target
+  el.className = 'rockhound-pin';
+  el.style.width = '48px';
+  el.style.height = '48px';
+  el.style.display = 'flex';
+  el.style.alignItems = 'center';
+  el.style.justifyContent = 'center';
+  el.style.cursor = 'pointer';
+  el.dataset.trustCategory = trust;
+  el.dataset.accessStatus = status;
+
+  // The actual visual pin
+  const visualPin = document.createElement('div');
   const size = simplified ? 20 : 30;
   const ringWidth = simplified ? 2 : 3;
 
-  el.className = 'rockhound-pin';
-  el.style.width = `${size}px`;
-  el.style.height = `${size}px`;
-  el.style.borderRadius = '50%';
-  el.style.cursor = 'pointer';
-  el.style.backgroundColor = fillColor;
-  el.style.border = `${ringWidth}px solid ${ringColor}`;
-  el.style.boxShadow = '0 2px 6px rgba(0,0,0,0.45)';
-  el.style.boxSizing = 'border-box';
-  el.dataset.trustCategory = trust;
-  el.dataset.accessStatus = status;
+  visualPin.style.width = `${size}px`;
+  visualPin.style.height = `${size}px`;
+  visualPin.style.boxSizing = 'border-box';
+  visualPin.style.boxShadow = '0 2px 6px rgba(0,0,0,0.45)';
+
+  // Channel 1: Color
+  visualPin.style.backgroundColor = getAccessFillColor(status);
+
+  // Channel 2 & 3: Border Color and Style (Trust)
+  if (trust === 'verified') {
+    visualPin.style.border = `${ringWidth}px solid var(--mineral-teal, #0d9488)`;
+  } else if (trust === 'community') {
+    visualPin.style.border = `${ringWidth}px dashed var(--sandstone, #d97706)`;
+  } else {
+    visualPin.style.border = `${ringWidth}px dotted var(--slate-800, #1e293b)`;
+  }
+
+  // Channel 4: Shape (Access Status)
+  if (status === 'prohibited') {
+    visualPin.style.borderRadius = '2px'; // Square
+  } else if (status === 'restricted' || status === 'caution') {
+    visualPin.style.borderRadius = '8px'; // Rounded Rect
+  } else {
+    visualPin.style.borderRadius = '50%'; // Circle
+  }
+
+  el.appendChild(visualPin);
 }
 
 export function getAccessFillColor(accessStatus: string): string {

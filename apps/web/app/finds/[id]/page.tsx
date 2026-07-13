@@ -44,9 +44,18 @@ export default async function FindDetailPage({
           >
             ← Physical Ledger
           </Link>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-2">
-            {find.material_name}
-          </h1>
+          {(confidenceMetrics.breakdown?.expert ?? 0) < 1.0 ? (
+            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-2 text-white/90">
+              <span className="block text-sm font-bold text-amber-400 uppercase tracking-widest mb-2">
+                Possible identification:
+              </span>
+              {find.material_name}
+            </h1>
+          ) : (
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-2">
+              {find.material_name}
+            </h1>
+          )}
           <div className="flex items-center justify-center gap-3">
             <span className="px-3 py-1 bg-white/5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/10">
               ID: {(find.id ?? params.id).slice(0, 8)}
