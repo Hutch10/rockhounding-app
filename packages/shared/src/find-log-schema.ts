@@ -1,13 +1,13 @@
 /**
  * Rockhound FindLog Schema
- * 
+ *
  * Comprehensive schema for logging individual finds within a FieldSession.
- * Includes material identification, GPS coordinates, photos, environmental 
+ * Includes material identification, GPS coordinates, photos, environmental
  * metadata, quality ratings, and relationships to Specimens and FieldSessions.
  */
 
-import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
 
 // ==================== ENUMS ====================
 
@@ -31,12 +31,12 @@ export enum MaterialType {
  * Confidence levels for material identification
  */
 export enum IdentificationConfidence {
-  CERTAIN = 'CERTAIN',           // 95-100% confident
-  VERY_LIKELY = 'VERY_LIKELY',   // 80-95% confident
-  LIKELY = 'LIKELY',             // 65-80% confident
-  POSSIBLE = 'POSSIBLE',         // 50-65% confident
-  UNCERTAIN = 'UNCERTAIN',       // 25-50% confident
-  GUESS = 'GUESS',               // <25% confident
+  CERTAIN = 'CERTAIN', // 95-100% confident
+  VERY_LIKELY = 'VERY_LIKELY', // 80-95% confident
+  LIKELY = 'LIKELY', // 65-80% confident
+  POSSIBLE = 'POSSIBLE', // 50-65% confident
+  UNCERTAIN = 'UNCERTAIN', // 25-50% confident
+  GUESS = 'GUESS', // <25% confident
   UNIDENTIFIED = 'UNIDENTIFIED', // No identification attempted
 }
 
@@ -44,13 +44,13 @@ export enum IdentificationConfidence {
  * Quality/condition ratings for finds
  */
 export enum QualityRating {
-  PRISTINE = 'PRISTINE',         // 95-100% condition
-  EXCELLENT = 'EXCELLENT',       // 85-95% condition
-  VERY_GOOD = 'VERY_GOOD',       // 75-85% condition
-  GOOD = 'GOOD',                 // 60-75% condition
-  FAIR = 'FAIR',                 // 45-60% condition
-  POOR = 'POOR',                 // 25-45% condition
-  FRAGMENTARY = 'FRAGMENTARY',   // <25% condition
+  PRISTINE = 'PRISTINE', // 95-100% condition
+  EXCELLENT = 'EXCELLENT', // 85-95% condition
+  VERY_GOOD = 'VERY_GOOD', // 75-85% condition
+  GOOD = 'GOOD', // 60-75% condition
+  FAIR = 'FAIR', // 45-60% condition
+  POOR = 'POOR', // 25-45% condition
+  FRAGMENTARY = 'FRAGMENTARY', // <25% condition
 }
 
 /**
@@ -73,23 +73,23 @@ export enum EnvironmentalFactor {
  * Size classification
  */
 export enum SizeClass {
-  MICROSCOPIC = 'MICROSCOPIC',   // <1mm
-  VERY_SMALL = 'VERY_SMALL',     // 1-5mm
-  SMALL = 'SMALL',               // 5-20mm
-  MEDIUM = 'MEDIUM',             // 20-100mm
-  LARGE = 'LARGE',               // 100-500mm
-  VERY_LARGE = 'VERY_LARGE',     // >500mm
+  MICROSCOPIC = 'MICROSCOPIC', // <1mm
+  VERY_SMALL = 'VERY_SMALL', // 1-5mm
+  SMALL = 'SMALL', // 5-20mm
+  MEDIUM = 'MEDIUM', // 20-100mm
+  LARGE = 'LARGE', // 100-500mm
+  VERY_LARGE = 'VERY_LARGE', // >500mm
 }
 
 /**
  * Find lifecycle states
  */
 export enum FindLogState {
-  DRAFT = 'DRAFT',               // Being recorded
-  SUBMITTED = 'SUBMITTED',       // Ready for review
-  VERIFIED = 'VERIFIED',         // Verified by expert
-  ARCHIVED = 'ARCHIVED',         // Archived/historical
-  DELETED = 'DELETED',           // Soft delete
+  DRAFT = 'DRAFT', // Being recorded
+  SUBMITTED = 'SUBMITTED', // Ready for review
+  VERIFIED = 'VERIFIED', // Verified by expert
+  ARCHIVED = 'ARCHIVED', // Archived/historical
+  DELETED = 'DELETED', // Soft delete
 }
 
 /**
@@ -144,11 +144,11 @@ export type PhotoMetadata = z.infer<typeof PhotoMetadataSchema>;
 export const MaterialIdentificationSchema = z.object({
   materialType: z.nativeEnum(MaterialType),
   primaryName: z.string().min(1).max(200), // e.g., "Quartz", "Hematite"
-  secondaryName: z.string().optional(),     // e.g., "Rose Quartz"
+  secondaryName: z.string().optional(), // e.g., "Rose Quartz"
   confidence: z.nativeEnum(IdentificationConfidence),
   notes: z.string().optional(),
   references: z.array(z.string()).default([]), // External references, papers, websites
-  identifiedBy: z.string().optional(),     // Person or AI system that identified it
+  identifiedBy: z.string().optional(), // Person or AI system that identified it
   identifiedAt: z.string().datetime().optional(),
 });
 
@@ -159,13 +159,15 @@ export type MaterialIdentification = z.infer<typeof MaterialIdentificationSchema
  */
 export const SpecimenCharacteristicsSchema = z.object({
   sizeClass: z.nativeEnum(SizeClass),
-  estimatedSize: z.object({
-    length_mm: z.number().positive().optional(),
-    width_mm: z.number().positive().optional(),
-    height_mm: z.number().positive().optional(),
-    weight_g: z.number().positive().optional(),
-  }).optional(),
-  color: z.string().optional(),             // Color description
+  estimatedSize: z
+    .object({
+      length_mm: z.number().positive().optional(),
+      width_mm: z.number().positive().optional(),
+      height_mm: z.number().positive().optional(),
+      weight_g: z.number().positive().optional(),
+    })
+    .optional(),
+  color: z.string().optional(), // Color description
   luster: z.enum(['METALLIC', 'VITREOUS', 'SILKY', 'MATTE', 'PEARLY', 'ADAMANTINE']).optional(),
   transparency: z.enum(['TRANSPARENT', 'TRANSLUCENT', 'OPAQUE']).optional(),
   cleavage: z.string().optional(),
@@ -186,8 +188,8 @@ export const EnvironmentalMetadataSchema = z.object({
   humidity: z.number().min(0).max(100).optional(),
   weatherCondition: z.string().optional(),
   soilType: z.string().optional(),
-  hostRock: z.string().optional(),          // Rock the specimen was found in/on
-  depth_cm: z.number().optional(),          // Depth below surface
+  hostRock: z.string().optional(), // Rock the specimen was found in/on
+  depth_cm: z.number().optional(), // Depth below surface
   exposure: z.enum(['SURFACE', 'EXCAVATED', 'EXPOSED']).optional(),
 });
 
@@ -214,49 +216,53 @@ export const FindLogSchema = z.object({
   id: z.string().uuid(),
   user_id: z.string().uuid(),
   field_session_id: z.string().uuid(),
-  
+
   // Material Identification
   identification: MaterialIdentificationSchema,
   characteristics: SpecimenCharacteristicsSchema,
   quality: QualityAssessmentSchema,
-  
+
   // Location & Environment
   location: GeoPointSchema,
   coordinates_polygon: z.string().optional(), // GeoJSON polygon for area
   environmental_metadata: EnvironmentalMetadataSchema,
-  
+
   // Photos
   photo_ids: z.array(z.string().uuid()).default([]),
   photos: z.array(PhotoMetadataSchema).default([]),
-  
+
   // Related Data
   specimen_ids: z.array(z.string().uuid()).default([]), // Linked Specimen entities
   notes: z.string().optional(),
-  field_notes: z.array(z.object({
-    id: z.string().uuid(),
-    text: z.string(),
-    addedAt: z.string().datetime(),
-  })).default([]),
-  
+  field_notes: z
+    .array(
+      z.object({
+        id: z.string().uuid(),
+        text: z.string(),
+        addedAt: z.string().datetime(),
+      })
+    )
+    .default([]),
+
   // State & Status
   state: z.nativeEnum(FindLogState).default(FindLogState.DRAFT),
   sync_status: z.nativeEnum(FindLogSyncStatus).default(FindLogSyncStatus.PENDING),
-  is_private: z.boolean().default(false),    // Private finds (not shared)
-  is_favorite: z.boolean().default(false),   // User marked as favorite
-  
+  is_private: z.boolean().default(false), // Private finds (not shared)
+  is_favorite: z.boolean().default(false), // User marked as favorite
+
   // Timestamps
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
   submitted_at: z.string().datetime().optional(),
   verified_at: z.string().datetime().optional(),
-  verified_by: z.string().optional(),        // Verifier user ID
-  
+  verified_by: z.string().optional(), // Verifier user ID
+
   // Sync Tracking
   synced_at: z.string().datetime().optional(),
   last_sync_error: z.string().optional(),
   checksum_hash: z.string().optional(),
   is_offline: z.boolean().default(false),
-  
+
   // Versioning
   version: z.number().default(1),
   schema_version: z.number().default(1),
@@ -317,21 +323,27 @@ export const FindLogQueryFilterSchema = z.object({
   hasPhotos: z.boolean().optional(),
   isFavorite: z.boolean().optional(),
   state: z.array(z.nativeEnum(FindLogState)).optional(),
-  dateRange: z.object({
-    from: z.string().datetime(),
-    to: z.string().datetime(),
-  }).optional(),
-  nearbyLocation: z.object({
-    latitude: z.number(),
-    longitude: z.number(),
-    radiusKm: z.number().positive(),
-  }).optional(),
+  dateRange: z
+    .object({
+      from: z.string().datetime(),
+      to: z.string().datetime(),
+    })
+    .optional(),
+  nearbyLocation: z
+    .object({
+      latitude: z.number(),
+      longitude: z.number(),
+      radiusKm: z.number().positive(),
+    })
+    .optional(),
   sortBy: z.enum(['CREATED', 'QUALITY', 'CONFIDENCE', 'DISTANCE']).default('CREATED'),
   sortOrder: z.enum(['ASC', 'DESC']).default('DESC'),
-  pagination: z.object({
-    page: z.number().positive().default(1),
-    pageSize: z.number().positive().max(100).default(20),
-  }).optional(),
+  pagination: z
+    .object({
+      page: z.number().positive().default(1),
+      pageSize: z.number().positive().max(100).default(20),
+    })
+    .optional(),
 });
 
 export type FindLogQueryFilter = z.infer<typeof FindLogQueryFilterSchema>;
@@ -403,7 +415,7 @@ export function createNewFindLog(
   input: Omit<CreateFindLogInput, 'field_session_id'>
 ): FindLog {
   const now = new Date().toISOString();
-  
+
   return {
     id: uuidv4(),
     user_id: userId,
@@ -425,14 +437,14 @@ export function createNewFindLog(
  */
 export function validateFindLog(findLog: unknown): { valid: boolean; errors?: string[] } {
   const result = FindLogSchema.safeParse(findLog);
-  
+
   if (!result.success) {
     return {
       valid: false,
-      errors: result.error.errors.map(e => `${e.path.join('.')}: ${e.message}`),
+      errors: result.error.errors.map((e) => `${e.path.join('.')}: ${e.message}`),
     };
   }
-  
+
   return { valid: true };
 }
 
@@ -443,28 +455,25 @@ export function isValidFindLogStateTransition(
   fromState: FindLogState,
   toState: FindLogState
 ): boolean {
-  return FIND_LOG_STATE_TRANSITIONS[fromState]?.includes(toState) ?? false;
+  return FIND_LOG_STATE_TRANSITIONS[fromState].includes(toState);
 }
 
 /**
  * Calculate Haversine distance between two points
  */
-export function calculateDistance(
-  point1: GeoPoint,
-  point2: GeoPoint
-): number {
+export function calculateDistance(point1: GeoPoint, point2: GeoPoint): number {
   const R = 6371000; // Earth's radius in meters
   const lat1 = (point1.latitude * Math.PI) / 180;
   const lat2 = (point2.latitude * Math.PI) / 180;
   const dLat = ((point2.latitude - point1.latitude) * Math.PI) / 180;
   const dLon = ((point2.longitude - point1.longitude) * Math.PI) / 180;
-  
+
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  
+
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  
+
   return R * c;
 }
 
@@ -477,9 +486,9 @@ export function calculateFindScore(
 ): number {
   const confidenceScore = CONFIDENCE_SCORES[confidenceLevel];
   const qualityScore = QUALITY_SCORES[qualityRating];
-  
+
   // Weighted average: 60% confidence, 40% quality
-  return Math.round((confidenceScore * 0.6 + qualityScore * 0.4));
+  return Math.round(confidenceScore * 0.6 + qualityScore * 0.4);
 }
 
 /**
@@ -498,8 +507,8 @@ export function getMaterialTypeDisplay(type: MaterialType): string {
     [MaterialType.GEMSTONE]: '💍 Gemstone',
     [MaterialType.UNKNOWN]: '❓ Unknown',
   };
-  
-  return display[type] || type;
+
+  return display[type];
 }
 
 /**
@@ -513,10 +522,10 @@ export function getConfidenceDisplay(confidence: IdentificationConfidence): stri
     [IdentificationConfidence.POSSIBLE]: '? Possible',
     [IdentificationConfidence.UNCERTAIN]: '?? Uncertain',
     [IdentificationConfidence.GUESS]: '??? Guess',
-    [IdentificationConfidence.UNIDENTIFIED]: 'Not ID\'d',
+    [IdentificationConfidence.UNIDENTIFIED]: "Not ID'd",
   };
-  
-  return display[confidence] || confidence;
+
+  return display[confidence];
 }
 
 /**
@@ -532,8 +541,8 @@ export function getQualityDisplay(rating: QualityRating): string {
     [QualityRating.POOR]: 'Poor',
     [QualityRating.FRAGMENTARY]: 'Fragmentary',
   };
-  
-  return display[rating] || rating;
+
+  return display[rating];
 }
 
 /**
@@ -550,7 +559,7 @@ export function computeFindLogChecksum(find: FindLog): string {
     specimen_ids: find.specimen_ids,
     state: find.state,
   });
-  
+
   // Simple hash (in production, use crypto.sha256)
   let hash = 0;
   for (let i = 0; i < data.length; i++) {
@@ -558,7 +567,7 @@ export function computeFindLogChecksum(find: FindLog): string {
     hash = (hash << 5) - hash + char;
     hash = hash & hash; // Convert to 32-bit integer
   }
-  
+
   return Math.abs(hash).toString(16);
 }
 
@@ -575,11 +584,7 @@ export function formatDistance(meters: number): string {
 /**
  * Check if find is near a location
  */
-export function isFindNearLocation(
-  find: FindLog,
-  location: GeoPoint,
-  radiusKm: number
-): boolean {
+export function isFindNearLocation(find: FindLog, location: GeoPoint, radiusKm: number): boolean {
   const distance = calculateDistance(find.location, location);
   return distance <= radiusKm * 1000;
 }
@@ -587,21 +592,15 @@ export function isFindNearLocation(
 /**
  * Filter finds by material type
  */
-export function filterFindsByMaterial(
-  finds: FindLog[],
-  materials: MaterialType[]
-): FindLog[] {
-  return finds.filter(f => materials.includes(f.identification.materialType));
+export function filterFindsByMaterial(finds: FindLog[], materials: MaterialType[]): FindLog[] {
+  return finds.filter((f) => materials.includes(f.identification.materialType));
 }
 
 /**
  * Filter finds by quality range
  */
-export function filterFindsByQuality(
-  finds: FindLog[],
-  qualities: QualityRating[]
-): FindLog[] {
-  return finds.filter(f => qualities.includes(f.quality.rating));
+export function filterFindsByQuality(finds: FindLog[], qualities: QualityRating[]): FindLog[] {
+  return finds.filter((f) => qualities.includes(f.quality.rating));
 }
 
 /**
@@ -611,7 +610,7 @@ export function filterFindsByConfidence(
   finds: FindLog[],
   confidences: IdentificationConfidence[]
 ): FindLog[] {
-  return finds.filter(f => confidences.includes(f.identification.confidence));
+  return finds.filter((f) => confidences.includes(f.identification.confidence));
 }
 
 /**
@@ -624,7 +623,7 @@ export function sortFinds(
 ): FindLog[] {
   const sorted = [...finds];
   const isAsc = sortOrder === 'ASC';
-  
+
   switch (sortBy) {
     case 'CREATED':
       sorted.sort((a, b) => {
@@ -632,26 +631,28 @@ export function sortFinds(
         return isAsc ? diff : -diff;
       });
       break;
-    
+
     case 'QUALITY':
       sorted.sort((a, b) => {
         const diff = QUALITY_SCORES[b.quality.rating] - QUALITY_SCORES[a.quality.rating];
         return isAsc ? -diff : diff;
       });
       break;
-    
+
     case 'CONFIDENCE':
       sorted.sort((a, b) => {
-        const diff = CONFIDENCE_SCORES[b.identification.confidence] - CONFIDENCE_SCORES[a.identification.confidence];
+        const diff =
+          CONFIDENCE_SCORES[b.identification.confidence] -
+          CONFIDENCE_SCORES[a.identification.confidence];
         return isAsc ? -diff : diff;
       });
       break;
-    
+
     case 'DISTANCE':
       // This requires a reference point, usually handled at query level
       break;
   }
-  
+
   return sorted;
 }
 
@@ -666,8 +667,8 @@ export function getFindStatusDisplay(state: FindLogState): string {
     [FindLogState.ARCHIVED]: '📦 Archived',
     [FindLogState.DELETED]: '🗑️ Deleted',
   };
-  
-  return display[state] || state;
+
+  return display[state];
 }
 
 /**
@@ -680,17 +681,15 @@ export function calculateTotalSpecimens(finds: FindLog[]): number {
 /**
  * Calculate specimen distribution by material
  */
-export function getSpecimenDistributionByMaterial(
-  finds: FindLog[]
-): Record<MaterialType, number> {
-  const distribution: Record<MaterialType, number> = {} as any;
-  
-  finds.forEach(find => {
+export function getSpecimenDistributionByMaterial(finds: FindLog[]): Record<MaterialType, number> {
+  const distribution: Partial<Record<MaterialType, number>> = {};
+
+  finds.forEach((find) => {
     const material = find.identification.materialType;
-    distribution[material] = (distribution[material] || 0) + find.specimen_ids.length;
+    distribution[material] = (distribution[material] ?? 0) + find.specimen_ids.length;
   });
-  
-  return distribution;
+
+  return distribution as Record<MaterialType, number>;
 }
 
 /**
@@ -698,7 +697,7 @@ export function getSpecimenDistributionByMaterial(
  */
 export function calculateAverageQuality(finds: FindLog[]): number {
   if (finds.length === 0) return 0;
-  
+
   const sum = finds.reduce((acc, f) => acc + QUALITY_SCORES[f.quality.rating], 0);
   return Math.round(sum / finds.length);
 }
@@ -708,7 +707,7 @@ export function calculateAverageQuality(finds: FindLog[]): number {
  */
 export function calculateAverageConfidence(finds: FindLog[]): number {
   if (finds.length === 0) return 0;
-  
+
   const sum = finds.reduce((acc, f) => acc + CONFIDENCE_SCORES[f.identification.confidence], 0);
   return Math.round(sum / finds.length);
 }

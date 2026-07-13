@@ -11,7 +11,7 @@ export const browserHashProvider: HashProvider = {
   algorithm: 'sha256-v1',
   async sha256Hex(canonicalJson: string): Promise<string> {
     const subtle = globalThis.crypto.subtle;
-    if (subtle == null) {
+    if (typeof subtle === 'undefined') {
       throw new Error('Web Crypto API unavailable — use server hash provider');
     }
     const data = new TextEncoder().encode(canonicalJson);

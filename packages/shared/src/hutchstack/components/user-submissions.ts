@@ -10,13 +10,7 @@ import type {
 export function scoreSubmissionCompleteness(input: UserSubmissionInput): number {
   let score = 0;
 
-  if (
-    input.name.length >= 3 &&
-    input.state != null &&
-    input.state !== '' &&
-    input.legal_tag != null &&
-    input.legal_tag !== ''
-  ) {
+  if (input.name.length >= 3 && input.state !== '' && input.legal_tag !== '') {
     score += 40;
   }
 
