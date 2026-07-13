@@ -24,11 +24,10 @@ Repair the deployed Rockhound mobile login page so it renders as a compact, read
 
 ## Verification
 
-- Before-and-after screenshots across viewports:
-  - 390x844 (iPhone 12/13/14)
-  - 412x915 (Pixel 7 Pro)
-  - 1280x720 (Desktop Landscape)
-- Lint and type-check: Verified no new warnings or errors introduced.
-- Build: Verified
-  pm run build succeeds.
-- Evidence saved under rtifacts/ui/mobile-login-repair/.
+- **Evidence Failure**: Attempted to capture "before" screenshots at parent commit `4217001` via a clean `git worktree`.
+- **Blocker**: The baseline commit `4217001` is unbuildable. `pnpm install` fails initially, and even when forced, `pnpm build` for `@rockhounding/shared` crashes because it references workspace packages (`@hutchstack/core-offline-ledger`, `@hutchstack/core-sync-v1`) that were deleted or missing in that commit.
+- **Impact**: Without `@rockhounding/shared`, the Next.js dev server fails to compile the application and throws HTTP 500s. Playwright times out waiting for the `webServer` to be ready.
+- **Result**: Due to the strict isolation rule prohibiting altering the current working branch to reconstruct old screenshots, the "before" evidence cannot be authentically captured.
+- **Conclusion**: `META_003C_MOBILE_LOGIN_REPAIR_FAIL`
+
+- Evidence saved under `artifacts/ui/mobile-login-repair/` (partial - contains "after" screenshots only).
