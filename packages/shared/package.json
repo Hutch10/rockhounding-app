@@ -36,6 +36,10 @@
     "./hutchstack/server": {
       "types": "./dist/hutchstack/server/index.d.ts",
       "default": "./dist/hutchstack/server/index.js"
+    },
+    "./uges": {
+      "types": "./dist/universal-geological-evidence-schema.d.ts",
+      "default": "./dist/universal-geological-evidence-schema.js"
     }
   },
   "scripts": {
