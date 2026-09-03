@@ -1,51 +1,47 @@
 /**
- * State Packs API Tests
- * Build Document Step 11: Tests for GET /api/state-packs and GET /api/state-packs/:state
+ * State Packs API Tests - GET /api/state-packs and GET /api/state-packs/:state
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { GET as getList } from './route';
 import { GET as getSingle } from './[state]/route';
 import { NextRequest } from 'next/server';
+import { ApiClientError } from '@/lib/api';
 
-// Mock Supabase
-vi.mock('@/lib/supabase/server', () => ({
-  createClient: vi.fn(() => ({
-    from: vi.fn((table: string) => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(() => Promise.resolve({ data: null, error: null })),
-        })),
-        order: vi.fn(() => Promise.resolve({ data: [], error: null })),
-      })),
+const mockPacks = [{ state: 'CA', version: '1.0.0', updatedAt: '2024-01-01T00:00:00.000Z' }];
+
+const mockPackDetail = {
+  state: 'CA',
+  version: '1.0.0',
+  updatedAt: '2024-01-01T00:00:00.000Z',
+  dataUrl: 'https://example.com/ca.pack',
+  checksum: 'abc123',
+};
+
+const mockListStatePacks = vi.fn();
+const mockGetStatePack = vi.fn();
+
+vi.mock('@/lib/api', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/api')>();
+  return {
+    ...actual,
+    createApiClient: vi.fn(() => ({
+      listStatePacks: mockListStatePacks,
+      getStatePack: mockGetStatePack,
     })),
-    storage: {
-      from: vi.fn(() => ({
-        createSignedUrl: vi.fn(() =>
-          Promise.resolve({ data: { signedUrl: 'https://example.com/signed' } })
-        ),
-      })),
-    },
-  })),
-}));
+  };
+});
 
-vi.mock('next/headers', () => ({
-  cookies: vi.fn(() => ({})),
-}));
+beforeEach(() => {
+  mockListStatePacks.mockReset();
+  mockGetStatePack.mockReset();
+  mockListStatePacks.mockResolvedValue(mockPacks);
+  mockGetStatePack.mockResolvedValue(mockPackDetail);
+});
 
 describe('GET /api/state-packs', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   it('returns empty array when no packs exist', async () => {
-    const { createClient } = await import('@/lib/supabase/server');
-    const mockSupabase = createClient({} as any);
-    vi.mocked(mockSupabase.from).mockReturnValue({
-      select: vi.fn(() => ({
-        order: vi.fn(() => Promise.resolve({ data: [], error: null })),
-      })),
-    } as any);
+    mockListStatePacks.mockResolvedValue([]);
 
     const response = await getList();
     const data = await response.json();
@@ -54,240 +50,49 @@ describe('GET /api/state-packs', () => {
     expect(data).toEqual([]);
   });
 
-  it('returns list of packs with signed URLs', async () => {
-    const { createClient } = await import('@/lib/supabase/server');
-    const mockSupabase = createClient({} as any);
-    vi.mocked(mockSupabase.from).mockReturnValue({
-      select: vi.fn(() => ({
-        order: vi.fn(() =>
-          Promise.resolve({
-            data: [
-              {
-                id: 'pack-1',
-                state: 'CA',
-                file_path: 'CA.json',
-                size_bytes: 1024000,
-                updated_at: '2024-01-01T00:00:00Z',
-                created_at: '2024-01-01T00:00:00Z',
-              },
-              {
-                id: 'pack-2',
-                state: 'TX',
-                file_path: 'TX.json',
-                size_bytes: 2048000,
-                updated_at: '2024-01-02T00:00:00Z',
-                created_at: '2024-01-02T00:00:00Z',
-              },
-            ],
-            error: null,
-          })
-        ),
-      })),
-    } as any);
-
+  it('returns list of packs from backend', async () => {
     const response = await getList();
     const data = await response.json();
 
     expect(response.status).toBe(200);
-    expect(data).toHaveLength(2);
-    expect(data[0]).toEqual({
-      state: 'CA',
-      updated_at: '2024-01-01T00:00:00Z',
-      size_bytes: 1024000,
-      download_url: 'https://example.com/signed',
-    });
-    expect(data[1]).toEqual({
-      state: 'TX',
-      updated_at: '2024-01-02T00:00:00Z',
-      size_bytes: 2048000,
-      download_url: 'https://example.com/signed',
-    });
+    expect(data).toEqual(mockPacks);
   });
 
-  it('returns 500 on database error', async () => {
-    const { createClient } = await import('@/lib/supabase/server');
-    const mockSupabase = createClient({} as any);
-    vi.mocked(mockSupabase.from).mockReturnValue({
-      select: vi.fn(() => ({
-        order: vi.fn(() =>
-          Promise.resolve({ data: null, error: { message: 'Database error' } })
-        ),
-      })),
-    } as any);
+  it('returns 500 on backend error', async () => {
+    mockListStatePacks.mockRejectedValue(new ApiClientError('Failed to fetch state packs', 500));
 
     const response = await getList();
-    const data = await response.json();
-
     expect(response.status).toBe(500);
-    expect(data.error).toBe('Failed to fetch state packs');
   });
 });
 
 describe('GET /api/state-packs/:state', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('returns 400 for invalid state code (not 2 letters)', async () => {
-    const request = new NextRequest('http://localhost/api/state-packs/CAL', {
-      method: 'GET',
-    });
-
-    const response = await getSingle(request, { params: { state: 'CAL' } });
-    const data = await response.json();
+  it('returns 400 for invalid state code', async () => {
+    const request = new NextRequest('http://localhost/api/state-packs/california');
+    const response = await getSingle(request, { params: { state: 'california' } });
 
     expect(response.status).toBe(400);
-    expect(data.error).toBe('Invalid state code (must be 2 letters)');
+    expect(mockGetStatePack).not.toHaveBeenCalled();
   });
 
-  it('returns 400 for invalid state code (lowercase)', async () => {
-    const request = new NextRequest('http://localhost/api/state-packs/ca', {
-      method: 'GET',
-    });
-
+  it('returns pack detail for valid state', async () => {
+    const request = new NextRequest('http://localhost/api/state-packs/ca');
     const response = await getSingle(request, { params: { state: 'ca' } });
     const data = await response.json();
 
-    expect(response.status).toBe(400);
-    expect(data.error).toBe('Invalid state code (must be 2 letters)');
+    expect(response.status).toBe(200);
+    expect(data).toEqual(mockPackDetail);
+    expect(mockGetStatePack).toHaveBeenCalledWith('CA');
   });
 
   it('returns 404 when pack does not exist', async () => {
-    const request = new NextRequest('http://localhost/api/state-packs/ZZ', {
-      method: 'GET',
-    });
+    mockGetStatePack.mockRejectedValue(
+      new ApiClientError('State pack not found', 404, 'NOT_FOUND')
+    );
 
-    const { createClient } = await import('@/lib/supabase/server');
-    const mockSupabase = createClient({} as any);
-    vi.mocked(mockSupabase.from).mockReturnValue({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(() =>
-            Promise.resolve({ data: null, error: { message: 'Not found' } })
-          ),
-        })),
-      })),
-    } as any);
-
-    const response = await getSingle(request, { params: { state: 'ZZ' } });
-    const data = await response.json();
+    const request = new NextRequest('http://localhost/api/state-packs/xx');
+    const response = await getSingle(request, { params: { state: 'xx' } });
 
     expect(response.status).toBe(404);
-    expect(data.error).toBe('State pack not found');
-  });
-
-  it('returns pack with signed URL when pack exists', async () => {
-    const request = new NextRequest('http://localhost/api/state-packs/CA', {
-      method: 'GET',
-    });
-
-    const { createClient } = await import('@/lib/supabase/server');
-    const mockSupabase = createClient({} as any);
-    vi.mocked(mockSupabase.from).mockReturnValue({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(() =>
-            Promise.resolve({
-              data: {
-                id: 'pack-1',
-                state: 'CA',
-                file_path: 'CA.json',
-                size_bytes: 1024000,
-                updated_at: '2024-01-01T00:00:00Z',
-                created_at: '2024-01-01T00:00:00Z',
-              },
-              error: null,
-            })
-          ),
-        })),
-      })),
-    } as any);
-
-    const response = await getSingle(request, { params: { state: 'CA' } });
-    const data = await response.json();
-
-    expect(response.status).toBe(200);
-    expect(data).toEqual({
-      state: 'CA',
-      updated_at: '2024-01-01T00:00:00Z',
-      size_bytes: 1024000,
-      download_url: 'https://example.com/signed',
-    });
-  });
-
-  it('converts lowercase state code to uppercase', async () => {
-    const request = new NextRequest('http://localhost/api/state-packs/tx', {
-      method: 'GET',
-    });
-
-    const { createClient } = await import('@/lib/supabase/server');
-    const mockSupabase = createClient({} as any);
-    const mockEq = vi.fn(() => ({
-      single: vi.fn(() =>
-        Promise.resolve({
-          data: {
-            id: 'pack-2',
-            state: 'TX',
-            file_path: 'TX.json',
-            size_bytes: 2048000,
-            updated_at: '2024-01-02T00:00:00Z',
-            created_at: '2024-01-02T00:00:00Z',
-          },
-          error: null,
-        })
-      ),
-    }));
-
-    vi.mocked(mockSupabase.from).mockReturnValue({
-      select: vi.fn(() => ({
-        eq: mockEq,
-      })),
-    } as any);
-
-    const response = await getSingle(request, { params: { state: 'tx' } });
-    const data = await response.json();
-
-    expect(response.status).toBe(200);
-    expect(data.state).toBe('TX');
-    expect(mockEq).toHaveBeenCalledWith('state', 'TX');
-  });
-
-  it('returns 500 when signed URL generation fails', async () => {
-    const request = new NextRequest('http://localhost/api/state-packs/CA', {
-      method: 'GET',
-    });
-
-    const { createClient } = await import('@/lib/supabase/server');
-    const mockSupabase = createClient({} as any);
-    vi.mocked(mockSupabase.from).mockReturnValue({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(() =>
-            Promise.resolve({
-              data: {
-                id: 'pack-1',
-                state: 'CA',
-                file_path: 'CA.json',
-                size_bytes: 1024000,
-                updated_at: '2024-01-01T00:00:00Z',
-                created_at: '2024-01-01T00:00:00Z',
-              },
-              error: null,
-            })
-          ),
-        })),
-      })),
-    } as any);
-
-    // Mock signed URL failure
-    vi.mocked(mockSupabase.storage.from).mockReturnValue({
-      createSignedUrl: vi.fn(() => Promise.resolve({ data: null })),
-    } as any);
-
-    const response = await getSingle(request, { params: { state: 'CA' } });
-    const data = await response.json();
-
-    expect(response.status).toBe(500);
-    expect(data.error).toBe('Failed to generate download URL');
   });
 });

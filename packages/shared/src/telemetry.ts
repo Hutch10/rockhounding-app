@@ -255,7 +255,7 @@ export function getNetworkContext(): {
 
   return {
     connection_type: connection?.effectiveType ?? null,
-    is_online: navigator.onLine,
+    is_online: typeof navigator.onLine === 'boolean' ? navigator.onLine : true,
   };
 }
 

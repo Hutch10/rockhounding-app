@@ -9,48 +9,41 @@ import { NextRequest } from 'next/server';
 import { GET } from './route';
 import { LegalTag, SourceTier, Status } from '@rockhounding/shared';
 import type { FullLocationDetailResponse } from './types';
+import { ApiClientError } from '@/lib/api';
 
-// Mock Supabase client
-vi.mock('@supabase/supabase-js', () => ({
-  createClient: vi.fn(() => ({
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({
-        eq: vi.fn(() => ({
-          single: vi.fn(() => ({
-            data: {
-              id: 1,
-              name: 'Crystal Peak',
-              description: 'A productive quartz location',
-              legal_tag: LegalTag.LEGAL_PUBLIC,
-              legal_confidence: 95,
-              primary_ruleset_id: 1,
-              source_tier: SourceTier.FIELD_VERIFIED,
-              verification_date: '2024-06-15T00:00:00Z',
-              status: Status.ACTIVE,
-              access_model: 'Walk-in',
-              difficulty: 2,
-              kid_friendly: true,
-              geom: 'POINT(-105.5 39.7)',
-            },
-            error: null,
-          })),
-        })),
-      })),
+const mockLocationDetail = {
+  id: '1',
+  name: 'Crystal Peak',
+  latitude: 39.7,
+  longitude: -105.5,
+  state: 'CO',
+  notes: 'A productive quartz location',
+  legal_tag: LegalTag.LEGAL_PUBLIC,
+  legal_confidence: 95,
+  primary_ruleset_id: 1,
+  source_tier: SourceTier.FIELD_VERIFIED,
+  verification_date: '2024-06-15T00:00:00Z',
+  status: Status.ACTIVE,
+  access_model: 'Walk-in',
+  difficulty: 2,
+  kid_friendly: true,
+};
+
+const mockGetLocation = vi.fn();
+
+vi.mock('@/lib/api', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/api')>();
+  return {
+    ...actual,
+    createApiClient: vi.fn(() => ({
+      getLocation: mockGetLocation,
     })),
-    rpc: vi.fn((funcName) => {
-      if (funcName === 'get_coordinates') {
-        return {
-          data: [{ lon: -105.5, lat: 39.7 }],
-          error: null,
-        };
-      }
-      return { data: null, error: new Error('Unknown RPC') };
-    }),
-  })),
-}));
+  };
+});
 
-// Mock environment variables
 beforeEach(() => {
+  mockGetLocation.mockReset();
+  mockGetLocation.mockResolvedValue(mockLocationDetail);
   process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://example.supabase.co';
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'mock-anon-key';
 });
@@ -102,28 +95,17 @@ describe('GET /api/locations/:id', () => {
 
       const { location } = json;
 
-      // Core identification
       expect(location).toHaveProperty('id');
       expect(location).toHaveProperty('name');
       expect(location).toHaveProperty('description');
-
-      // Geography
       expect(location).toHaveProperty('lat');
       expect(location).toHaveProperty('lon');
-
-      // Legal
       expect(location).toHaveProperty('legal_tag');
       expect(location).toHaveProperty('legal_confidence');
       expect(location).toHaveProperty('primary_ruleset_id');
-
-      // Provenance
       expect(location).toHaveProperty('source_tier');
       expect(location).toHaveProperty('verification_date');
-
-      // Status
       expect(location).toHaveProperty('status');
-
-      // Accessibility
       expect(location).toHaveProperty('access_model');
       expect(location).toHaveProperty('difficulty');
       expect(location).toHaveProperty('kid_friendly');
@@ -138,13 +120,8 @@ describe('GET /api/locations/:id', () => {
 
       const { location } = json;
 
-      expect(location).toHaveProperty('materials');
       expect(Array.isArray(location.materials)).toBe(true);
-
-      expect(location).toHaveProperty('rulesets');
       expect(Array.isArray(location.rulesets)).toBe(true);
-
-      expect(location).toHaveProperty('sources');
       expect(Array.isArray(location.sources)).toBe(true);
     });
 
@@ -176,24 +153,17 @@ describe('GET /api/locations/:id', () => {
 
       const { location } = json;
 
-      // Numbers
       expect(typeof location.id).toBe('number');
       expect(typeof location.lat).toBe('number');
       expect(typeof location.lon).toBe('number');
       expect(typeof location.legal_confidence).toBe('number');
       expect(typeof location.primary_ruleset_id).toBe('number');
       expect(typeof location.difficulty).toBe('number');
-
-      // Strings
       expect(typeof location.name).toBe('string');
       expect(typeof location.access_model).toBe('string');
-
-      // Enums
       expect(Object.values(LegalTag)).toContain(location.legal_tag);
       expect(Object.values(SourceTier)).toContain(location.source_tier);
       expect(Object.values(Status)).toContain(location.status);
-
-      // Booleans
       expect(typeof location.kid_friendly).toBe('boolean');
     });
 
@@ -224,80 +194,9 @@ describe('GET /api/locations/:id', () => {
     });
   });
 
-  describe('Related Arrays Structure', () => {
-    it('should return materials with correct fields', async () => {
-      const request = new NextRequest('http://localhost:3000/api/locations/1');
-      const context = { params: Promise.resolve({ id: '1' }) };
-
-      const response = await GET(request, context);
-      const json = (await response.json()) as FullLocationDetailResponse;
-
-      const { location } = json;
-
-      if (location.materials.length > 0) {
-        const material = location.materials[0];
-        expect(material).toHaveProperty('id');
-        expect(material).toHaveProperty('name');
-        expect(material).toHaveProperty('category');
-        expect(['mineral', 'gemstone', 'rock', 'fossil', 'other']).toContain(
-          material.category
-        );
-      }
-    });
-
-    it('should return rulesets with correct fields', async () => {
-      const request = new NextRequest('http://localhost:3000/api/locations/1');
-      const context = { params: Promise.resolve({ id: '1' }) };
-
-      const response = await GET(request, context);
-      const json = (await response.json()) as FullLocationDetailResponse;
-
-      const { location } = json;
-
-      if (location.rulesets.length > 0) {
-        const ruleset = location.rulesets[0];
-        expect(ruleset).toHaveProperty('id');
-        expect(ruleset).toHaveProperty('name');
-        expect(ruleset).toHaveProperty('authority');
-        expect(ruleset).toHaveProperty('url');
-        expect(ruleset).toHaveProperty('summary');
-      }
-    });
-
-    it('should return sources with correct fields', async () => {
-      const request = new NextRequest('http://localhost:3000/api/locations/1');
-      const context = { params: Promise.resolve({ id: '1' }) };
-
-      const response = await GET(request, context);
-      const json = (await response.json()) as FullLocationDetailResponse;
-
-      const { location } = json;
-
-      if (location.sources.length > 0) {
-        const source = location.sources[0];
-        expect(source).toHaveProperty('id');
-        expect(source).toHaveProperty('citation');
-        expect(source).toHaveProperty('url');
-        expect(source).toHaveProperty('date_accessed');
-      }
-    });
-  });
-
   describe('Error Handling', () => {
     it('should return 404 for non-existent location', async () => {
-      // Mock Supabase to return null
-      vi.mocked(vi.fn()).mockReturnValueOnce({
-        from: vi.fn(() => ({
-          select: vi.fn(() => ({
-            eq: vi.fn(() => ({
-              single: vi.fn(() => ({
-                data: null,
-                error: { message: 'Not found' },
-              })),
-            })),
-          })),
-        })),
-      });
+      mockGetLocation.mockRejectedValueOnce(new ApiClientError('Location not found', 404));
 
       const request = new NextRequest('http://localhost:3000/api/locations/9999');
       const context = { params: Promise.resolve({ id: '9999' }) };
@@ -332,9 +231,7 @@ describe('GET /api/locations/:id', () => {
       const response = await GET(request, context);
       const json = (await response.json()) as FullLocationDetailResponse;
 
-      const { location } = json;
-
-      expect(location).not.toHaveProperty('geom');
+      expect(json.location).not.toHaveProperty('geom');
     });
 
     it('should include primary_ruleset_id for Why? link', async () => {

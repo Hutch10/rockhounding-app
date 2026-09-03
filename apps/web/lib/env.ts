@@ -1,7 +1,7 @@
 /**
  * Environment Variable Validation
  * Ensures all required environment variables are present at runtime
- * 
+ *
  * This file should be imported at application startup (e.g., in layout.tsx)
  * to fail fast if critical configuration is missing.
  */
@@ -12,15 +12,13 @@
 const requiredClientEnvVars = [
   'NEXT_PUBLIC_SUPABASE_URL',
   'NEXT_PUBLIC_SUPABASE_ANON_KEY',
-  'NEXT_PUBLIC_MAPBOX_TOKEN',
 ] as const;
 
 /**
- * Required environment variables for server-side only
+ * Server-only secrets used by privileged backend routes (not the web client).
+ * Optional at web runtime — absence must not block login or core Preview shell.
  */
-const requiredServerEnvVars = [
-  'SUPABASE_SERVICE_ROLE_KEY',
-] as const;
+const optionalServerEnvVars = ['SUPABASE_SERVICE_ROLE_KEY'] as const;
 
 /**
  * Optional environment variables with defaults
@@ -44,40 +42,38 @@ export function validateEnv() {
     }
   }
 
-  // Check server-side vars (only on server)
-  if (typeof window === 'undefined') {
-    for (const varName of requiredServerEnvVars) {
-      if (!process.env[varName]) {
-        missing.push(varName);
-      }
-    }
-  }
+  // Optional server-only vars are validated for format only when present (see below).
 
   if (missing.length > 0) {
     throw new Error(
       `Missing required environment variables:\n` +
-      missing.map((v) => `  - ${v}`).join('\n') +
-      `\n\nPlease copy .env.example to .env.local and fill in the values.\n` +
-      `See /docs/deployment.md for more information.`
+        missing.map((v) => `  - ${v}`).join('\n') +
+        `\n\nPlease copy .env.example to .env.local and fill in the values.\n` +
+        `See /docs/deployment.md for more information.`
     );
   }
 
   // Validate Supabase URL format
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   if (supabaseUrl && !supabaseUrl.startsWith('https://')) {
+    throw new Error(`NEXT_PUBLIC_SUPABASE_URL must start with https://\n` + `Got: ${supabaseUrl}`);
+  }
+
+  // Optional Mapbox public token — MapClient renders a supported fallback when absent.
+  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+  if (mapboxToken != null && mapboxToken !== '' && !mapboxToken.startsWith('pk.')) {
     throw new Error(
-      `NEXT_PUBLIC_SUPABASE_URL must start with https://\n` +
-      `Got: ${supabaseUrl}`
+      `NEXT_PUBLIC_MAPBOX_TOKEN must start with pk.\n` + `Got: ${mapboxToken.substring(0, 10)}...`
     );
   }
 
-  // Validate Mapbox token format
-  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-  if (mapboxToken && !mapboxToken.startsWith('pk.')) {
-    throw new Error(
-      `NEXT_PUBLIC_MAPBOX_TOKEN must start with pk.\n` +
-      `Got: ${mapboxToken.substring(0, 10)}...`
-    );
+  if (typeof window === 'undefined') {
+    for (const varName of optionalServerEnvVars) {
+      const value = process.env[varName];
+      if (value != null && value !== '' && value.length < 20) {
+        throw new Error(`${varName} appears too short to be a valid key`);
+      }
+    }
   }
 
   // Warn if using default bucket names
@@ -108,9 +104,7 @@ export function getEnv(key: keyof typeof process.env): string {
 /**
  * Get optional environment variable with default
  */
-export function getOptionalEnv(
-  key: keyof typeof optionalEnvVars
-): string {
+export function getOptionalEnv(key: keyof typeof optionalEnvVars): string {
   return process.env[key] || optionalEnvVars[key];
 }
 

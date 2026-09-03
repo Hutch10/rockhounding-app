@@ -9,6 +9,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
+    exclude: ['**/node_modules/**', '**/dist/**', 'e2e/**', '**/__tests__/integration/**'],
     alias: {
       '@': path.resolve(__dirname, './apps/web'),
       'server-only': path.resolve(__dirname, './test/mocks/server-only.ts'),

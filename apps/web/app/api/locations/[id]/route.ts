@@ -60,10 +60,7 @@ export async function GET(
     const parseResult = ParamsSchema.safeParse(resolvedParams);
 
     if (!parseResult.success) {
-      return NextResponse.json(
-        { error: 'Invalid location ID' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid location ID' }, { status: 400 });
     }
 
     const { id }: Params = parseResult.data;
@@ -81,15 +78,16 @@ export async function GET(
       description: detail.notes ?? null,
       lat: detail.latitude,
       lon: detail.longitude,
-      legal_tag: LegalTag.RESEARCH_ONLY,
-      legal_confidence: 0,
-      primary_ruleset_id: 0,
-      source_tier: SourceTier.SECONDARY,
-      verification_date: null,
-      status: Status.UNKNOWN,
-      access_model: 'UNKNOWN',
-      difficulty: 1,
-      kid_friendly: false,
+      // Map optional detailed fields if present on the detail response
+      legal_tag: (detail as any).legal_tag ?? LegalTag.RESEARCH_ONLY,
+      legal_confidence: (detail as any).legal_confidence ?? 0,
+      primary_ruleset_id: (detail as any).primary_ruleset_id ?? 1,
+      source_tier: (detail as any).source_tier ?? SourceTier.SECONDARY,
+      verification_date: (detail as any).verification_date ?? null,
+      status: (detail as any).status ?? Status.UNKNOWN,
+      access_model: (detail as any).access_model ?? 'UNKNOWN',
+      difficulty: (detail as any).difficulty ?? 1,
+      kid_friendly: (detail as any).kid_friendly ?? false,
       materials,
       rulesets,
       sources,
@@ -108,10 +106,7 @@ export async function GET(
     });
   } catch (error) {
     if (error instanceof ApiClientError) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: error.status || 500 }
-      );
+      return NextResponse.json({ error: error.message }, { status: error.status || 500 });
     }
     console.error('Unexpected error in GET /api/locations/:id', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
