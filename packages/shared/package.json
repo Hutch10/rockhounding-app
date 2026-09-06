@@ -40,6 +40,10 @@
     "./uges": {
       "types": "./dist/universal-geological-evidence-schema.d.ts",
       "default": "./dist/universal-geological-evidence-schema.js"
+    },
+    "./geological-layer-registry": {
+      "types": "./dist/geological-layer-registry.d.ts",
+      "default": "./dist/geological-layer-registry.js"
     }
   },
   "scripts": {

@@ -212,7 +212,7 @@ Represented as `value.kind = 'permission'` with `dimension` + `status` (`ALLOWED
 
 ## Future relationships
 
-- **Layer Registry:** catalog of sources referencing `EvidenceSourceDescriptor`
+- **Layer Registry:** [Geological Layer Registry R1](GEOLOGICAL_LAYER_REGISTRY.md) catalogs sources; `projectLayerToUgesSource` emits `EvidenceSourceDescriptor` only — never an assertion from a layer definition alone
 - **MCP / OGC / STAC:** adapters emit `EvidenceAssertion` records
 - **PostGIS:** store geometry as `geography` 4326; assertions as JSONB
 
