@@ -60,6 +60,7 @@ The Build Document (provided by user) is the master specification. All implement
 10. Use shared enums and Zod schemas
 11. Geological and access _facts_ that need provenance use [UGES R1](UNIVERSAL_GEOLOGICAL_EVIDENCE_SCHEMA.md); do not invent parallel assertion types in adapters
 12. Data-source / layer catalogs use the [Geological Layer Registry R1](GEOLOGICAL_LAYER_REGISTRY.md); it does not replace UGES assertions or authorize collection
+13. Discoverable datasets/APIs/documents use the [Resource Catalog R1](RESOURCE_CATALOG.md); it does not fetch, execute, or become UGES assertions
 
 ## Architecture Constraints
 

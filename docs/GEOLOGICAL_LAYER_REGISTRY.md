@@ -36,6 +36,7 @@ Not implemented:
 | Component                     | Role                                                               |
 | ----------------------------- | ------------------------------------------------------------------ |
 | **Geological Layer Registry** | Catalog of sources/layers and their declared capabilities          |
+| **Resource Catalog**          | Discoverable datasets/APIs/documents that may back a layer         |
 | **UGES**                      | Provenance-first **evidence assertion** primitive                  |
 | Map renderer                  | View of geometries (out of scope)                                  |
 | Ingestion / adapters          | Future: emit UGES assertions, referencing registry source metadata |
@@ -181,6 +182,7 @@ listLayerDefinitions(registry)              // sorted by id
 listLayersByCategory(registry, category)
 listLayersByCapability(registry, capability)
 listLayersByUsage(registry, usage)
+listResourceIdsForLayer(layer)              // optional Resource Catalog refs; existence not required
 projectLayerToUgesSource(layer)
 evaluateFreshnessExpiryEffect(layer)
 layerAuthorizesCollection(layer)            // always false
@@ -203,6 +205,12 @@ Conservative, non-networked fixtures — **not** live currency:
 | `nws-alerts-weather`           | NWS alerts/weather family                |
 | `nasa-firms-fire`              | NASA FIRMS                               |
 | `rockhound-field-observations` | Field/community observations             |
+
+Built-in layers optionally reference Resource Catalog IDs (`resourceRecordIds`) such as `res-usgs-ngmdb`. Missing catalog records are **not** rejected.
+
+## Resource Catalog
+
+Layer definitions may point at [Resource Catalog](RESOURCE_CATALOG.md) records. Catalog metadata is not copied into the layer. `resolveResourcesForLayer` lives in `@rockhounding/shared/resource-catalog`.
 
 ## Extension path
 

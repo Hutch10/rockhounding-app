@@ -376,6 +376,7 @@ export const GeologicalLayerDefinitionSchema = z
     derivation: LayerDerivationSchema.extend({
       inputLayerIds: UniqueIdListSchema,
     }).optional(),
+    resourceRecordIds: UniqueIdListSchema.optional(),
   })
   .superRefine((definition, ctx) => {
     const coverageFrom = definition.temporal.coverageFrom;
@@ -525,6 +526,10 @@ export function listLayersByUsage(
   return registry.listLayersByUsage(usage);
 }
 
+export function listResourceIdsForLayer(layer: GeologicalLayerDefinition): string[] {
+  return [...(layer.resourceRecordIds ?? [])];
+}
+
 export function evaluateFreshnessExpiryEffect(
   layer: GeologicalLayerDefinition
 ): LayerFreshnessExpiryEffect {
@@ -623,6 +628,7 @@ export const BUILTIN_GEOLOGICAL_LAYER_DEFINITIONS: readonly GeologicalLayerDefin
       { code: LayerLimitationCode.NON_AUTHORITATIVE_FOR_LEGAL_DECISIONS },
     ],
     licensing: USGS_PUBLIC_DOMAIN_UNKNOWN,
+    resourceRecordIds: ['res-usgs-ngmdb'],
   }),
   validateLayerDefinition({
     id: 'usgs-mrds-mineral-occurrence',
@@ -673,6 +679,7 @@ export const BUILTIN_GEOLOGICAL_LAYER_DEFINITIONS: readonly GeologicalLayerDefin
       { code: LayerLimitationCode.NON_AUTHORITATIVE_FOR_LEGAL_DECISIONS },
     ],
     licensing: USGS_PUBLIC_DOMAIN_UNKNOWN,
+    resourceRecordIds: ['res-usgs-mrds'],
   }),
   validateLayerDefinition({
     id: 'usgs-3dep-elevation',
@@ -722,6 +729,7 @@ export const BUILTIN_GEOLOGICAL_LAYER_DEFINITIONS: readonly GeologicalLayerDefin
       { code: LayerLimitationCode.NON_AUTHORITATIVE_FOR_LEGAL_DECISIONS },
     ],
     licensing: USGS_PUBLIC_DOMAIN_UNKNOWN,
+    resourceRecordIds: ['res-usgs-3dep'],
   }),
   validateLayerDefinition({
     id: 'blm-mlrs-mining-claims',
@@ -778,6 +786,7 @@ export const BUILTIN_GEOLOGICAL_LAYER_DEFINITIONS: readonly GeologicalLayerDefin
       offlineCaching: 'UNKNOWN',
       derivativeUse: 'UNKNOWN',
     },
+    resourceRecordIds: ['res-blm-mlrs'],
   }),
   validateLayerDefinition({
     id: 'nws-alerts-weather',
@@ -829,6 +838,7 @@ export const BUILTIN_GEOLOGICAL_LAYER_DEFINITIONS: readonly GeologicalLayerDefin
       offlineCaching: 'UNKNOWN',
       derivativeUse: 'UNKNOWN',
     },
+    resourceRecordIds: ['res-nws-alerts'],
   }),
   validateLayerDefinition({
     id: 'nasa-firms-fire',
@@ -886,6 +896,7 @@ export const BUILTIN_GEOLOGICAL_LAYER_DEFINITIONS: readonly GeologicalLayerDefin
       offlineCaching: 'UNKNOWN',
       derivativeUse: 'UNKNOWN',
     },
+    resourceRecordIds: ['res-nasa-firms'],
   }),
   validateLayerDefinition({
     id: 'rockhound-field-observations',
@@ -941,5 +952,6 @@ export const BUILTIN_GEOLOGICAL_LAYER_DEFINITIONS: readonly GeologicalLayerDefin
       offlineCaching: 'UNKNOWN',
       derivativeUse: 'UNKNOWN',
     },
+    resourceRecordIds: ['res-local-field-observations'],
   }),
 ];

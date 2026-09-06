@@ -44,6 +44,10 @@
     "./geological-layer-registry": {
       "types": "./dist/geological-layer-registry.d.ts",
       "default": "./dist/geological-layer-registry.js"
+    },
+    "./resource-catalog": {
+      "types": "./dist/resource-catalog.d.ts",
+      "default": "./dist/resource-catalog.js"
     }
   },
   "scripts": {
