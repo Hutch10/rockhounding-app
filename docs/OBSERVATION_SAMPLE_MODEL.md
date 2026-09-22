@@ -159,9 +159,9 @@ STABLE 1.0.0:
 
 DRAFT 0.1.0 records are retained for identity continuity. Latest stable is 1.0.0. Other stable foundations are unchanged.
 
-## Future Provenance Activity Kernel
+## Provenance
 
-Who/what generated or transformed these entities is out of R1.
+Who or what generated or transformed an observation or sample is recorded by the [Provenance Activity Kernel](PROVENANCE_ACTIVITY_KERNEL.md). That kernel references these entities and does not change their semantics.
 
 ## Future custody / sync state
 

@@ -189,6 +189,7 @@ This metadata prepares a future Semantic Migration Ledger. R1 does not execute m
 | `rockhounding:observation`                | 1.0.0   | STABLE    | `@rockhounding/shared/observation-sample-model`   |
 | `rockhounding:sample`                     | 1.0.0   | STABLE    | `@rockhounding/shared/observation-sample-model`   |
 | `rockhounding:sampling-event`             | 1.0.0   | STABLE    | `@rockhounding/shared/observation-sample-model`   |
+| `rockhounding:provenance-activity`        | 1.0.0   | STABLE    | `@rockhounding/shared/provenance-activity-kernel` |
 
 Registry records for these blocks do **not** redefine UGES certainty, confidence, PROHIBITED-as-permission, layer semantics, resource semantics, or source-governance decisions.
 
@@ -210,13 +211,12 @@ The catalog owns resource metadata. The building-block record PROJECTS_TO UGES. 
 
 Source Governance owns admission/restriction of source use. The building-block record REFERENCES Resource Catalog and declares compatibility with catalog v1.0.0. Governance decisions are not re-encoded as registry fields.
 
-## Future Observation / Sample / Provenance blocks
+## Implemented and reserved blocks
 
-Observation, Sample, and Sampling Event are implemented as STABLE 1.0.0. Historical DRAFT 0.1.0 records remain queryable. See [Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md).
+Observation, Sample, Sampling Event, and Provenance Activity are STABLE 1.0.0. Historical DRAFT 0.1.0 records remain queryable. See [Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md) and [Provenance Activity Kernel R1](PROVENANCE_ACTIVITY_KERNEL.md).
 
 Still **DRAFT** v0.1.0 with no implementation:
 
-- `rockhounding:provenance-activity`
 - `rockhounding:truth-clock`
 - `rockhounding:evidence-availability`
 - `rockhounding:decision-snapshot`

@@ -17,6 +17,7 @@ export const SOURCE_GOVERNANCE_BLOCK_ID = 'rockhounding:source-governance-contra
 export const OBSERVATION_BLOCK_ID = 'rockhounding:observation';
 export const SAMPLE_BLOCK_ID = 'rockhounding:sample';
 export const SAMPLING_EVENT_BLOCK_ID = 'rockhounding:sampling-event';
+export const PROVENANCE_ACTIVITY_BLOCK_ID = 'rockhounding:provenance-activity';
 
 export type BuildingBlockId = string;
 
@@ -978,11 +979,77 @@ export const BUILTIN_BUILDING_BLOCK_DEFINITIONS: readonly BuildingBlockDefinitio
     'OBSERVATION_MODEL',
     'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
   ),
+  validateBuildingBlockDefinition({
+    id: PROVENANCE_ACTIVITY_BLOCK_ID,
+    schemaVersion: BUILDING_BLOCK_REGISTRY_SCHEMA_VERSION,
+    name: 'Provenance Activity',
+    version: { major: 1, minor: 0, patch: 0 },
+    category: 'PROVENANCE_MODEL',
+    lifecycleStatus: BuildingBlockLifecycleStatus.STABLE,
+    purpose: 'Lineage of entities, activities, and agents. Does not establish truth or authority.',
+    boundary: 'PROVENANCE_MODEL',
+    documentationRef: 'docs/PROVENANCE_ACTIVITY_KERNEL.md',
+    dependencies: [
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: OBSERVATION_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: SAMPLE_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: RESOURCE_CATALOG_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+      {
+        kind: BuildingBlockRelationshipKind.PROJECTS_TO,
+        targetBuildingBlockId: UGES_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.SAME_MAJOR,
+          version: { major: 1, minor: 1, patch: 0 },
+        },
+      },
+    ],
+    validators: [
+      { kind: 'SCHEMA_VALIDATOR', ref: 'ProvenanceActivitySchema' },
+      { kind: 'TEST_SUITE', ref: 'packages/shared/src/provenance-activity-kernel.test.ts' },
+    ],
+    examples: [{ kind: 'VALID', ref: 'field observation, sampling, retrieval, AI analysis' }],
+    conformance: {
+      schemaValidation: true,
+      semanticValidation: true,
+      requiredTests: ['packages/shared/src/provenance-activity-kernel.test.ts'],
+      requiredDocumentation: ['docs/PROVENANCE_ACTIVITY_KERNEL.md'],
+      requiredInvariants: [
+        'provenance-does-not-establish-truth',
+        'authority-not-elevated-by-processing',
+        'source-lineage-distinct-from-processing',
+      ],
+    },
+    implementation: {
+      ...IMPLEMENTED,
+      modulePath: 'packages/shared/src/provenance-activity-kernel.ts',
+      exportSubpath: '@rockhounding/shared/provenance-activity-kernel',
+    },
+  }),
   draftBlock(
-    'rockhounding:provenance-activity',
+    PROVENANCE_ACTIVITY_BLOCK_ID,
     'Provenance Activity',
     'PROVENANCE_MODEL',
-    'Planned provenance activity kernel. Not implemented in R1.'
+    'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
   ),
   draftBlock(
     'rockhounding:truth-clock',

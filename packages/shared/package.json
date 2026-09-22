@@ -60,6 +60,10 @@
     "./observation-sample-model": {
       "types": "./dist/observation-sample-model.d.ts",
       "default": "./dist/observation-sample-model.js"
+    },
+    "./provenance-activity-kernel": {
+      "types": "./dist/provenance-activity-kernel.d.ts",
+      "default": "./dist/provenance-activity-kernel.js"
     }
   },
   "scripts": {
