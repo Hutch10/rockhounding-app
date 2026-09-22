@@ -77,6 +77,10 @@
       "types": "./dist/evidence-quarantine.d.ts",
       "default": "./dist/evidence-quarantine.js"
     },
+    "./evidence-admission": {
+      "types": "./dist/evidence-admission.d.ts",
+      "default": "./dist/evidence-admission.js"
+    },
     "./offline-fixture-adapters": {
       "types": "./dist/offline-fixture-adapters.d.ts",
       "default": "./dist/offline-fixture-adapters.js"

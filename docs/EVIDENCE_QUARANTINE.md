@@ -78,4 +78,4 @@ No persistence, quarantine database, review UI, automated adjudication, evidence
 
 ## Later phases
 
-[Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md) send unsafe fixture translations here. The next phase is `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. Live ingestion stays closed. Network access stays prohibited.
+[Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md) send unsafe fixture translations here. [Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md) is a separate purpose gate. A quarantine disposition of `ADMIT_CANDIDATE` does not admit evidence. The next phase after admission is `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1`. Live ingestion stays closed. Network access stays prohibited.

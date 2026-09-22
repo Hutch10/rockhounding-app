@@ -21,6 +21,7 @@ export const PROVENANCE_ACTIVITY_BLOCK_ID = 'rockhounding:provenance-activity';
 export const TRUTH_CLOCK_BLOCK_ID = 'rockhounding:truth-clock';
 export const SOURCE_ADAPTER_CONTRACT_BLOCK_ID = 'rockhounding:source-adapter-contract';
 export const EVIDENCE_QUARANTINE_BLOCK_ID = 'rockhounding:evidence-quarantine';
+export const EVIDENCE_ADMISSION_BLOCK_ID = 'rockhounding:evidence-admission';
 
 export type BuildingBlockId = string;
 
@@ -1313,6 +1314,66 @@ export const BUILTIN_BUILDING_BLOCK_DEFINITIONS: readonly BuildingBlockDefinitio
   draftBlock(
     EVIDENCE_QUARANTINE_BLOCK_ID,
     'Evidence Quarantine',
+    'PROCESS_CONTRACT',
+    'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
+  ),
+  validateBuildingBlockDefinition({
+    id: EVIDENCE_ADMISSION_BLOCK_ID,
+    schemaVersion: BUILDING_BLOCK_REGISTRY_SCHEMA_VERSION,
+    name: 'Evidence Admission',
+    version: { major: 1, minor: 0, patch: 0 },
+    category: 'PROCESS_CONTRACT',
+    lifecycleStatus: BuildingBlockLifecycleStatus.STABLE,
+    purpose:
+      'Purpose-specific gate for whether candidate evidence may support a defined question. Does not decide a field action, rewrite certainty, or authorize collection.',
+    boundary: 'PROCESS_CONTRACT',
+    documentationRef: 'docs/EVIDENCE_ADMISSION_ENGINE.md',
+    dependencies: [
+      UGES_BLOCK_ID,
+      TRUTH_CLOCK_BLOCK_ID,
+      PROVENANCE_ACTIVITY_BLOCK_ID,
+      SOURCE_GOVERNANCE_BLOCK_ID,
+      SOURCE_ADAPTER_CONTRACT_BLOCK_ID,
+      EVIDENCE_QUARANTINE_BLOCK_ID,
+      OBSERVATION_BLOCK_ID,
+      SAMPLE_BLOCK_ID,
+    ].map((targetBuildingBlockId) => ({
+      kind: BuildingBlockRelationshipKind.REFERENCES,
+      targetBuildingBlockId,
+      versionRequirement: {
+        mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+        version:
+          targetBuildingBlockId === UGES_BLOCK_ID
+            ? { major: 1, minor: 1, patch: 0 }
+            : { major: 1, minor: 0, patch: 0 },
+      },
+    })),
+    validators: [
+      { kind: 'SCHEMA_VALIDATOR', ref: 'EvidenceAdmissionRequestSchema' },
+      { kind: 'TEST_SUITE', ref: 'packages/shared/src/evidence-admission.test.ts' },
+    ],
+    examples: [{ kind: 'VALID', ref: 'geological candidate admitted only for geological context' }],
+    conformance: {
+      schemaValidation: true,
+      semanticValidation: true,
+      requiredTests: ['packages/shared/src/evidence-admission.test.ts'],
+      requiredDocumentation: ['docs/EVIDENCE_ADMISSION_ENGINE.md'],
+      requiredInvariants: [
+        'admission-is-purpose-specific',
+        'admission-does-not-decide-the-field-action',
+        'authority-stays-in-domain',
+        'quarantine-disposition-is-not-admission',
+      ],
+    },
+    implementation: {
+      ...IMPLEMENTED,
+      modulePath: 'packages/shared/src/evidence-admission.ts',
+      exportSubpath: '@rockhounding/shared/evidence-admission',
+    },
+  }),
+  draftBlock(
+    EVIDENCE_ADMISSION_BLOCK_ID,
+    'Evidence Admission',
     'PROCESS_CONTRACT',
     'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
   ),

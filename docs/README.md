@@ -69,6 +69,7 @@ The Build Document (provided by user) is the master specification. All implement
 19. Source translation uses the [Source Adapter Contract R1](SOURCE_ADAPTER_CONTRACT.md); an adapter may normalize representation and may not manufacture authority, certainty, permission, currency, or absence
 20. Material that cannot safely proceed uses [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md); quarantine preserves and explains, and it does not accept, discard, or verify evidence
 21. The first executable source translation is [Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md); fixtures are local and deterministic, and they do not open live ingestion
+22. Purpose-specific eligibility uses [Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md); admission is not truth, permission, or a field decision
 
 ## Architecture Constraints
 

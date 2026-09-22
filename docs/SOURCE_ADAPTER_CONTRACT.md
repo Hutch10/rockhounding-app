@@ -88,4 +88,4 @@ No live network retrieval, provider live adapter, persistence, quarantine storag
 
 ## Later phases
 
-Quarantine candidates are held by [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md). The first controlled implementation is [Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md): local fixtures only, no network. The next phase is `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. Live ingestion stays closed.
+Quarantine candidates are held by [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md). The first controlled implementation is [Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md): local fixtures only, no network. Adapter success is not admission. Purpose eligibility is [Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md). The next phase is `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1`. Live ingestion stays closed.

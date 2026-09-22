@@ -99,4 +99,4 @@ Zero rows with `PARTIAL` or `UNKNOWN` record coverage produce no candidates and 
 
 ## Next phase
 
-`ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1` must define eligibility, evidence role, domain-scoped authority, purpose fitness, independence, freshness, coverage, contradiction handling, decision-specific admissibility, and explicit rejection reasons. A live read-only provider comes only after fixture candidates can pass that gate.
+`ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1` is the purpose-specific gate in [Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md). A fixture candidate that translates successfully is not thereby admitted. The phase after admission is `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1`. Live ingestion stays closed.

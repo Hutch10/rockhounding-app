@@ -7,12 +7,14 @@
 **Validated repository state:**
 
 - Branch: `feat/sprint-4-field-mode`
-- `ROCKHOUNDING_EVIDENCE_QUARANTINE_R1` is closed and STABLE at `68ad73f21ad289ac706ade42759ec868f9f96a4b` (59 files, 758 tests)
-- This document travels with `ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1`
-- Offline fixture adapters are the first controlled executable source translation
+- `ROCKHOUNDING_EVIDENCE_QUARANTINE_R1` is closed and STABLE
+- `ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1` is closed at `27d5eeb050d61321f04fcb749a9bdc905edd978e` (60 files, 781 tests)
+- This document travels with `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`
+- Evidence Admission is the active purpose-specific gate
+- Fixture success does not imply source admission
 - Live ingestion stays closed
 - Network access stays prohibited
-- Next phase after that pass: `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`
+- Next phase after that pass: `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1`
 
 Reconfirm branch, HEAD, origin, and `git status` before every implementation phase. This snapshot goes stale the moment the branch moves.
 
@@ -41,6 +43,7 @@ These are governed interfaces. Do not silently change their semantics.
 | Truth Clock / Evidence Availability                              | 1.0.0                 | `@rockhounding/shared/truth-clock-availability`   |
 | Source Adapter Contract (`rockhounding:source-adapter-contract`) | 1.0.0                 | `@rockhounding/shared/source-adapter-contract`    |
 | Evidence Quarantine (`rockhounding:evidence-quarantine`)         | 1.0.0                 | `@rockhounding/shared/evidence-quarantine`        |
+| Evidence Admission (`rockhounding:evidence-admission`)           | 1.0.0                 | `@rockhounding/shared/evidence-admission`         |
 
 Truth Clock is STABLE because R1 passed. `rockhounding:evidence-availability` and `rockhounding:decision-snapshot` remain DRAFT. Prior DRAFT 0.1.0 rows stay queryable when a block is promoted. Do not change other STABLE versions while promoting one block.
 
@@ -106,8 +109,8 @@ Package exports for foundational modules are subpath exports in `packages/shared
 
 ## Next phase boundary
 
-`rockhounding:evidence-quarantine` is STABLE 1.0.0 and closed. Offline fixture adapters are the active implementation of `rockhounding:source-adapter-contract`. They translate known local fixtures only. They do not admit evidence, open a live provider, or authorize network access.
+`rockhounding:evidence-admission` is the active STABLE 1.0.0 gate. It answers whether candidate evidence may support a specified purpose. Offline fixture adapters are closed and remain an implementation of `rockhounding:source-adapter-contract`. Fixture success does not imply admission. Live ingestion stays closed. Network access stays prohibited.
 
-If fixture adapters pass, the next phase is `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. That phase defines eligibility, evidence role, domain-scoped authority, purpose fitness, independence, freshness, coverage, contradiction handling, decision-specific admissibility, and explicit rejection reasons. A live read-only provider waits until fixture candidates can pass that gate.
+If admission passes, the next phase is `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1`. That phase defines, for each decision class, the required domains, roles, authority, time, coverage, independence, contradiction policy, and unresolved factors. A live read-only provider waits until those contracts exist.
 
 `.cursor/` is local orchestration configuration only. This document is the portable repository coordinator contract.
