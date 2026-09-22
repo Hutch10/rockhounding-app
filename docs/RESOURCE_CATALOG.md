@@ -16,12 +16,13 @@ Not implemented: network access, live adapters, persistence, authentication, ing
 
 ## Architecture boundary
 
-| Component                     | Role                                                                 |
-| ----------------------------- | -------------------------------------------------------------------- |
-| **UGES**                      | Evidence assertions                                                  |
-| **Geological Layer Registry** | Geological/geospatial **layer** semantics and capabilities           |
-| **Resource Catalog**          | Discoverable **resources** that may back layers or future assertions |
-| **Adapters**                  | Future: translate resource content into UGES assertions              |
+| Component                      | Role                                                                 |
+| ------------------------------ | -------------------------------------------------------------------- |
+| **UGES**                       | Evidence assertions                                                  |
+| **Geological Layer Registry**  | Geological/geospatial **layer** semantics and capabilities           |
+| **Resource Catalog**           | Discoverable **resources** that may back layers or future assertions |
+| **Source Governance Contract** | Admission/restriction policy; does not create assertions             |
+| **Adapters**                   | Future: translate resource content into UGES assertions              |
 
 These responsibilities must not collapse.
 

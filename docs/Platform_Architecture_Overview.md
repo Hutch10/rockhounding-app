@@ -44,6 +44,7 @@ Rockhound is a mobile-first, offline-capable platform for geological fieldwork, 
 - Shared domain primitive for geology + access + observations: **[Universal Geological Evidence Schema (UGES) R1](UNIVERSAL_GEOLOGICAL_EVIDENCE_SCHEMA.md)** — not yet a persistence or MCP layer
 - Source/layer catalog: **[Geological Layer Registry R1](GEOLOGICAL_LAYER_REGISTRY.md)** — persistence-free metadata; does not fetch, render, or authorize collection
 - Discoverable resource index: **[Resource Catalog R1](RESOURCE_CATALOG.md)** — datasets/APIs/documents as metadata only; adapters are a later phase
+- Source admission policy: **[Source Governance Contract R1](SOURCE_GOVERNANCE_CONTRACT.md)** — whether a cataloged source may be used; not evidence, not permission, not adapters
 - Arrows indicate data flow: FieldSession orchestrates, FindLog and CaptureSession feed data, Camera → Specimen Pipeline classifies, Collection Management aggregates, Dashboard visualizes, Telemetry tracks, Sync Engine synchronizes, Offline Storage caches, Settings personalizes, Shared Libraries provide core logic
 
 ---

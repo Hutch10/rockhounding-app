@@ -48,6 +48,10 @@
     "./resource-catalog": {
       "types": "./dist/resource-catalog.d.ts",
       "default": "./dist/resource-catalog.js"
+    },
+    "./source-governance-contract": {
+      "types": "./dist/source-governance-contract.d.ts",
+      "default": "./dist/source-governance-contract.js"
     }
   },
   "scripts": {

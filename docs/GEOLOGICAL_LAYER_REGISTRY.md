@@ -33,14 +33,15 @@ Not implemented:
 
 ## Architecture boundary
 
-| Component                     | Role                                                               |
-| ----------------------------- | ------------------------------------------------------------------ |
-| **Geological Layer Registry** | Catalog of sources/layers and their declared capabilities          |
-| **Resource Catalog**          | Discoverable datasets/APIs/documents that may back a layer         |
-| **UGES**                      | Provenance-first **evidence assertion** primitive                  |
-| Map renderer                  | View of geometries (out of scope)                                  |
-| Ingestion / adapters          | Future: emit UGES assertions, referencing registry source metadata |
-| Permissions / legal engine    | Future: consume UGES permission values; **not** this registry      |
+| Component                      | Role                                                               |
+| ------------------------------ | ------------------------------------------------------------------ |
+| **Geological Layer Registry**  | Catalog of sources/layers and their declared capabilities          |
+| **Resource Catalog**           | Discoverable datasets/APIs/documents that may back a layer         |
+| **Source Governance Contract** | Admission/restriction policy for cataloged sources                 |
+| **UGES**                       | Provenance-first **evidence assertion** primitive                  |
+| Map renderer                   | View of geometries (out of scope)                                  |
+| Ingestion / adapters           | Future: emit UGES assertions, referencing registry source metadata |
+| Permissions / legal engine     | Future: consume UGES permission values; **not** this registry      |
 
 The registry is **not**:
 
