@@ -76,7 +76,7 @@ Observation, sample, and sampling-event candidates stay distinct. A sample recor
 
 ## Partial success and quarantine
 
-Partial success lists what was emitted, what stayed unknown, and whether downstream use of the successful portion is contractually safe. When a required semantic cannot be normalized and the adapter declares `QUARANTINE_ON_UNKNOWN`, the result is `QUARANTINED` and still carries source identity, version, raw input, adapter id and version, diagnostics, truth-clock context, governance receipt, provenance, and coverage. The quarantine store is future work. Malformed records are not dropped.
+Partial success lists what was emitted, what stayed unknown, and whether downstream use of the successful portion is contractually safe. When a required semantic cannot be normalized and the adapter declares `QUARANTINE_ON_UNKNOWN`, the result is `QUARANTINED` and still carries source identity, version, raw input, adapter id and version, diagnostics, truth-clock context, governance receipt, provenance, and coverage. Malformed records are not dropped. Quarantine candidates are held by [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md).
 
 ## Source versions and determinism
 
@@ -88,4 +88,4 @@ No live network retrieval, provider live adapter, persistence, quarantine storag
 
 ## Later phases
 
-Quarantine candidates are held by [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md). After that, `ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1`, then `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. Live ingestion stays closed until those phases pass.
+Quarantine candidates are held by [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md). The first controlled implementation is [Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md): local fixtures only, no network. The next phase is `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. Live ingestion stays closed.

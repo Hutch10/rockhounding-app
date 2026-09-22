@@ -68,6 +68,7 @@ The Build Document (provided by user) is the master specification. All implement
 18. Freshness and evidence availability use the [Truth Clock / Evidence Availability R1](TRUTH_CLOCK_AVAILABILITY.md); freshness is not truth, authority, or permission
 19. Source translation uses the [Source Adapter Contract R1](SOURCE_ADAPTER_CONTRACT.md); an adapter may normalize representation and may not manufacture authority, certainty, permission, currency, or absence
 20. Material that cannot safely proceed uses [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md); quarantine preserves and explains, and it does not accept, discard, or verify evidence
+21. The first executable source translation is [Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md); fixtures are local and deterministic, and they do not open live ingestion
 
 ## Architecture Constraints
 

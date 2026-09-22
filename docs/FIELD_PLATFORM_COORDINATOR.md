@@ -7,10 +7,12 @@
 **Validated repository state:**
 
 - Branch: `feat/sprint-4-field-mode`
-- Source Adapter Contract R1 is closed at `bb456ec4553a58a3314a1933454efcc4bce0abbe` (58 files, 747 tests)
-- This document travels with `ROCKHOUNDING_EVIDENCE_QUARANTINE_R1` (`rockhounding:evidence-quarantine`)
-- Next phase after that pass: `ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1`
+- `ROCKHOUNDING_EVIDENCE_QUARANTINE_R1` is closed and STABLE at `68ad73f21ad289ac706ade42759ec868f9f96a4b` (59 files, 758 tests)
+- This document travels with `ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1`
+- Offline fixture adapters are the first controlled executable source translation
 - Live ingestion stays closed
+- Network access stays prohibited
+- Next phase after that pass: `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`
 
 Reconfirm branch, HEAD, origin, and `git status` before every implementation phase. This snapshot goes stale the moment the branch moves.
 
@@ -104,8 +106,8 @@ Package exports for foundational modules are subpath exports in `packages/shared
 
 ## Next phase boundary
 
-`rockhounding:source-adapter-contract` is STABLE 1.0.0 and closed. `rockhounding:evidence-quarantine` is the active holding contract. It preserves material that cannot safely proceed. It does not admit, verify, or authorize use.
+`rockhounding:evidence-quarantine` is STABLE 1.0.0 and closed. Offline fixture adapters are the active implementation of `rockhounding:source-adapter-contract`. They translate known local fixtures only. They do not admit evidence, open a live provider, or authorize network access.
 
-If quarantine passes, the next phase is `ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1`, then `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. Those fixture adapters use known offline data only. Live ingestion stays closed.
+If fixture adapters pass, the next phase is `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. That phase defines eligibility, evidence role, domain-scoped authority, purpose fitness, independence, freshness, coverage, contradiction handling, decision-specific admissibility, and explicit rejection reasons. A live read-only provider waits until fixture candidates can pass that gate.
 
 `.cursor/` is local orchestration configuration only. This document is the portable repository coordinator contract.

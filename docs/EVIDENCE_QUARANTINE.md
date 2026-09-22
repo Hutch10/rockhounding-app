@@ -78,4 +78,4 @@ No persistence, quarantine database, review UI, automated adjudication, evidence
 
 ## Later phases
 
-`ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1` uses known offline fixtures only. Then `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. Live ingestion stays closed.
+[Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md) send unsafe fixture translations here. The next phase is `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. Live ingestion stays closed. Network access stays prohibited.
