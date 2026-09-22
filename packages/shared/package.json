@@ -68,6 +68,10 @@
     "./truth-clock-availability": {
       "types": "./dist/truth-clock-availability.d.ts",
       "default": "./dist/truth-clock-availability.js"
+    },
+    "./source-adapter-contract": {
+      "types": "./dist/source-adapter-contract.d.ts",
+      "default": "./dist/source-adapter-contract.js"
     }
   },
   "scripts": {

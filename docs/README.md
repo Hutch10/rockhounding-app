@@ -66,6 +66,7 @@ The Build Document (provided by user) is the master specification. All implement
 16. Field observations, sampling events, and specimens use the [Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md); they are not UGES assertions and do not authorize collection
 17. Creation and transformation lineage uses the [Provenance Activity Kernel R1](PROVENANCE_ACTIVITY_KERNEL.md); it does not establish truth, authority, or permission
 18. Freshness and evidence availability use the [Truth Clock / Evidence Availability R1](TRUTH_CLOCK_AVAILABILITY.md); freshness is not truth, authority, or permission
+19. Source translation uses the [Source Adapter Contract R1](SOURCE_ADAPTER_CONTRACT.md); an adapter may normalize representation and may not manufacture authority, certainty, permission, currency, or absence
 
 ## Architecture Constraints
 
