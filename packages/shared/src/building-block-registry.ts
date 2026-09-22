@@ -20,6 +20,7 @@ export const SAMPLING_EVENT_BLOCK_ID = 'rockhounding:sampling-event';
 export const PROVENANCE_ACTIVITY_BLOCK_ID = 'rockhounding:provenance-activity';
 export const TRUTH_CLOCK_BLOCK_ID = 'rockhounding:truth-clock';
 export const SOURCE_ADAPTER_CONTRACT_BLOCK_ID = 'rockhounding:source-adapter-contract';
+export const EVIDENCE_QUARANTINE_BLOCK_ID = 'rockhounding:evidence-quarantine';
 
 export type BuildingBlockId = string;
 
@@ -1230,6 +1231,88 @@ export const BUILTIN_BUILDING_BLOCK_DEFINITIONS: readonly BuildingBlockDefinitio
   draftBlock(
     SOURCE_ADAPTER_CONTRACT_BLOCK_ID,
     'Source Adapter Contract',
+    'PROCESS_CONTRACT',
+    'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
+  ),
+  validateBuildingBlockDefinition({
+    id: EVIDENCE_QUARANTINE_BLOCK_ID,
+    schemaVersion: BUILDING_BLOCK_REGISTRY_SCHEMA_VERSION,
+    name: 'Evidence Quarantine',
+    version: { major: 1, minor: 0, patch: 0 },
+    category: 'PROCESS_CONTRACT',
+    lifecycleStatus: BuildingBlockLifecycleStatus.STABLE,
+    purpose:
+      'Truth-preserving holding state for material that cannot safely enter canonical evidence flow. Does not admit, verify, or authorize.',
+    boundary: 'PROCESS_CONTRACT',
+    documentationRef: 'docs/EVIDENCE_QUARANTINE.md',
+    dependencies: [
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: SOURCE_ADAPTER_CONTRACT_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: RESOURCE_CATALOG_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: SOURCE_GOVERNANCE_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: TRUTH_CLOCK_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: PROVENANCE_ACTIVITY_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+    ],
+    validators: [
+      { kind: 'SCHEMA_VALIDATOR', ref: 'EvidenceQuarantineRecordSchema' },
+      { kind: 'TEST_SUITE', ref: 'packages/shared/src/evidence-quarantine.test.ts' },
+    ],
+    examples: [{ kind: 'VALID', ref: 'unknown enum preserved without a guessed value' }],
+    conformance: {
+      schemaValidation: true,
+      semanticValidation: true,
+      requiredTests: ['packages/shared/src/evidence-quarantine.test.ts'],
+      requiredDocumentation: ['docs/EVIDENCE_QUARANTINE.md'],
+      requiredInvariants: [
+        'quarantine-does-not-drop-or-accept',
+        'raw-capture-is-immutable',
+        'resolution-does-not-verify',
+        'absence-is-not-inferred',
+      ],
+    },
+    implementation: {
+      ...IMPLEMENTED,
+      modulePath: 'packages/shared/src/evidence-quarantine.ts',
+      exportSubpath: '@rockhounding/shared/evidence-quarantine',
+    },
+  }),
+  draftBlock(
+    EVIDENCE_QUARANTINE_BLOCK_ID,
+    'Evidence Quarantine',
     'PROCESS_CONTRACT',
     'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
   ),

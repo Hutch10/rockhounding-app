@@ -88,4 +88,4 @@ No live network retrieval, provider live adapter, persistence, quarantine storag
 
 ## Later phases
 
-`ROCKHOUNDING_EVIDENCE_QUARANTINE_R1`, then `ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1`, then `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. Live ingestion stays closed until those phases pass.
+Quarantine candidates are held by [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md). After that, `ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1`, then `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. Live ingestion stays closed until those phases pass.

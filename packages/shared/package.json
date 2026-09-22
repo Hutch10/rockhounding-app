@@ -72,6 +72,10 @@
     "./source-adapter-contract": {
       "types": "./dist/source-adapter-contract.d.ts",
       "default": "./dist/source-adapter-contract.js"
+    },
+    "./evidence-quarantine": {
+      "types": "./dist/evidence-quarantine.d.ts",
+      "default": "./dist/evidence-quarantine.js"
     }
   },
   "scripts": {

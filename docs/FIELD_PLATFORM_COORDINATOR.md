@@ -7,10 +7,9 @@
 **Validated repository state:**
 
 - Branch: `feat/sprint-4-field-mode`
-- Parent of the Source Adapter Contract commit: `2e90838801791043b62e67322fa254b152131efc`
-- Closed phase: `ROCKHOUNDING_TRUTH_CLOCK_AVAILABILITY_R1_PASS` (57 files, 729 tests)
-- This document travels with `ROCKHOUNDING_SOURCE_ADAPTER_CONTRACT_R1`
-- Next phase after that pass: `ROCKHOUNDING_EVIDENCE_QUARANTINE_R1`
+- Source Adapter Contract R1 is closed at `bb456ec4553a58a3314a1933454efcc4bce0abbe` (58 files, 747 tests)
+- This document travels with `ROCKHOUNDING_EVIDENCE_QUARANTINE_R1` (`rockhounding:evidence-quarantine`)
+- Next phase after that pass: `ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1`
 - Live ingestion stays closed
 
 Reconfirm branch, HEAD, origin, and `git status` before every implementation phase. This snapshot goes stale the moment the branch moves.
@@ -39,6 +38,7 @@ These are governed interfaces. Do not silently change their semantics.
 | Provenance Activity                                              | 1.0.0                 | `@rockhounding/shared/provenance-activity-kernel` |
 | Truth Clock / Evidence Availability                              | 1.0.0                 | `@rockhounding/shared/truth-clock-availability`   |
 | Source Adapter Contract (`rockhounding:source-adapter-contract`) | 1.0.0                 | `@rockhounding/shared/source-adapter-contract`    |
+| Evidence Quarantine (`rockhounding:evidence-quarantine`)         | 1.0.0                 | `@rockhounding/shared/evidence-quarantine`        |
 
 Truth Clock is STABLE because R1 passed. `rockhounding:evidence-availability` and `rockhounding:decision-snapshot` remain DRAFT. Prior DRAFT 0.1.0 rows stay queryable when a block is promoted. Do not change other STABLE versions while promoting one block.
 
@@ -104,8 +104,8 @@ Package exports for foundational modules are subpath exports in `packages/shared
 
 ## Next phase boundary
 
-`rockhounding:source-adapter-contract` is the active R1 translation boundary. It does not fetch, persist, or admit evidence.
+`rockhounding:source-adapter-contract` is STABLE 1.0.0 and closed. `rockhounding:evidence-quarantine` is the active holding contract. It preserves material that cannot safely proceed. It does not admit, verify, or authorize use.
 
-If that phase passes, the next phase is `ROCKHOUNDING_EVIDENCE_QUARANTINE_R1`, then `ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1`, then `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. Live adapters stay closed until those phases pass.
+If quarantine passes, the next phase is `ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1`, then `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`. Those fixture adapters use known offline data only. Live ingestion stays closed.
 
 `.cursor/` is local orchestration configuration only. This document is the portable repository coordinator contract.

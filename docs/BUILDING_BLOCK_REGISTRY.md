@@ -192,6 +192,7 @@ This metadata prepares a future Semantic Migration Ledger. R1 does not execute m
 | `rockhounding:provenance-activity`        | 1.0.0   | STABLE    | `@rockhounding/shared/provenance-activity-kernel` |
 | `rockhounding:truth-clock`                | 1.0.0   | STABLE    | `@rockhounding/shared/truth-clock-availability`   |
 | `rockhounding:source-adapter-contract`    | 1.0.0   | STABLE    | `@rockhounding/shared/source-adapter-contract`    |
+| `rockhounding:evidence-quarantine`        | 1.0.0   | STABLE    | `@rockhounding/shared/evidence-quarantine`        |
 
 Registry records for these blocks do **not** redefine UGES certainty, confidence, PROHIBITED-as-permission, layer semantics, resource semantics, or source-governance decisions.
 
@@ -215,7 +216,7 @@ Source Governance owns admission/restriction of source use. The building-block r
 
 ## Implemented and reserved blocks
 
-Observation, Sample, Sampling Event, Provenance Activity, Truth Clock, and Source Adapter Contract are STABLE 1.0.0. Historical DRAFT 0.1.0 records remain queryable. See [Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md), [Provenance Activity Kernel R1](PROVENANCE_ACTIVITY_KERNEL.md), [Truth Clock / Evidence Availability R1](TRUTH_CLOCK_AVAILABILITY.md), and [Source Adapter Contract R1](SOURCE_ADAPTER_CONTRACT.md). Evidence availability is included in the Truth Clock block. `rockhounding:evidence-availability` remains a DRAFT placeholder.
+Observation, Sample, Sampling Event, Provenance Activity, Truth Clock, Source Adapter Contract, and Evidence Quarantine are STABLE 1.0.0. Historical DRAFT 0.1.0 records remain queryable. See [Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md), [Provenance Activity Kernel R1](PROVENANCE_ACTIVITY_KERNEL.md), [Truth Clock / Evidence Availability R1](TRUTH_CLOCK_AVAILABILITY.md), [Source Adapter Contract R1](SOURCE_ADAPTER_CONTRACT.md), and [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md). Evidence availability semantics inside Truth Clock stay there. `rockhounding:evidence-availability` remains a DRAFT placeholder.
 
 Still **DRAFT** v0.1.0 with no separate implementation:
 
