@@ -63,6 +63,7 @@ The Build Document (provided by user) is the master specification. All implement
 13. Discoverable datasets/APIs/documents use the [Resource Catalog R1](RESOURCE_CATALOG.md); it does not fetch, execute, or become UGES assertions
 14. Source admission/restriction uses the [Source Governance Contract R1](SOURCE_GOVERNANCE_CONTRACT.md); it does not authorize collection, elevate authority, or generate assertions
 15. Independently versioned domain contracts are cataloged by the [Building Block Registry R1](BUILDING_BLOCK_REGISTRY.md); it does not redefine UGES, layers, resources, or governance semantics
+16. Field observations, sampling events, and specimens use the [Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md); they are not UGES assertions and do not authorize collection
 
 ## Architecture Constraints
 

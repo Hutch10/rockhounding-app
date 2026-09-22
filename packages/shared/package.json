@@ -56,6 +56,10 @@
     "./building-block-registry": {
       "types": "./dist/building-block-registry.d.ts",
       "default": "./dist/building-block-registry.js"
+    },
+    "./observation-sample-model": {
+      "types": "./dist/observation-sample-model.d.ts",
+      "default": "./dist/observation-sample-model.js"
     }
   },
   "scripts": {

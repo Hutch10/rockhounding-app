@@ -186,6 +186,9 @@ This metadata prepares a future Semantic Migration Ledger. R1 does not execute m
 | `rockhounding:geological-layer-registry`  | 1.0.0   | STABLE    | `@rockhounding/shared/geological-layer-registry`  |
 | `rockhounding:resource-catalog`           | 1.0.0   | STABLE    | `@rockhounding/shared/resource-catalog`           |
 | `rockhounding:source-governance-contract` | 1.0.0   | STABLE    | `@rockhounding/shared/source-governance-contract` |
+| `rockhounding:observation`                | 1.0.0   | STABLE    | `@rockhounding/shared/observation-sample-model`   |
+| `rockhounding:sample`                     | 1.0.0   | STABLE    | `@rockhounding/shared/observation-sample-model`   |
+| `rockhounding:sampling-event`             | 1.0.0   | STABLE    | `@rockhounding/shared/observation-sample-model`   |
 
 Registry records for these blocks do **not** redefine UGES certainty, confidence, PROHIBITED-as-permission, layer semantics, resource semantics, or source-governance decisions.
 
@@ -209,19 +212,16 @@ Source Governance owns admission/restriction of source use. The building-block r
 
 ## Future Observation / Sample / Provenance blocks
 
-R1 registers the following as **DRAFT** v0.1.0 with no implementation descriptor:
+Observation, Sample, and Sampling Event are implemented as STABLE 1.0.0. Historical DRAFT 0.1.0 records remain queryable. See [Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md).
 
-- `rockhounding:observation`
-- `rockhounding:sample`
-- `rockhounding:sampling-event`
+Still **DRAFT** v0.1.0 with no implementation:
+
 - `rockhounding:provenance-activity`
 - `rockhounding:truth-clock`
 - `rockhounding:evidence-availability`
 - `rockhounding:decision-snapshot`
 
-They are not STABLE and must not be used as implementation claims.
-
-Planned but **not registered** in R1 (documented only): Process Contract, Disclosure Policy, Evidence Admission Contract.
+Planned but **not registered**: Process Contract, Disclosure Policy, Evidence Admission Contract.
 
 ## Agent / Astra consumption boundary
 

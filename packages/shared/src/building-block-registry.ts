@@ -14,6 +14,9 @@ export const UGES_BLOCK_ID = 'rockhounding:uges';
 export const GEOLOGICAL_LAYER_REGISTRY_BLOCK_ID = 'rockhounding:geological-layer-registry';
 export const RESOURCE_CATALOG_BLOCK_ID = 'rockhounding:resource-catalog';
 export const SOURCE_GOVERNANCE_BLOCK_ID = 'rockhounding:source-governance-contract';
+export const OBSERVATION_BLOCK_ID = 'rockhounding:observation';
+export const SAMPLE_BLOCK_ID = 'rockhounding:sample';
+export const SAMPLING_EVENT_BLOCK_ID = 'rockhounding:sampling-event';
 
 export type BuildingBlockId = string;
 
@@ -821,23 +824,159 @@ export const BUILTIN_BUILDING_BLOCK_DEFINITIONS: readonly BuildingBlockDefinitio
       exportSubpath: '@rockhounding/shared/source-governance-contract',
     },
   }),
+  validateBuildingBlockDefinition({
+    id: OBSERVATION_BLOCK_ID,
+    schemaVersion: BUILDING_BLOCK_REGISTRY_SCHEMA_VERSION,
+    name: 'Observation',
+    version: { major: 1, minor: 0, patch: 0 },
+    category: 'OBSERVATION_MODEL',
+    lifecycleStatus: BuildingBlockLifecycleStatus.STABLE,
+    purpose: 'Direct field and instrument observations, results, and observed properties.',
+    boundary: 'OBSERVATION_MODEL',
+    documentationRef: 'docs/OBSERVATION_SAMPLE_MODEL.md',
+    dependencies: [
+      {
+        kind: BuildingBlockRelationshipKind.PROJECTS_TO,
+        targetBuildingBlockId: UGES_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.SAME_MAJOR,
+          version: { major: 1, minor: 1, patch: 0 },
+        },
+      },
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: RESOURCE_CATALOG_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+    ],
+    compatibility: [
+      {
+        targetBuildingBlockId: UGES_BLOCK_ID,
+        targetVersion: { major: 1, minor: 1, patch: 0 },
+      },
+    ],
+    validators: [
+      { kind: 'SCHEMA_VALIDATOR', ref: 'ObservationSchema' },
+      { kind: 'TEST_SUITE', ref: 'packages/shared/src/observation-sample-model.test.ts' },
+    ],
+    examples: [{ kind: 'VALID', ref: 'minimal valid observation' }],
+    conformance: {
+      schemaValidation: true,
+      semanticValidation: true,
+      requiredTests: ['packages/shared/src/observation-sample-model.test.ts'],
+      requiredDocumentation: ['docs/OBSERVATION_SAMPLE_MODEL.md'],
+      requiredInvariants: [
+        'observation-is-not-uges-assertion',
+        'raw-observation-not-overwritten',
+        'model-generated-is-not-direct',
+      ],
+    },
+    implementation: {
+      ...IMPLEMENTED,
+      modulePath: 'packages/shared/src/observation-sample-model.ts',
+      exportSubpath: '@rockhounding/shared/observation-sample-model',
+    },
+  }),
+  validateBuildingBlockDefinition({
+    id: SAMPLE_BLOCK_ID,
+    schemaVersion: BUILDING_BLOCK_REGISTRY_SCHEMA_VERSION,
+    name: 'Sample / Specimen',
+    version: { major: 1, minor: 0, patch: 0 },
+    category: 'SAMPLE_MODEL',
+    lifecycleStatus: BuildingBlockLifecycleStatus.STABLE,
+    purpose: 'Physical specimen identity, external identifiers, and sample lineage.',
+    boundary: 'SAMPLE_MODEL',
+    documentationRef: 'docs/OBSERVATION_SAMPLE_MODEL.md',
+    dependencies: [
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: SAMPLING_EVENT_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+    ],
+    validators: [
+      { kind: 'SCHEMA_VALIDATOR', ref: 'SampleSchema' },
+      { kind: 'TEST_SUITE', ref: 'packages/shared/src/observation-sample-model.test.ts' },
+    ],
+    examples: [{ kind: 'VALID', ref: 'museum specimen without sampling event' }],
+    conformance: {
+      schemaValidation: true,
+      semanticValidation: true,
+      requiredTests: ['packages/shared/src/observation-sample-model.test.ts'],
+      requiredDocumentation: ['docs/OBSERVATION_SAMPLE_MODEL.md'],
+      requiredInvariants: [
+        'sample-is-not-observation',
+        'fossil-does-not-imply-lawful-collection',
+        'lineage-self-reference-rejected',
+      ],
+    },
+    implementation: {
+      ...IMPLEMENTED,
+      modulePath: 'packages/shared/src/observation-sample-model.ts',
+      exportSubpath: '@rockhounding/shared/observation-sample-model',
+    },
+  }),
+  validateBuildingBlockDefinition({
+    id: SAMPLING_EVENT_BLOCK_ID,
+    schemaVersion: BUILDING_BLOCK_REGISTRY_SCHEMA_VERSION,
+    name: 'Sampling Event',
+    version: { major: 1, minor: 0, patch: 0 },
+    category: 'OBSERVATION_MODEL',
+    lifecycleStatus: BuildingBlockLifecycleStatus.STABLE,
+    purpose: 'Act of obtaining physical samples from a feature or material source.',
+    boundary: 'OBSERVATION_MODEL',
+    documentationRef: 'docs/OBSERVATION_SAMPLE_MODEL.md',
+    dependencies: [
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: SAMPLE_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+    ],
+    validators: [
+      { kind: 'SCHEMA_VALIDATOR', ref: 'SamplingEventSchema' },
+      { kind: 'TEST_SUITE', ref: 'packages/shared/src/observation-sample-model.test.ts' },
+    ],
+    examples: [{ kind: 'VALID', ref: 'sampling event with empty resultingSampleIds' }],
+    conformance: {
+      schemaValidation: true,
+      semanticValidation: true,
+      requiredTests: ['packages/shared/src/observation-sample-model.test.ts'],
+      requiredDocumentation: ['docs/OBSERVATION_SAMPLE_MODEL.md'],
+      requiredInvariants: ['sampling-event-is-not-sample', 'does-not-authorize-collection'],
+    },
+    implementation: {
+      ...IMPLEMENTED,
+      modulePath: 'packages/shared/src/observation-sample-model.ts',
+      exportSubpath: '@rockhounding/shared/observation-sample-model',
+    },
+  }),
   draftBlock(
-    'rockhounding:observation',
+    OBSERVATION_BLOCK_ID,
     'Observation',
     'OBSERVATION_MODEL',
-    'Planned observation contract. Not implemented in R1.'
+    'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
   ),
   draftBlock(
-    'rockhounding:sample',
+    SAMPLE_BLOCK_ID,
     'Sample / Specimen',
     'SAMPLE_MODEL',
-    'Planned sample and specimen identity contract. Not implemented in R1.'
+    'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
   ),
   draftBlock(
-    'rockhounding:sampling-event',
+    SAMPLING_EVENT_BLOCK_ID,
     'Sampling Event',
     'OBSERVATION_MODEL',
-    'Planned sampling-event contract. Not implemented in R1.'
+    'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
   ),
   draftBlock(
     'rockhounding:provenance-activity',

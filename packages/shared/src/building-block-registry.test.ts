@@ -493,15 +493,15 @@ describe('foundation registration without semantic takeover', () => {
     expect(gov?.purpose.toLowerCase()).not.toContain('authorize collection');
   });
 
-  it('keeps future observation/sample blocks non-STABLE when registered', () => {
+  it('keeps unimplemented future blocks non-STABLE when registered', () => {
     const registry = createBuildingBlockRegistry();
     const drafts = listBuildingBlocksByLifecycle(registry, BuildingBlockLifecycleStatus.DRAFT);
-    expect(drafts.some((block) => block.id === 'rockhounding:observation')).toBe(true);
+    expect(drafts.some((block) => block.id === 'rockhounding:provenance-activity')).toBe(true);
     expect(
       drafts.every((block) => block.lifecycleStatus !== BuildingBlockLifecycleStatus.STABLE)
     ).toBe(true);
     expect(
-      listBuildingBlocksByCategory(registry, 'OBSERVATION_MODEL').every(
+      listBuildingBlocksByCategory(registry, 'PROVENANCE_MODEL').every(
         (block) => block.lifecycleStatus !== BuildingBlockLifecycleStatus.STABLE
       )
     ).toBe(true);
