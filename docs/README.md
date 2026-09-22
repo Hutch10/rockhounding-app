@@ -65,6 +65,7 @@ The Build Document (provided by user) is the master specification. All implement
 15. Independently versioned domain contracts are cataloged by the [Building Block Registry R1](BUILDING_BLOCK_REGISTRY.md); it does not redefine UGES, layers, resources, or governance semantics
 16. Field observations, sampling events, and specimens use the [Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md); they are not UGES assertions and do not authorize collection
 17. Creation and transformation lineage uses the [Provenance Activity Kernel R1](PROVENANCE_ACTIVITY_KERNEL.md); it does not establish truth, authority, or permission
+18. Freshness and evidence availability use the [Truth Clock / Evidence Availability R1](TRUTH_CLOCK_AVAILABILITY.md); freshness is not truth, authority, or permission
 
 ## Architecture Constraints
 

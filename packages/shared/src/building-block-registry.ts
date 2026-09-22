@@ -18,6 +18,7 @@ export const OBSERVATION_BLOCK_ID = 'rockhounding:observation';
 export const SAMPLE_BLOCK_ID = 'rockhounding:sample';
 export const SAMPLING_EVENT_BLOCK_ID = 'rockhounding:sampling-event';
 export const PROVENANCE_ACTIVITY_BLOCK_ID = 'rockhounding:provenance-activity';
+export const TRUTH_CLOCK_BLOCK_ID = 'rockhounding:truth-clock';
 
 export type BuildingBlockId = string;
 
@@ -1051,11 +1052,79 @@ export const BUILTIN_BUILDING_BLOCK_DEFINITIONS: readonly BuildingBlockDefinitio
     'PROVENANCE_MODEL',
     'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
   ),
+  validateBuildingBlockDefinition({
+    id: TRUTH_CLOCK_BLOCK_ID,
+    schemaVersion: BUILDING_BLOCK_REGISTRY_SCHEMA_VERSION,
+    name: 'Truth Clock / Evidence Availability',
+    version: { major: 1, minor: 0, patch: 0 },
+    category: 'TEMPORAL_MODEL',
+    lifecycleStatus: BuildingBlockLifecycleStatus.STABLE,
+    purpose:
+      'Temporal truth context, freshness, revalidation, and evidence availability. Does not establish truth or permission.',
+    boundary: 'TEMPORAL_MODEL',
+    documentationRef: 'docs/TRUTH_CLOCK_AVAILABILITY.md',
+    dependencies: [
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: RESOURCE_CATALOG_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: OBSERVATION_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+      {
+        kind: BuildingBlockRelationshipKind.REFERENCES,
+        targetBuildingBlockId: PROVENANCE_ACTIVITY_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+          version: { major: 1, minor: 0, patch: 0 },
+        },
+      },
+      {
+        kind: BuildingBlockRelationshipKind.PROJECTS_TO,
+        targetBuildingBlockId: UGES_BLOCK_ID,
+        versionRequirement: {
+          mode: BuildingBlockVersionRequirementMode.SAME_MAJOR,
+          version: { major: 1, minor: 1, patch: 0 },
+        },
+      },
+    ],
+    validators: [
+      { kind: 'SCHEMA_VALIDATOR', ref: 'TruthClockSchema' },
+      { kind: 'TEST_SUITE', ref: 'packages/shared/src/truth-clock-availability.test.ts' },
+    ],
+    examples: [{ kind: 'VALID', ref: 'retrieval versus source currency' }],
+    conformance: {
+      schemaValidation: true,
+      semanticValidation: true,
+      requiredTests: ['packages/shared/src/truth-clock-availability.test.ts'],
+      requiredDocumentation: ['docs/TRUTH_CLOCK_AVAILABILITY.md'],
+      requiredInvariants: [
+        'freshness-is-not-truth',
+        'retrieved-at-is-not-source-updated',
+        'zero-results-do-not-prove-absence',
+        'does-not-authorize-use',
+      ],
+    },
+    implementation: {
+      ...IMPLEMENTED,
+      modulePath: 'packages/shared/src/truth-clock-availability.ts',
+      exportSubpath: '@rockhounding/shared/truth-clock-availability',
+    },
+  }),
   draftBlock(
-    'rockhounding:truth-clock',
+    TRUTH_CLOCK_BLOCK_ID,
     'Truth Clock',
     'TEMPORAL_MODEL',
-    'Planned truth-clock / availability clock. Not implemented in R1.'
+    'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
   ),
   draftBlock(
     'rockhounding:evidence-availability',

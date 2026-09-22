@@ -48,6 +48,7 @@ Rockhound is a mobile-first, offline-capable platform for geological fieldwork, 
 - Architectural contract catalog: **[Building Block Registry R1](BUILDING_BLOCK_REGISTRY.md)** — identity, version, lifecycle, and compatibility of domain contracts; not scientific, legal, or permission truth
 - Field-science primitives: **[Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md)** — observations, sampling events, and specimens; not assertions, not permission, not adapters
 - Lineage kernel: **[Provenance Activity Kernel R1](PROVENANCE_ACTIVITY_KERNEL.md)** — entities, activities, and agents; not truth, not authority, not adapters
+- Temporal context: **[Truth Clock / Evidence Availability R1](TRUTH_CLOCK_AVAILABILITY.md)** — when evidence was true, published, retrieved, and whether it is fit for a use; not certainty and not permission
 - Arrows indicate data flow: FieldSession orchestrates, FindLog and CaptureSession feed data, Camera → Specimen Pipeline classifies, Collection Management aggregates, Dashboard visualizes, Telemetry tracks, Sync Engine synchronizes, Offline Storage caches, Settings personalizes, Shared Libraries provide core logic
 
 ---

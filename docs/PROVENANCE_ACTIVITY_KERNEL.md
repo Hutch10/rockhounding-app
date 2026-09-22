@@ -72,7 +72,7 @@ Unknown external references remain valid.
 
 Zero inputs and zero outputs are allowed. `AI_ANALYSIS` with inputs and no generated entity is valid.
 
-`startedAt` / `endedAt` are optional. Equal times and future times are allowed. `endedAt` before `startedAt` is rejected. This is not the Truth Clock.
+`startedAt` / `endedAt` are optional. Equal times and future times are allowed. `endedAt` before `startedAt` is rejected. Those fields are process execution times. Temporal fitness and retrieval currency belong to the [Truth Clock](TRUTH_CLOCK_AVAILABILITY.md), not to the activity.
 
 ## Agents and roles
 

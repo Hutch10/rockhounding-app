@@ -496,12 +496,12 @@ describe('foundation registration without semantic takeover', () => {
   it('keeps unimplemented future blocks non-STABLE when registered', () => {
     const registry = createBuildingBlockRegistry();
     const drafts = listBuildingBlocksByLifecycle(registry, BuildingBlockLifecycleStatus.DRAFT);
-    expect(drafts.some((block) => block.id === 'rockhounding:truth-clock')).toBe(true);
+    expect(drafts.some((block) => block.id === 'rockhounding:evidence-availability')).toBe(true);
     expect(
       drafts.every((block) => block.lifecycleStatus !== BuildingBlockLifecycleStatus.STABLE)
     ).toBe(true);
     expect(
-      listBuildingBlocksByCategory(registry, 'TEMPORAL_MODEL').every(
+      listBuildingBlocksByCategory(registry, 'DECISION_MODEL').every(
         (block) => block.lifecycleStatus !== BuildingBlockLifecycleStatus.STABLE
       )
     ).toBe(true);
