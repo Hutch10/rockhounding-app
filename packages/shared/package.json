@@ -52,6 +52,10 @@
     "./source-governance-contract": {
       "types": "./dist/source-governance-contract.d.ts",
       "default": "./dist/source-governance-contract.js"
+    },
+    "./building-block-registry": {
+      "types": "./dist/building-block-registry.d.ts",
+      "default": "./dist/building-block-registry.js"
     }
   },
   "scripts": {

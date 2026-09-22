@@ -213,6 +213,8 @@ Built-in layers optionally reference Resource Catalog IDs (`resourceRecordIds`) 
 
 Layer definitions may point at [Resource Catalog](RESOURCE_CATALOG.md) records. Catalog metadata is not copied into the layer. `resolveResourcesForLayer` lives in `@rockhounding/shared/resource-catalog`.
 
+Architectural identity is cataloged as `rockhounding:geological-layer-registry` in the [Building Block Registry](BUILDING_BLOCK_REGISTRY.md). The registry does not change layer semantics.
+
 ## Extension path
 
 Later phases may add OGC API Features / JSON-FG, STAC, GeoSciML, and GeoPackage **adapters** that:

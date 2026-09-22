@@ -16,14 +16,14 @@ Not implemented: persistence, live retrieval, adapters, authentication, legal-ru
 
 ## Architecture boundary
 
-| Component                      | Role                                                       |
-| ------------------------------ | ---------------------------------------------------------- |
-| **UGES**                       | Evidence assertions                                        |
-| **Geological Layer Registry**  | Layer semantics and capabilities                           |
-| **Resource Catalog**           | Discoverable resources                                     |
-| **Source Governance Contract** | Admission / restriction / review policy for those subjects |
-| **Building Block Registry**    | Future: reusable processing/building-block catalog         |
-| **Adapters**                   | Future: translate resource content into UGES assertions    |
+| Component                      | Role                                                                                                                        |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| **UGES**                       | Evidence assertions                                                                                                         |
+| **Geological Layer Registry**  | Layer semantics and capabilities                                                                                            |
+| **Resource Catalog**           | Discoverable resources                                                                                                      |
+| **Source Governance Contract** | Admission / restriction / review policy for those subjects                                                                  |
+| **Building Block Registry**    | Architectural identity of this contract (`rockhounding:source-governance-contract`); does not redefine governance decisions |
+| **Adapters**                   | Future: translate resource content into UGES assertions                                                                     |
 
 Governance records reference Resource / Layer / Provider IDs. They do not merge those catalogs.
 

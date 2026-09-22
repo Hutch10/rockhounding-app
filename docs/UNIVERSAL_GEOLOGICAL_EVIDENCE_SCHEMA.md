@@ -213,6 +213,7 @@ Represented as `value.kind = 'permission'` with `dimension` + `status` (`ALLOWED
 ## Future relationships
 
 - **Layer Registry:** [Geological Layer Registry R1](GEOLOGICAL_LAYER_REGISTRY.md) catalogs sources; `projectLayerToUgesSource` emits `EvidenceSourceDescriptor` only — never an assertion from a layer definition alone
+- **Building Block Registry:** [Building Block Registry R1](BUILDING_BLOCK_REGISTRY.md) records UGES identity `rockhounding:uges` v1.1.0 as STABLE; it does not redefine certainty, confidence, or PROHIBITED
 - **MCP / OGC / STAC:** adapters emit `EvidenceAssertion` records
 - **PostGIS:** store geometry as `geography` 4326; assertions as JSONB
 

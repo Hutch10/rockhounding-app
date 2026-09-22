@@ -22,6 +22,7 @@ Not implemented: network access, live adapters, persistence, authentication, ing
 | **Geological Layer Registry**  | Geological/geospatial **layer** semantics and capabilities           |
 | **Resource Catalog**           | Discoverable **resources** that may back layers or future assertions |
 | **Source Governance Contract** | Admission/restriction policy; does not create assertions             |
+| **Building Block Registry**    | Architectural identity/version/lifecycle of contracts                |
 | **Adapters**                   | Future: translate resource content into UGES assertions              |
 
 These responsibilities must not collapse.
@@ -117,6 +118,8 @@ projectResourceToUgesSource(record)
 ```
 
 Clone-on-read. No hidden mutation.
+
+Architectural identity is cataloged as `rockhounding:resource-catalog` in the [Building Block Registry](BUILDING_BLOCK_REGISTRY.md). The registry does not change resource semantics.
 
 ## R1 limitations
 
