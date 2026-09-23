@@ -103,7 +103,9 @@ Adapters (next phase) look up a `ResourceRecord`, fetch/parse **outside this cat
 
 ## Built-ins (metadata only)
 
-`res-usgs-ngmdb`, `res-usgs-mrds`, `res-usgs-3dep`, `res-blm-mlrs`, `res-nws-alerts`, `res-nasa-firms`, `res-regulation-document-example`, `res-stac-imagery-example`, `res-local-field-observations`, `res-derived-terrain-analysis`
+`res-usgs-ngmdb`, `res-usgs-mrds`, `res-usgs-3dep`, `res-blm-mlrs`, `res-nws-alerts`, `res-nasa-firms`, `res-regulation-document-example`, `res-stac-imagery-example`, `res-local-field-observations`, `res-derived-terrain-analysis`, `res-usgs-sgmc-geology`
+
+`res-usgs-sgmc-geology` is the pinned USGS State Geologic Map Compilation geology resource (DOI `10.5066/F7WH2N65`, layer `SGMC_Geology`). Its offline contract is `docs/USGS_SGMC_PROVIDER_CONTRACT.md`. Registration does not authorize a live query.
 
 ## API
 

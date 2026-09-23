@@ -496,4 +496,32 @@ export const BUILTIN_SOURCE_GOVERNANCE_RECORDS: readonly SourceGovernanceRecord[
     constraints: PROHIBITED_CONSTRAINTS,
     limitations: [{ code: SourceGovernanceLimitationCode.MODEL_DERIVED }],
   }),
+  validateSourceGovernanceRecord({
+    id: 'gov-usgs-sgmc-geology',
+    schemaVersion: SOURCE_GOVERNANCE_SCHEMA_VERSION,
+    subject: { kind: SourceSubjectKind.RESOURCE, id: 'res-usgs-sgmc-geology' },
+    status: SourceGovernanceStatus.ADMITTED,
+    reviewState: SourceReviewState.REVIEWED,
+    admissionClass: SourceAdmissionClass.GOVERNED_METADATA,
+    allowedUses: [ResourceUsage.GEOLOGICAL_CONTEXT],
+    deniedUses: [
+      ResourceUsage.COLLECTION_DECISION_INPUT,
+      ResourceUsage.SAFETY_DECISION_INPUT,
+      ResourceUsage.ROUTE_DECISION_INPUT,
+    ],
+    revalidationPolicy: SourceRevalidationPolicy.BEFORE_DECISION_USE,
+    constraints: PROHIBITED_CONSTRAINTS,
+    limitations: [
+      {
+        code: SourceGovernanceLimitationCode.LEGAL_NONAUTHORITATIVE,
+        description: 'SGMC geology does not authorize collection, access, closure, or claims.',
+      },
+      { code: SourceGovernanceLimitationCode.DECISION_INPUT_ONLY },
+      {
+        code: SourceGovernanceLimitationCode.UNVERIFIED_CURRENCY,
+        description:
+          'Reviewed 2026-09-23 from public-domain USGS terms plus the embedded-copyright caveat. Redistribution, cache, and training use stay ungranted.',
+      },
+    ],
+  }),
 ];

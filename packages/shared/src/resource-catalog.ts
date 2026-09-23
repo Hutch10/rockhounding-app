@@ -1062,4 +1062,92 @@ export const BUILTIN_RESOURCE_RECORDS: readonly ResourceRecord[] = [
       derivationMethod: 'slope-aspect-v1',
     },
   }),
+  validateResourceRecord({
+    id: 'res-usgs-sgmc-geology',
+    schemaVersion: RESOURCE_CATALOG_SCHEMA_VERSION,
+    name: 'USGS State Geologic Map Compilation geology polygons',
+    type: ResourceType.FEATURE_COLLECTION,
+    provider: {
+      id: 'usgs',
+      name: 'U.S. Geological Survey',
+      kind: 'AGENCY',
+    },
+    identifiers: {
+      doi: '10.5066/F7WH2N65',
+      uri: 'https://doi.org/10.5066/F7WH2N65',
+      catalogIdentifier: '5888bf4fe4b05ccb964bab9d',
+      versionIdentifier: 'ds1052-v1.1',
+      providerRecordId: 'SGMC_Geology:3',
+    },
+    authority: {
+      originKind: ResourceOriginKind.AGENCY,
+      sourceAuthorityClass: EvidenceAuthorityClass.PRIMARY_AUTHORITY,
+    },
+    temporal: {
+      publishedAt: '2017-08-01T00:00:00.000Z',
+    },
+    spatial: {
+      crs: 'EPSG:3857',
+      coverageDescription:
+        'Conterminous United States geologic map units. Alaska and Hawaii are outside this compilation. Scales vary from about 1:50,000 to 1:1,000,000. State-line units are not reconciled. Display geometry is the Web Mercator service copy.',
+    },
+    access: {
+      mechanism: ResourceAccessMechanism.REST_API,
+      authenticationRequired: 'NOT_REQUIRED',
+      accessStatus: 'PUBLIC',
+      offlineAvailability: 'UNAVAILABLE',
+      rateLimit: 'max-record-count-2000-quota-unpublished',
+    },
+    licensing: {
+      licenseId: 'usgs-public-domain-with-embedded-copyright-caveat',
+      licenseRef:
+        'https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits',
+      attributionRequired: 'REQUIRED',
+      redistribution: 'UNKNOWN',
+      offlineCaching: 'UNKNOWN',
+      derivativeUse: 'UNKNOWN',
+    },
+    version: {
+      versionId: 'ds1052-v1.1',
+      publishedAt: '2017-08-01T00:00:00.000Z',
+      deprecated: false,
+      knownIssueRefs: ['doi:10.5066/P1A3DQZK-is-a-different-product'],
+    },
+    relationships: [],
+    limitations: [
+      {
+        code: ResourceLimitationCode.COARSE_SCALE,
+        description: 'Map scales vary from about 1:50,000 to 1:1,000,000.',
+      },
+      {
+        code: ResourceLimitationCode.INCOMPLETE_COVERAGE,
+        description:
+          'Alaska and Hawaii are excluded. Bedrock is preferred where both bedrock and surficial maps exist.',
+      },
+      { code: ResourceLimitationCode.NOT_PARCEL_SCALE },
+      {
+        code: ResourceLimitationCode.LEGAL_NONAUTHORITATIVE,
+        description:
+          'Geological context only. Not collection permission, access, closure, or claim status.',
+      },
+      {
+        code: ResourceLimitationCode.HISTORICAL_ONLY,
+        description:
+          'Compilation citation is Data Series 1052 version 1.1. Geologic age text is not a feature clock.',
+      },
+      { code: ResourceLimitationCode.UNVERIFIED_CURRENCY },
+      {
+        code: ResourceLimitationCode.KNOWN_PROVIDER_ISSUE,
+        description:
+          'Units are unreconciled across state lines. Embedded third-party copyright may exist. The 2026 GeMS release is a different product.',
+      },
+    ],
+    capabilities: [
+      ResourceCapability.FEATURE_QUERY,
+      ResourceCapability.BBOX_QUERY,
+      ResourceCapability.PROVENANCE_LINKING,
+    ],
+    usage: { intendedUses: [ResourceUsage.GEOLOGICAL_CONTEXT] },
+    standardsHints: ['GEOJSON'],
+  }),
 ];

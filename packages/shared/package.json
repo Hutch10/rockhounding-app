@@ -108,6 +108,10 @@
     "./offline-fixture-adapters": {
       "types": "./dist/offline-fixture-adapters.d.ts",
       "default": "./dist/offline-fixture-adapters.js"
+    },
+    "./usgs-sgmc-provider": {
+      "types": "./dist/usgs-sgmc-provider.d.ts",
+      "default": "./dist/usgs-sgmc-provider.js"
     }
   },
   "scripts": {

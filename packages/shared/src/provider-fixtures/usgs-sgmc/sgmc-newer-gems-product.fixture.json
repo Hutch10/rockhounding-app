@@ -1,0 +1,41 @@
+{
+  "fixtureId": "sgmc-newer-gems-product",
+  "fixtureKind": "DOCUMENTATION_DERIVED_SYNTHETIC_PROVIDER_FIXTURE",
+  "offline": true,
+  "operationallyRetrieved": false,
+  "productDoi": "10.5066/P1A3DQZK",
+  "publicationVersion": "1.1",
+  "layerName": "SGMC_Geology",
+  "layerId": 3,
+  "scienceBaseItem": "5888bf4fe4b05ccb964bab9d",
+  "spatialReference": "EPSG:3857",
+  "pagination": {
+    "returnedCount": 1,
+    "maxRecordCount": 2000,
+    "completion": "COMPLETE"
+  },
+  "feature": {
+    "OBJECTID": 1001,
+    "STATE": "SYN",
+    "SGMC_LABEL": "Qal",
+    "UNIT_LINK": "SYNTHETIC-UNIT-LINK-001",
+    "UNIT_NAME": "Alluvium",
+    "AGE_MIN": "Holocene",
+    "AGE_MAX": "Quaternary",
+    "GENERALIZED_LITH": "Unconsolidated, undifferentiated",
+    "NGMDB1": "NGMDB-SYNTHETIC-1",
+    "NGMDB2": "NGMDB-SYNTHETIC-2",
+    "NGMDB3": "NGMDB-SYNTHETIC-3",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [0, 0],
+          [1, 0],
+          [1, 1],
+          [0, 0]
+        ]
+      ]
+    }
+  }
+}

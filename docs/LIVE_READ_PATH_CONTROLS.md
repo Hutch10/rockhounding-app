@@ -83,6 +83,4 @@ Source Governance and the Source Adapter Contract stay at STABLE 1.0.0. The oper
 
 ## Next phase
 
-`ROCKHOUNDING_FIRST_LIVE_PROVIDER_SELECTION_R1`
-
-That phase may compare candidate sources and select one. It specifies domain, purpose, operation, license basis, disclosure expectations, fixture strategy, time, coverage, failure behavior, rate limits, authentication, and an off-switch. It does not implement the provider. A provider-specific fixture and adapter come only after that selection passes.
+`ROCKHOUNDING_FIRST_LIVE_PROVIDER_SELECTION_R1` selected USGS SGMC. The offline contract is [USGS SGMC Provider Contract](USGS_SGMC_PROVIDER_CONTRACT.md). A shadow read is a later phase. Live ingestion stays closed.

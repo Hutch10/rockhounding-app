@@ -2,7 +2,9 @@
 
 **Decision:** `SELECTED_FIRST_LIVE_PROVIDER`
 
-**Phase:** `ROCKHOUNDING_FIRST_LIVE_PROVIDER_SELECTION_R1`
+**Phase:** `ROCKHOUNDING_FIRST_LIVE_PROVIDER_SELECTION_R1` — CLOSED / PASS
+
+The offline contract for this selection is [USGS SGMC Provider Contract](USGS_SGMC_PROVIDER_CONTRACT.md). Selection still does not authorize a live call.
 
 **Evidence date:** 2026-09-23
 
