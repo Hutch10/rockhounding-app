@@ -13,14 +13,19 @@
 - `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` is CLOSED and STABLE at `30a67267d2c0b1af0f09de9bc69bca5e61e1003d` (62 files, 806 tests)
 - `ROCKHOUNDING_DECISION_SNAPSHOT_R1` is CLOSED and STABLE at `a370168a53c3d6746f10336800f0ac5ec4ff5824` (63 files, 813 tests)
 - `ROCKHOUNDING_DECISION_EVALUATOR_R1` is CLOSED and STABLE at `5353b7356adcc63d8e5861b6b9d5025418fd8f3b` (64 files, 821 tests)
-- This document travels with `ROCKHOUNDING_DECISION_RECEIPT_R1`
-- Decision Receipt is the active immutable outcome record
-- A receipt freezes the evaluator outcome, exact rule set, and exact evaluator version
+- `ROCKHOUNDING_DECISION_RECEIPT_R1` is CLOSED and STABLE at `706f849f8829f6caf787af2231196f9cbd4a7cd0` (65 files, 828 tests)
+- `ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE` is CONDITIONALLY READY and CLOSED
+- Gate decision: `CONDITIONALLY_READY_FOR_FIRST_LIVE_READ_ONLY_PROVIDER`
+- This document travels with `ROCKHOUNDING_LIVE_READ_PATH_CONTROLS_R1`
+- Decision Receipt is CLOSED and STABLE. It freezes the evaluator outcome, exact rule set, and exact evaluator version
+- Live Read Path Controls R1 is ACTIVE
+- The two remediated blockers are the disclosure boundary and the license-to-operation binding
 - Replay and reanalysis stay separate
 - Fixture success does not imply source admission
 - Live ingestion stays closed
 - Network access stays prohibited
-- Next phase after that pass: `ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE`
+- No provider is selected and no live call is authorized
+- Next phase after these controls pass: `ROCKHOUNDING_FIRST_LIVE_PROVIDER_SELECTION_R1`
 
 Reconfirm branch, HEAD, origin, and `git status` before every implementation phase. This snapshot goes stale the moment the branch moves.
 
@@ -54,6 +59,7 @@ These are governed interfaces. Do not silently change their semantics.
 | Decision Snapshot (`rockhounding:decision-snapshot`)                   | 1.0.0                 | `@rockhounding/shared/decision-snapshot`           |
 | Decision Evaluator (`rockhounding:decision-evaluator`)                 | 1.0.0                 | `@rockhounding/shared/decision-evaluator`          |
 | Decision Receipt (`rockhounding:decision-receipt`)                     | 1.0.0                 | `@rockhounding/shared/decision-receipt`            |
+| Disclosure Governance (`rockhounding:disclosure-governance`)           | 1.0.0                 | `@rockhounding/shared/disclosure-governance`       |
 
 Truth Clock is STABLE because R1 passed. `rockhounding:evidence-availability` remains DRAFT. `rockhounding:decision-snapshot` is STABLE 1.0.0, and its DRAFT 0.1.0 row stays queryable. Do not change other STABLE versions while promoting one block.
 
@@ -119,8 +125,10 @@ Package exports for foundational modules are subpath exports in `packages/shared
 
 ## Next phase boundary
 
-`rockhounding:decision-receipt` is the active STABLE 1.0.0 record. It freezes the outcome produced from an immutable snapshot by an exact evaluator and rule-set version. `ROCKHOUNDING_DECISION_EVALUATOR_R1` is CLOSED and STABLE. `ROCKHOUNDING_DECISION_SNAPSHOT_R1` is CLOSED and STABLE. `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` is CLOSED and STABLE. Historical receipts stay immutable. Replay uses the pinned versions. Reanalysis creates a new receipt. Offline fixture adapters remain an implementation of `rockhounding:source-adapter-contract`. R1 rules are synthetic. Live ingestion stays closed. Network access stays prohibited.
+`rockhounding:decision-receipt` is CLOSED and STABLE at 1.0.0. It freezes the outcome produced from an immutable snapshot by an exact evaluator and rule-set version. `ROCKHOUNDING_DECISION_EVALUATOR_R1` is CLOSED and STABLE. `ROCKHOUNDING_DECISION_SNAPSHOT_R1` is CLOSED and STABLE. `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` is CLOSED and STABLE. Historical receipts stay immutable. Replay uses the pinned versions. Reanalysis creates a new receipt. Offline fixture adapters remain an implementation of `rockhounding:source-adapter-contract`. R1 rules are synthetic. Live ingestion stays closed. Network access stays prohibited.
 
-If this receipt passes, the next phase is `ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE`. That step is a gate, not a provider implementation. `ROCKHOUNDING_DECISION_RECEIPT_R1` is the phase recorded here.
+`ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE` is CONDITIONALLY READY and CLOSED. Its decision remains `CONDITIONALLY_READY_FOR_FIRST_LIVE_READ_ONLY_PROVIDER`. `ROCKHOUNDING_LIVE_READ_PATH_CONTROLS_R1` is ACTIVE. It adds the disclosure boundary and the license-to-operation binding. It does not select a provider, contact an API, or grant production decision authority. Live ingestion stays closed. Network access stays prohibited.
+
+A source still has to answer two separate questions: whether this operation is allowed, and whether this spatial precision may be disclosed for this purpose. Neither answer implies the other. The next phase is `ROCKHOUNDING_FIRST_LIVE_PROVIDER_SELECTION_R1`. That phase may research and select one source. It must not implement a live adapter.
 
 `.cursor/` is local orchestration configuration only. This document is the portable repository coordinator contract.

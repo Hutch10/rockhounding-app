@@ -50,7 +50,7 @@ A geological-context snapshot can stay complete on historical geology. A later s
 
 ## Future Decision Evaluator
 
-[Decision Evaluator R1](DECISION_EVALUATOR.md) consumes a valid snapshot and an exact synthetic rule set. [Decision Receipt R1](DECISION_RECEIPT.md) freezes that outcome. `ROCKHOUNDING_DECISION_SNAPSHOT_R1` does not produce an outcome and does not store a receipt id. The next phase is `ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE`.
+[Decision Evaluator R1](DECISION_EVALUATOR.md) consumes a valid snapshot and an exact synthetic rule set. [Decision Receipt R1](DECISION_RECEIPT.md) freezes that outcome. `ROCKHOUNDING_DECISION_SNAPSHOT_R1` does not produce an outcome and does not store a receipt id. The readiness gate is recorded in [First Live Provider Readiness Gate](FIRST_LIVE_PROVIDER_READINESS_GATE.md). It does not authorize a live provider.
 
 ## R1 limitations
 

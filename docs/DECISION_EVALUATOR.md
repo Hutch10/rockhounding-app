@@ -62,7 +62,7 @@ The same snapshot, rule-set version, and evaluator version `1.0.0` produce the s
 
 ## Provenance and neighboring contracts
 
-The caller may attach a provenance activity id. Upstream provenance ids are not invented. Source Governance is not called. UGES certainty and confidence are not mutated. The result keeps a receipt candidate. [Decision Receipt R1](DECISION_RECEIPT.md) freezes that candidate. The evaluator does not store the receipt. The next phase is `ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE`.
+The caller may attach a provenance activity id. Upstream provenance ids are not invented. Source Governance is not called. UGES certainty and confidence are not mutated. The result keeps a receipt candidate. [Decision Receipt R1](DECISION_RECEIPT.md) freezes that candidate. The evaluator does not store the receipt. The readiness gate is recorded in [First Live Provider Readiness Gate](FIRST_LIVE_PROVIDER_READINESS_GATE.md). It does not authorize a live provider.
 
 ## R1 limitations
 

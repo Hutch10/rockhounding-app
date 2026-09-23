@@ -97,6 +97,14 @@
       "types": "./dist/decision-receipt.d.ts",
       "default": "./dist/decision-receipt.js"
     },
+    "./disclosure-governance": {
+      "types": "./dist/disclosure-governance.d.ts",
+      "default": "./dist/disclosure-governance.js"
+    },
+    "./source-operation-authorization": {
+      "types": "./dist/source-operation-authorization.d.ts",
+      "default": "./dist/source-operation-authorization.js"
+    },
     "./offline-fixture-adapters": {
       "types": "./dist/offline-fixture-adapters.d.ts",
       "default": "./dist/offline-fixture-adapters.js"

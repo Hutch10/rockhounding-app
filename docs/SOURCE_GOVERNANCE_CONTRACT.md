@@ -78,6 +78,10 @@ Clone-on-read. Duplicate IDs rejected. Deterministic id order.
 
 Metadata-only policies for NGMDB, MRDS, 3DEP, MLRS, NWS, FIRMS, example regulation document, local field observations, and derived terrain analysis.
 
+## Operation binding
+
+Source Governance still answers whether a subject may be admitted for a declared use. It does not, by itself, bind a license profile to one adapter operation. That binding is [Live Read Path Controls R1](LIVE_READ_PATH_CONTROLS.md). `READ` does not imply `TRANSFORM`. `AUTOMATED_QUERY` does not imply `BULK_DOWNLOAD`. `MODEL_INPUT` does not imply `TRAINING_USE`. An unreviewed or unknown review state fails closed. The governance schema version stays 1.0.0.
+
 ## R1 limitations
 
 - no persistence

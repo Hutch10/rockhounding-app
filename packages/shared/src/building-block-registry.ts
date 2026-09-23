@@ -26,6 +26,7 @@ export const DECISION_EVIDENCE_CONTRACT_BLOCK_ID = 'rockhounding:decision-eviden
 export const DECISION_SNAPSHOT_BLOCK_ID = 'rockhounding:decision-snapshot';
 export const DECISION_EVALUATOR_BLOCK_ID = 'rockhounding:decision-evaluator';
 export const DECISION_RECEIPT_BLOCK_ID = 'rockhounding:decision-receipt';
+export const DISCLOSURE_GOVERNANCE_BLOCK_ID = 'rockhounding:disclosure-governance';
 
 export type BuildingBlockId = string;
 
@@ -1595,6 +1596,47 @@ export const BUILTIN_BUILDING_BLOCK_DEFINITIONS: readonly BuildingBlockDefinitio
       ...IMPLEMENTED,
       modulePath: 'packages/shared/src/decision-receipt.ts',
       exportSubpath: '@rockhounding/shared/decision-receipt',
+    },
+  }),
+  validateBuildingBlockDefinition({
+    id: DISCLOSURE_GOVERNANCE_BLOCK_ID,
+    schemaVersion: BUILDING_BLOCK_REGISTRY_SCHEMA_VERSION,
+    name: 'Disclosure Governance',
+    version: { major: 1, minor: 0, patch: 0 },
+    category: 'DISCLOSURE_MODEL',
+    lifecycleStatus: BuildingBlockLifecycleStatus.STABLE,
+    purpose:
+      'Decides what spatial precision may leave the trusted graph for one disclosure purpose. Does not change source geometry or authorize collection.',
+    boundary: 'DISCLOSURE_MODEL',
+    documentationRef: 'docs/DISCLOSURE_GOVERNANCE.md',
+    dependencies: [PROVENANCE_ACTIVITY_BLOCK_ID].map((targetBuildingBlockId) => ({
+      kind: BuildingBlockRelationshipKind.REFERENCES,
+      targetBuildingBlockId,
+      versionRequirement: {
+        mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+        version: { major: 1, minor: 0, patch: 0 },
+      },
+    })),
+    validators: [
+      { kind: 'SCHEMA_VALIDATOR', ref: 'DisclosurePolicySchema' },
+      { kind: 'TEST_SUITE', ref: 'packages/shared/src/disclosure-governance.test.ts' },
+    ],
+    examples: [{ kind: 'VALID', ref: 'unknown sensitivity withheld from a public map' }],
+    conformance: {
+      schemaValidation: true,
+      semanticValidation: true,
+      requiredTests: ['packages/shared/src/disclosure-governance.test.ts'],
+      requiredDocumentation: ['docs/DISCLOSURE_GOVERNANCE.md'],
+      requiredInvariants: [
+        'unknown-sensitivity-fails-closed',
+        'disclosure-does-not-mutate-source-geometry',
+        'disclosure-does-not-authorize-collection',
+      ],
+    },
+    implementation: {
+      ...IMPLEMENTED,
+      modulePath: 'packages/shared/src/disclosure-governance.ts',
+      exportSubpath: '@rockhounding/shared/disclosure-governance',
     },
   }),
 ];

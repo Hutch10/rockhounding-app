@@ -86,6 +86,10 @@ An undeclared source version returns `UNSUPPORTED_SOURCE_VERSION`. Tolerant mode
 
 No live network retrieval, provider live adapter, persistence, quarantine storage, Evidence Admission, Decision Snapshot, legal evaluation, automatic schema discovery, dynamic plugins, AI execution, background sync, external referential integrity, standards-conformance claim, or production ingestion.
 
+## First-live execution guard
+
+`translateSourceMaterial` still accepts the caller-supplied governance reference defined by this contract. A future first live adapter must not stop there. [Live Read Path Controls R1](LIVE_READ_PATH_CONTROLS.md) requires `guardFirstLiveAdapterExecution` before that call. The guard recomputes operation authorization from the resource, reviewed governance receipt, and license profile. A caller boolean cannot replace that result. The guard rejects `tolerantUnsupportedVersion: true` and a definition that omits any adapter precondition. Offline fixtures keep calling this contract directly and stay local.
+
 ## Later phases
 
-Quarantine candidates are held by [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md). The first controlled implementation is [Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md): local fixtures only, no network. Adapter success is not admission. Purpose eligibility is [Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md). The next phase is `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1`. Live ingestion stays closed.
+Quarantine candidates are held by [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md). The first controlled implementation is [Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md): local fixtures only, no network. Adapter success is not admission. Purpose eligibility is [Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md). First-live execution is gated by [Live Read Path Controls R1](LIVE_READ_PATH_CONTROLS.md). Live ingestion stays closed.

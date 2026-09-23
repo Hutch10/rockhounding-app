@@ -216,13 +216,13 @@ Source Governance owns admission/restriction of source use. The building-block r
 
 ## Implemented and reserved blocks
 
-Observation, Sample, Sampling Event, Provenance Activity, Truth Clock, Source Adapter Contract, Evidence Quarantine, Evidence Admission, Decision Evidence Contract, Decision Snapshot, Decision Evaluator, and Decision Receipt are STABLE 1.0.0. Historical DRAFT 0.1.0 records remain queryable. See [Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md), [Provenance Activity Kernel R1](PROVENANCE_ACTIVITY_KERNEL.md), [Truth Clock / Evidence Availability R1](TRUTH_CLOCK_AVAILABILITY.md), [Source Adapter Contract R1](SOURCE_ADAPTER_CONTRACT.md), [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md), [Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md), [Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md), [Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md), [Decision Snapshot R1](DECISION_SNAPSHOT.md), [Decision Evaluator R1](DECISION_EVALUATOR.md), and [Decision Receipt R1](DECISION_RECEIPT.md). Offline fixtures implement the source-adapter contract and do not add a building block. Evidence availability semantics inside Truth Clock stay there. `rockhounding:evidence-availability` remains a DRAFT placeholder.
+Observation, Sample, Sampling Event, Provenance Activity, Truth Clock, Source Adapter Contract, Evidence Quarantine, Evidence Admission, Decision Evidence Contract, Decision Snapshot, Decision Evaluator, Decision Receipt, and Disclosure Governance are STABLE 1.0.0. Historical DRAFT 0.1.0 records remain queryable. See [Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md), [Provenance Activity Kernel R1](PROVENANCE_ACTIVITY_KERNEL.md), [Truth Clock / Evidence Availability R1](TRUTH_CLOCK_AVAILABILITY.md), [Source Adapter Contract R1](SOURCE_ADAPTER_CONTRACT.md), [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md), [Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md), [Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md), [Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md), [Decision Snapshot R1](DECISION_SNAPSHOT.md), [Decision Evaluator R1](DECISION_EVALUATOR.md), and [Decision Receipt R1](DECISION_RECEIPT.md), and [Disclosure Governance R1](DISCLOSURE_GOVERNANCE.md). Offline fixtures implement the source-adapter contract and do not add a building block. The license-to-operation helper is not a separate building block. Evidence availability semantics inside Truth Clock stay there. `rockhounding:evidence-availability` remains a DRAFT placeholder.
 
 Still **DRAFT** v0.1.0 with no separate implementation:
 
 - `rockhounding:evidence-availability`
 
-Planned but **not registered**: Process Contract, Disclosure Policy, Evidence Admission Contract.
+Planned but **not registered**: Process Contract.
 
 ## Agent / Astra consumption boundary
 

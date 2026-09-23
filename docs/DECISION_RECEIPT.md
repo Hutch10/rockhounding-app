@@ -30,7 +30,7 @@ Receipt creation checks that the evaluation candidate names the same snapshot id
 
 ## Next gate
 
-`ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE` decides whether one narrowly scoped read-only provider may be considered. Passing this receipt does not select or contact a provider.
+`ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE` is recorded in [First Live Provider Readiness Gate](FIRST_LIVE_PROVIDER_READINESS_GATE.md). The receipt does not select or contact a provider. The gate decision is `CONDITIONALLY_READY_FOR_FIRST_LIVE_READ_ONLY_PROVIDER`. The next phase is `ROCKHOUNDING_LIVE_READ_PATH_CONTROLS_R1`.
 
 ## R1 limitations
 
