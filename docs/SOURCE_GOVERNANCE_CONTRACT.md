@@ -82,7 +82,7 @@ Metadata-only policies for NGMDB, MRDS, 3DEP, MLRS, NWS, FIRMS, example regulati
 
 ## Operation binding
 
-Source Governance still answers whether a subject may be admitted for a declared use. It does not, by itself, bind a license profile to one adapter operation. That binding is [Live Read Path Controls R1](LIVE_READ_PATH_CONTROLS.md). `READ` does not imply `TRANSFORM`. `AUTOMATED_QUERY` does not imply `BULK_DOWNLOAD`. `MODEL_INPUT` does not imply `TRAINING_USE`. An unreviewed or unknown review state fails closed. The governance schema version stays 1.0.0.
+Source Governance still answers whether a subject may be admitted for a declared use. It does not, by itself, bind a license profile to one adapter operation. That binding is [Live Read Path Controls R1](LIVE_READ_PATH_CONTROLS.md). `READ` does not imply `TRANSFORM`. `AUTOMATED_QUERY` does not imply `BULK_DOWNLOAD` or `PUBLIC_DISPLAY`. `PUBLIC_DISPLAY` does not imply redistribution, caching, or a public API. `MODEL_INPUT` does not imply `TRAINING_USE`. An unreviewed or unknown review state fails closed. The SGMC display grant is [USGS SGMC Public Display Rights](USGS_SGMC_PUBLIC_DISPLAY_RIGHTS.md). The governance schema version stays 1.0.0.
 
 ## R1 limitations
 

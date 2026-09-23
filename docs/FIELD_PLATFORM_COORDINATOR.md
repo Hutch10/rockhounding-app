@@ -27,9 +27,11 @@
 - First Provider Shadow Read R1 is CLOSED and PASS at `df09267b2b386a8a8b960e97b90c1a9e5b12738c`
 - First Provider Shadow Certification R1 is CLOSED and PASS at `a6eed7782761cf136a6327c7043c4b298b034674`
 - `ROCKHOUNDING_SGMC_BOUNDED_REPEATED_SHADOW_R1` is CLOSED and PASS
-- `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1` decision is `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1_CONDITIONALLY_READY`
-- The open condition is `PUBLIC_DISPLAY` = `UNKNOWN`
-- Production implementation is not authorized
+- `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1` decision remains `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1_CONDITIONALLY_READY`
+- `ROCKHOUNDING_SGMC_PUBLIC_DISPLAY_RIGHTS_REVIEW_R1` is CLOSED and PASS
+- Rights result: `SGMC_PUBLIC_DISPLAY_ALLOWED_WITH_CONSTRAINTS`
+- The prior `PUBLIC_DISPLAY` = `UNKNOWN` condition is closed by this review
+- Production implementation is AUTHORIZED TO BEGIN
 - Current permitted live state is `BOUNDED_REPEATED_SHADOW_READ`
 - Live ingestion stays closed for production
 - Production ingestion is CLOSED
@@ -39,7 +41,7 @@
 - Fixture success does not imply source admission
 - Further production network access stays prohibited
 - The bounded repeated shadow campaign has been executed and does not authorize production
-- Production geological context is NOT AUTHORIZED
+- Production geological context is not enabled
 - Ordinary-user display is CLOSED
 - A shadow-read pass does not authorize production ingestion
 - A certification pass does not authorize production ingestion
@@ -145,8 +147,8 @@ Package exports for foundational modules are subpath exports in `packages/shared
 
 `rockhounding:decision-receipt` is CLOSED and STABLE at 1.0.0. It freezes the outcome produced from an immutable snapshot by an exact evaluator and rule-set version. `ROCKHOUNDING_DECISION_EVALUATOR_R1` is CLOSED and STABLE. `ROCKHOUNDING_DECISION_SNAPSHOT_R1` is CLOSED and STABLE. `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` is CLOSED and STABLE. Historical receipts stay immutable. Replay uses the pinned versions. Reanalysis creates a new receipt. Offline fixture adapters remain an implementation of `rockhounding:source-adapter-contract`. R1 rules are synthetic. Live ingestion stays closed. Network access stays prohibited.
 
-`ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE` is CONDITIONALLY READY and CLOSED. Its decision remains `CONDITIONALLY_READY_FOR_FIRST_LIVE_READ_ONLY_PROVIDER`. `ROCKHOUNDING_LIVE_READ_PATH_CONTROLS_R1` is CLOSED and STABLE. `ROCKHOUNDING_FIRST_LIVE_PROVIDER_SELECTION_R1` is CLOSED and PASS. `ROCKHOUNDING_FIRST_PROVIDER_OFFLINE_CONTRACT_AND_FIXTURE_R1` is CLOSED and PASS at `c8090cfdf7517ec5500361d8a0403a065c23716b`. `ROCKHOUNDING_FIRST_PROVIDER_SHADOW_READ_R1` is CLOSED and PASS at `df09267b2b386a8a8b960e97b90c1a9e5b12738c`. `ROCKHOUNDING_FIRST_PROVIDER_SHADOW_CERTIFICATION_R1` is CLOSED and PASS at `a6eed7782761cf136a6327c7043c4b298b034674`. `ROCKHOUNDING_SGMC_BOUNDED_REPEATED_SHADOW_R1` is CLOSED and PASS. `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1` is CONDITIONALLY READY and CLOSED. Its decision is `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1_CONDITIONALLY_READY`. The selected source is USGS SGMC DOI `10.5066/F7WH2N65`, layer `SGMC_Geology`, for `GEOLOGICAL_CONTEXT` only. The permitted live state remains `BOUNDED_REPEATED_SHADOW_READ`. Live ingestion stays closed for production. Production geological context is NOT AUTHORIZED. Ordinary-user display is CLOSED. Public decision authority is none. Public product authority is none. Production implementation is not authorized.
+`ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE` is CONDITIONALLY READY and CLOSED. Its decision remains `CONDITIONALLY_READY_FOR_FIRST_LIVE_READ_ONLY_PROVIDER`. `ROCKHOUNDING_LIVE_READ_PATH_CONTROLS_R1` is CLOSED and STABLE. `ROCKHOUNDING_FIRST_LIVE_PROVIDER_SELECTION_R1` is CLOSED and PASS. `ROCKHOUNDING_FIRST_PROVIDER_OFFLINE_CONTRACT_AND_FIXTURE_R1` is CLOSED and PASS at `c8090cfdf7517ec5500361d8a0403a065c23716b`. `ROCKHOUNDING_FIRST_PROVIDER_SHADOW_READ_R1` is CLOSED and PASS at `df09267b2b386a8a8b960e97b90c1a9e5b12738c`. `ROCKHOUNDING_FIRST_PROVIDER_SHADOW_CERTIFICATION_R1` is CLOSED and PASS at `a6eed7782761cf136a6327c7043c4b298b034674`. `ROCKHOUNDING_SGMC_BOUNDED_REPEATED_SHADOW_R1` is CLOSED and PASS. `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1` is CONDITIONALLY READY and CLOSED. Its historical decision remains `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1_CONDITIONALLY_READY`. `ROCKHOUNDING_SGMC_PUBLIC_DISPLAY_RIGHTS_REVIEW_R1` is CLOSED and PASS. Its rights result is `SGMC_PUBLIC_DISPLAY_ALLOWED_WITH_CONSTRAINTS` for DOI `10.5066/F7WH2N65` only. The selected source is USGS SGMC, layer `SGMC_Geology`, for `GEOLOGICAL_CONTEXT` only. The permitted live state remains `BOUNDED_REPEATED_SHADOW_READ`. Live ingestion stays closed for production. Ordinary-user display is CLOSED. Public decision authority is none. Public product authority is none. Production implementation is AUTHORIZED TO BEGIN. Production ingestion stays closed.
 
-A source still has to answer two separate questions: whether this operation is allowed, and whether this spatial precision may be disclosed for this purpose. Neither answer implies the other. `PUBLIC_DISPLAY` remains `UNKNOWN` on the recorded SGMC profile. The next phase is `ROCKHOUNDING_SGMC_PUBLIC_DISPLAY_RIGHTS_REVIEW_R1`. That phase has not started. A readiness gate does not authorize production ingestion. Production ingestion stays closed.
+A source still has to answer two separate questions: whether this operation is allowed, and whether this spatial precision may be disclosed for this purpose. Neither answer implies the other. `PUBLIC_DISPLAY` does not imply `AUTOMATED_QUERY`, redistribution, caching, or disclosure. The next phase is `ROCKHOUNDING_SGMC_PRODUCTION_READ_ONLY_GEOLOGICAL_CONTEXT_R1`. That phase has not started. A display grant does not authorize production ingestion. Production ingestion stays closed.
 
 `.cursor/` is local orchestration configuration only. This document is the portable repository coordinator contract.

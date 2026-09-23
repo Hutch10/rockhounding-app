@@ -31,9 +31,9 @@ Provider identity, resource identity, and record identity stay separate. The 202
 
 Review state is `REVIEWED` as of 2026-09-23. The reviewed basis is U.S. public domain for USGS-authored material, plus the service statement that embedded copyrighted material needs the owner's permission. Attribution to the U.S. Geological Survey is required. The profile does not imply USGS endorsement.
 
-`AUTOMATED_QUERY` is `ALLOWED_WITH_CONSTRAINTS` because attribution is required.
+`AUTOMATED_QUERY` is `ALLOWED_WITH_CONSTRAINTS` because attribution is required. `PUBLIC_DISPLAY` is a separate explicit grant, also `ALLOWED_WITH_CONSTRAINTS`, recorded in [USGS SGMC Public Display Rights](USGS_SGMC_PUBLIC_DISPLAY_RIGHTS.md). A query grant does not authorize display.
 
-These operations stay ungranted: `BULK_DOWNLOAD`, `REDISTRIBUTE`, `PUBLIC_API`, `LOCAL_CACHE`, `OFFLINE_PACKAGE`, `MODEL_INPUT`, `AI_PROCESSING`, `TRAINING_USE`, `COMMERCIAL_USE`. Redistribution, caching, and derivative use remain `UNKNOWN` on the license profile because the embedded-copyright caveat blocks a universal public-domain claim.
+These operations stay ungranted: `BULK_DOWNLOAD`, `REDISTRIBUTE`, `PUBLIC_API`, `LOCAL_CACHE`, `OFFLINE_PACKAGE`, `MODEL_INPUT`, `AI_PROCESSING`, `TRAINING_USE`, `COMMERCIAL_USE`. Redistribution, caching, and derivative use remain `UNKNOWN`. The CC0 mark on DOI `10.5066/F7WH2N65` is not applied to those operations and is not applied to DOI `10.5066/P1A3DQZK`.
 
 A `READ` receipt does not authorize `AUTOMATED_QUERY`.
 

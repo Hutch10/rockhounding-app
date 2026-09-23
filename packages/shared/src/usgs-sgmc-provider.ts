@@ -306,6 +306,17 @@ export function sgmcAdapterDefinition(
   });
 }
 
+export const USGS_SGMC_PUBLIC_DISPLAY_REVIEWED_ON = '2026-09-23';
+
+export const USGS_SGMC_PUBLIC_DISPLAY_ATTRIBUTION = {
+  source: 'U.S. Geological Survey',
+  product: 'State Geologic Map Compilation',
+  doi: USGS_SGMC_PINNED_DOI,
+  creditRequired: true,
+  endorsementDisclaimerRequired: true,
+  usgsIdentifierPermitted: false,
+} as const;
+
 export function sgmcAuthorizationRequest(
   overrides: Partial<SourceOperationAuthorizationRequest> = {}
 ): SourceOperationAuthorizationRequest {
@@ -337,6 +348,34 @@ export function sgmcAuthorizationRequest(
         ? base.governanceReceipt
         : overrides.governanceReceipt,
   };
+}
+
+export function sgmcPublicDisplayAuthorizationRequest(
+  overrides: Partial<SourceOperationAuthorizationRequest> = {}
+): SourceOperationAuthorizationRequest {
+  return sgmcAuthorizationRequest({
+    requestedOperation: 'PUBLIC_DISPLAY',
+    explicitGrants: ['PUBLIC_DISPLAY'],
+    governanceReceipt: {
+      receiptId: 'gov-receipt-usgs-sgmc-public-display',
+      resourceId: USGS_SGMC_RESOURCE_ID,
+      decision: 'ALLOWED',
+      allowedOperations: ['AUTOMATED_QUERY'],
+    },
+    ...overrides,
+  });
+}
+
+export function sgmcPublicDisplayAppliesToDoi(doi: string): boolean {
+  return doi === USGS_SGMC_PINNED_DOI;
+}
+
+export function sgmcPublicDisplayImpliesEndorsement(): false {
+  return false;
+}
+
+export function sgmcPublicDisplayAllowsUsgsIdentifier(): false {
+  return false;
 }
 
 export function sgmcGeologicalContextPolicy(): EvidenceAdmissionPolicy {

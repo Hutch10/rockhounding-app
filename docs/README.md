@@ -82,6 +82,7 @@ The Build Document (provided by user) is the master specification. All implement
 32. [USGS SGMC Shadow Certification](USGS_SGMC_SHADOW_CERTIFICATION.md) authorizes only a bounded repeated shadow read
 33. [USGS SGMC Bounded Repeated Shadow](USGS_SGMC_BOUNDED_REPEATED_SHADOW.md) records four operator-triggered reads and does not authorize production
 34. [USGS SGMC Production Readiness Gate](USGS_SGMC_PRODUCTION_READINESS_GATE.md) is conditionally ready and leaves ordinary-user display closed
+35. [USGS SGMC Public Display Rights](USGS_SGMC_PUBLIC_DISPLAY_RIGHTS.md) grants constrained display of this SGMC release and does not enable a product surface
 
 ## Architecture Constraints
 

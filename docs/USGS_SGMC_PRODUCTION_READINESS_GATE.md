@@ -22,7 +22,9 @@ The architecture can represent SGMC as read-only geological context when the ser
 
 `PUBLIC_DISPLAY` is a source-use operation. The reviewed SGMC profile grants `AUTOMATED_QUERY` only. `PUBLIC_DISPLAY` is not in that grant and is not in the explicit ungranted list. Its recorded status is `UNKNOWN`. Disclosure policy that allows `PUBLIC` geometry for `PUBLIC_MAP` does not grant the operation. `AUTOMATED_QUERY` does not grant it either.
 
-Until a later review records `PUBLIC_DISPLAY` as granted or refused, ordinary-user integration stays closed.
+## Condition closure
+
+The historical decision above stays `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1_CONDITIONALLY_READY`. The `PUBLIC_DISPLAY` = `UNKNOWN` condition is satisfied by [USGS SGMC Public Display Rights](USGS_SGMC_PUBLIC_DISPLAY_RIGHTS.md), phase `ROCKHOUNDING_SGMC_PUBLIC_DISPLAY_RIGHTS_REVIEW_R1`. That closure does not rewrite this gate and does not enable a product surface.
 
 ## Availability and failure
 
@@ -104,3 +106,5 @@ Future tests stay offline in normal CI: unit, contract, replay, and shadow tests
 `ROCKHOUNDING_SGMC_PUBLIC_DISPLAY_RIGHTS_REVIEW_R1` must record `PUBLIC_DISPLAY` as granted or refused on the SGMC source-use profile. That review uses the recorded terms and official documentation. It does not issue a feature query, does not infer the grant from `AUTOMATED_QUERY`, and does not enable a product surface.
 
 Production implementation stays unauthorized until that condition is closed. If the review grants display, the following implementation phase is `ROCKHOUNDING_SGMC_PRODUCTION_READ_ONLY_GEOLOGICAL_CONTEXT_R1`, still geology-only, read-only, bounded, and fail-closed. If the review refuses display, live authority remains `BOUNDED_REPEATED_SHADOW_READ`.
+
+That condition is now closed. `ROCKHOUNDING_SGMC_PUBLIC_DISPLAY_RIGHTS_REVIEW_R1` recorded `SGMC_PUBLIC_DISPLAY_ALLOWED_WITH_CONSTRAINTS`. This historical section is unchanged as the gate's requirement. The closure does not enable a product surface.
