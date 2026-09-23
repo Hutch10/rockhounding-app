@@ -112,6 +112,10 @@
     "./usgs-sgmc-provider": {
       "types": "./dist/usgs-sgmc-provider.d.ts",
       "default": "./dist/usgs-sgmc-provider.js"
+    },
+    "./usgs-sgmc-shadow-read": {
+      "types": "./dist/usgs-sgmc-shadow-read.d.ts",
+      "default": "./dist/usgs-sgmc-shadow-read.js"
     }
   },
   "scripts": {

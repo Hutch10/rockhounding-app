@@ -78,6 +78,7 @@ The Build Document (provided by user) is the master specification. All implement
 28. [Live Read Path Controls R1](LIVE_READ_PATH_CONTROLS.md) and [Disclosure Governance R1](DISCLOSURE_GOVERNANCE.md) decide operation authorization and spatial release separately
 29. [First Live Provider Selection R1](FIRST_LIVE_PROVIDER_SELECTION.md) names one candidate source and does not authorize a live call
 30. [USGS SGMC Provider Contract](USGS_SGMC_PROVIDER_CONTRACT.md) proves that candidate offline with documentation-derived fixtures
+31. [USGS SGMC Shadow Read](USGS_SGMC_SHADOW_READ.md) records the first bounded non-production read
 
 ## Architecture Constraints
 

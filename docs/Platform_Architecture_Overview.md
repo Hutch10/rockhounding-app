@@ -59,7 +59,7 @@ Rockhound is a mobile-first, offline-capable platform for geological fieldwork, 
 - Decision receipt: **[Decision Receipt R1](DECISION_RECEIPT.md)** — immutable record of that outcome, pinned to the snapshot hash, rule set, and evaluator version
 - Live-provider gate: **[First Live Provider Readiness Gate](FIRST_LIVE_PROVIDER_READINESS_GATE.md)** — audit of whether one read-only source may later enter that same chain; it does not fetch, select a provider, or grant production authority
 - Live read controls: **[Live Read Path Controls R1](LIVE_READ_PATH_CONTROLS.md)** and **[Disclosure Governance R1](DISCLOSURE_GOVERNANCE.md)** — operation authorization and pre-materialization spatial release; neither implies the other
-- First provider candidate: **[First Live Provider Selection R1](FIRST_LIVE_PROVIDER_SELECTION.md)** and **[USGS SGMC Provider Contract](USGS_SGMC_PROVIDER_CONTRACT.md)** — geologic map units for geological context, proven offline before any live request
+- First provider candidate: **[First Live Provider Selection R1](FIRST_LIVE_PROVIDER_SELECTION.md)**, **[USGS SGMC Provider Contract](USGS_SGMC_PROVIDER_CONTRACT.md)**, and **[USGS SGMC Shadow Read](USGS_SGMC_SHADOW_READ.md)** — geologic map units for geological context. The shadow read is non-production and does not authorize ingestion
 - Arrows indicate data flow: FieldSession orchestrates, FindLog and CaptureSession feed data, Camera → Specimen Pipeline classifies, Collection Management aggregates, Dashboard visualizes, Telemetry tracks, Sync Engine synchronizes, Offline Storage caches, Settings personalizes, Shared Libraries provide core logic
 
 ---

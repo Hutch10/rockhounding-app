@@ -1,0 +1,88 @@
+{
+  "authorizationStatus": "ALLOWED_WITH_CONSTRAINTS",
+  "featureServerUrl": "https://services.arcgis.com/v01gqwM5QqNysAAi/arcgis/rest/services/SB_5888bf4fe4b05ccb964bab9d_USGS_SGMC_feature/FeatureServer",
+  "gate": {
+    "ok": true,
+    "maxRecordCount": 2000
+  },
+  "requests": [
+    {
+      "purpose": "SCIENCEBASE_ITEM_METADATA",
+      "url": "https://www.sciencebase.gov/catalog/item/5888bf4fe4b05ccb964bab9d?format=json",
+      "executedBeforeCampaign": true
+    },
+    {
+      "purpose": "FEATURE_SERVER_METADATA",
+      "url": "https://services.arcgis.com/v01gqwM5QqNysAAi/arcgis/rest/services/SB_5888bf4fe4b05ccb964bab9d_USGS_SGMC_feature/FeatureServer?f=pjson",
+      "status": 200
+    },
+    {
+      "purpose": "LAYER_METADATA",
+      "url": "https://services.arcgis.com/v01gqwM5QqNysAAi/arcgis/rest/services/SB_5888bf4fe4b05ccb964bab9d_USGS_SGMC_feature/FeatureServer/3?f=pjson",
+      "status": 200
+    },
+    {
+      "purpose": "BOUNDED_FEATURE_QUERY",
+      "url": "https://services.arcgis.com/v01gqwM5QqNysAAi/arcgis/rest/services/SB_5888bf4fe4b05ccb964bab9d_USGS_SGMC_feature/FeatureServer/3/query?geometry=-77.0365%2C38.889%2C-77.03%2C38.8915&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=STATE%2CSGMC_LABEL%2CUNIT_LINK%2CUNIT_NAME%2CAGE_MIN%2CAGE_MAX%2CGENERALIZED_LITH%2CNGMDB1%2CNGMDB2%2CNGMDB3%2COBJECTID&returnGeometry=true&outSR=102100&resultRecordCount=5&where=1%3D1&f=json",
+      "status": 200
+    }
+  ],
+  "featureQuery": {
+    "bbox": {
+      "label": "National Mall, Washington, District of Columbia",
+      "purpose": "SCHEMA_TRANSPORT_VALIDATION",
+      "xmin": -77.0365,
+      "ymin": 38.889,
+      "xmax": -77.03,
+      "ymax": 38.8915,
+      "inSR": 4326
+    },
+    "outFields": [
+      "STATE",
+      "SGMC_LABEL",
+      "UNIT_LINK",
+      "UNIT_NAME",
+      "AGE_MIN",
+      "AGE_MAX",
+      "GENERALIZED_LITH",
+      "NGMDB1",
+      "NGMDB2",
+      "NGMDB3",
+      "OBJECTID"
+    ],
+    "httpStatus": 200,
+    "contentType": "application/json; charset=utf-8",
+    "featureCount": 1,
+    "pagination": "COMPLETE",
+    "geologicalAbsence": false,
+    "contentHash": "da2d6575b8dafa38a43383304e1ec196013cabb559cdfa5f622ddbea26d8c329",
+    "retrievedAt": "2026-09-23T21:42:11.147Z",
+    "comparison": {
+      "SOURCE_IDENTITY": "MATCH",
+      "LAYER": "MATCH",
+      "GEOMETRY_TYPE": "MATCH",
+      "SPATIAL_REFERENCE": "MATCH",
+      "CORE_FIELDS": "MATCH",
+      "FIELD_TYPES": "MATCH",
+      "UNKNOWN_FIELDS": "MATCH",
+      "LITHOLOGY_ENUM": "MATCH",
+      "AGE_REPRESENTATION": "MATCH",
+      "IDENTITY_COMPONENTS": "MATCH",
+      "IDENTITY_SCOPE": "MATCH",
+      "PAGINATION_SIGNAL": "MATCH",
+      "COVERAGE_SEMANTICS": "UNKNOWN",
+      "MAX_RECORD_COUNT": "MATCH"
+    },
+    "materialDrift": false,
+    "failure": null,
+    "adapterStatus": "SUCCESS",
+    "adapterFailure": null,
+    "admissionStatus": "ADMITTED",
+    "disclosureStatus": "ALLOWED",
+    "materialization": "QA_SCOPE_ONLY",
+    "provenanceTypes": ["SOURCE_RETRIEVAL", "IMPORT"],
+    "rateLimitHeaders": {},
+    "confirmedAbsence": false,
+    "offSwitch": "AUTHORIZATION_BLOCKED"
+  }
+}

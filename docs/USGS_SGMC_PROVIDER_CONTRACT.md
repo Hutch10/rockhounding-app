@@ -75,4 +75,4 @@ Fixtures live in `packages/shared/src/provider-fixtures/usgs-sgmc/`. Each file s
 
 This phase did not query a feature service, validate service availability, execute pagination, observe a rate limit, or test a provider outage. There is no production use, live display, or live decision receipt. Provider terms are pinned to the evidence reviewed on 2026-09-23. The external schema may change before the first shadow read.
 
-The next phase, `ROCKHOUNDING_FIRST_PROVIDER_SHADOW_READ_R1`, is the first phase that may make a bounded read-only request. A shadow-read pass still would not authorize production ingestion.
+The shadow read is recorded in [USGS SGMC Shadow Read](USGS_SGMC_SHADOW_READ.md). A shadow-read pass still does not authorize production ingestion. The next phase after that record is `ROCKHOUNDING_FIRST_PROVIDER_SHADOW_CERTIFICATION_R1`.

@@ -194,6 +194,20 @@ const FixtureSchema = z.object({
 
 export type SgmcFixture = z.infer<typeof FixtureSchema>;
 
+export type SgmcObservedRecord = {
+  recordId: string;
+  productDoi: string;
+  publicationVersion: string;
+  layerName: string;
+  layerId: number;
+  scienceBaseItem: string;
+  spatialReference: string;
+  pagination: SgmcFixture['pagination'];
+  feature: SgmcFixture['feature'];
+  sourceEncoding: string;
+  inputKind: 'LOCAL_FIXTURE' | 'RAW_FEATURE';
+};
+
 export type SgmcOfflineRun = {
   result: SourceAdapterResult;
   provenanceGraph: ProvenanceGraph;
@@ -430,6 +444,74 @@ export async function runSgmcOfflineFixture(
   return { result, provenanceGraph, authorization };
 }
 
+export function translateSgmcObservedRecord(
+  record: SgmcObservedRecord,
+  definition: SourceAdapterDefinition = sgmcAdapterDefinition(),
+  options?: { retrievedAt?: string }
+): SourceAdapterResult {
+  const rawFields = featureFields(record.feature);
+  const raw = {
+    id: record.recordId,
+    sourceResourceId: USGS_SGMC_RESOURCE_ID,
+    sourceVersionRef: record.productDoi,
+    rawFields,
+    sourceEncoding: record.sourceEncoding,
+    sourceSchemaRef: 'sgmc-geology-layer-3-ds1052-v1.1',
+  };
+  const coverage = coverageFor(record);
+  const identity = sgmcProviderRecordKey(rawFields);
+  const preflight = preflightIssue(record, identity, rawFields);
+  if (preflight !== undefined) {
+    return withRetrievalClock(
+      quarantined(raw, coverage, preflight.code, preflight.diagnostics),
+      options?.retrievedAt
+    );
+  }
+  const translated = translateSourceMaterial(
+    definition,
+    {
+      kind:
+        record.inputKind === 'RAW_FEATURE'
+          ? SourceAdapterInputKind.RAW_FEATURE
+          : SourceAdapterInputKind.LOCAL_FIXTURE,
+      raw,
+      mappings: fieldMappings(),
+      requestedOutputs: [SourceAdapterOutputKind.GEOLOGICAL_FEATURE_CANDIDATE],
+    },
+    {
+      resourceId: USGS_SGMC_RESOURCE_ID,
+      requestedUseOperation: SourceRequestedUseOperation.AUTOMATED_QUERY,
+      governance: {
+        receiptId: 'gov-receipt-usgs-sgmc-automated-query',
+        resourceId: USGS_SGMC_RESOURCE_ID,
+        decision: 'ALLOWED',
+        allowedOperations: [SourceRequestedUseOperation.AUTOMATED_QUERY],
+      },
+      truthClock: { presence: 'UNKNOWN' },
+      coverage,
+      provenance: { initialized: true, activityId: `act:${raw.id}:import` },
+      sourceAuthorities: [EvidenceAuthorityClass.PRIMARY_AUTHORITY],
+      claimedAuthority: EvidenceAuthorityClass.PRIMARY_AUTHORITY,
+    }
+  );
+  assertAgesStayOffTheClock(translated);
+  if (translated.normalized !== undefined && identity.key !== undefined) {
+    translated.normalized.normalizedFields['providerRecordKey'] = identity.key;
+    translated.normalized.normalizedFields['providerRecordKeyScope'] = identity.scope;
+  }
+  const result: SourceAdapterResult =
+    translated.status === SourceAdapterResultStatus.FAILED ||
+    translated.status === SourceAdapterResultStatus.QUARANTINED
+      ? {
+          ...translated,
+          status: SourceAdapterResultStatus.QUARANTINED,
+          safeToContinue: false,
+          confirmedAbsence: false,
+        }
+      : { ...translated, confirmedAbsence: false };
+  return withRetrievalClock(result, options?.retrievedAt);
+}
+
 export function sgmcAdmissionCandidate(result: SourceAdapterResult): EvidenceAdmissionCandidate {
   const key = sgmcProviderRecordKey(result.raw?.rawFields ?? {});
   return {
@@ -496,66 +578,48 @@ function translateSgmcFixture(
   definition: SourceAdapterDefinition
 ): SourceAdapterResult {
   const parsed = FixtureSchema.parse(fixture);
-  const rawFields = featureFields(parsed);
-  const raw = {
-    id: `fixture:${parsed.fixtureId}`,
-    sourceResourceId: USGS_SGMC_RESOURCE_ID,
-    sourceVersionRef: parsed.productDoi,
-    rawFields,
-    sourceEncoding: 'application/json',
-    sourceSchemaRef: 'sgmc-geology-layer-3-ds1052-v1.1',
-  };
-  const coverage = coverageFor(parsed);
-  const identity = sgmcProviderRecordKey(rawFields);
-  const preflight = preflightIssue(parsed, identity, rawFields);
-  if (preflight !== undefined) {
-    return quarantined(raw, coverage, preflight.code, preflight.diagnostics);
-  }
-  const translated = translateSourceMaterial(
-    definition,
+  return translateSgmcObservedRecord(
     {
-      kind: SourceAdapterInputKind.LOCAL_FIXTURE,
-      raw,
-      mappings: fieldMappings(),
-      requestedOutputs: [SourceAdapterOutputKind.GEOLOGICAL_FEATURE_CANDIDATE],
+      recordId: `fixture:${parsed.fixtureId}`,
+      productDoi: parsed.productDoi,
+      publicationVersion: parsed.publicationVersion,
+      layerName: parsed.layerName,
+      layerId: parsed.layerId,
+      scienceBaseItem: parsed.scienceBaseItem,
+      spatialReference: parsed.spatialReference,
+      pagination: parsed.pagination,
+      feature: parsed.feature,
+      sourceEncoding: 'application/json',
+      inputKind: 'LOCAL_FIXTURE',
     },
-    {
-      resourceId: USGS_SGMC_RESOURCE_ID,
-      requestedUseOperation: SourceRequestedUseOperation.AUTOMATED_QUERY,
-      governance: {
-        receiptId: 'gov-receipt-usgs-sgmc-automated-query',
-        resourceId: USGS_SGMC_RESOURCE_ID,
-        decision: 'ALLOWED',
-        allowedOperations: [SourceRequestedUseOperation.AUTOMATED_QUERY],
-      },
-      truthClock: { presence: 'UNKNOWN' },
-      coverage,
-      provenance: { initialized: true, activityId: `act:${raw.id}:import` },
-      sourceAuthorities: [EvidenceAuthorityClass.PRIMARY_AUTHORITY],
-      claimedAuthority: EvidenceAuthorityClass.PRIMARY_AUTHORITY,
-    }
+    definition
   );
-  assertAgesStayOffTheClock(translated);
-  if (translated.normalized !== undefined && identity.key !== undefined) {
-    translated.normalized.normalizedFields['providerRecordKey'] = identity.key;
-    translated.normalized.normalizedFields['providerRecordKeyScope'] = identity.scope;
+}
+
+function withRetrievalClock(
+  result: SourceAdapterResult,
+  retrievedAt: string | undefined
+): SourceAdapterResult {
+  if (retrievedAt === undefined) {
+    return result;
   }
-  if (
-    translated.status === SourceAdapterResultStatus.FAILED ||
-    translated.status === SourceAdapterResultStatus.QUARANTINED
-  ) {
-    return {
-      ...translated,
-      status: SourceAdapterResultStatus.QUARANTINED,
-      safeToContinue: false,
-      confirmedAbsence: false,
-    };
-  }
-  return { ...translated, confirmedAbsence: false };
+  return {
+    ...result,
+    truthClockCandidate: { ...(result.truthClockCandidate ?? {}), retrievedAt },
+  };
 }
 
 function preflightIssue(
-  fixture: SgmcFixture,
+  fixture: Pick<
+    SgmcObservedRecord,
+    | 'productDoi'
+    | 'publicationVersion'
+    | 'layerName'
+    | 'layerId'
+    | 'scienceBaseItem'
+    | 'spatialReference'
+    | 'pagination'
+  >,
   identity: ReturnType<typeof sgmcProviderRecordKey>,
   fields: Record<string, unknown>
 ): { code: SourceAdapterFailureCode; diagnostics: SourceAdapterDiagnostic[] } | undefined {
@@ -603,11 +667,13 @@ function issue(
 ): { code: SourceAdapterFailureCode; diagnostics: SourceAdapterDiagnostic[] } {
   return {
     code,
-    diagnostics: [{ code, field, detail: 'SGMC offline contract rejected this fixture' }],
+    diagnostics: [{ code, field, detail: 'SGMC provider contract rejected this record' }],
   };
 }
 
-function coverageFor(fixture: SgmcFixture): NonNullable<SourceAdapterResult['coverage']> {
+function coverageFor(
+  fixture: Pick<SgmcObservedRecord, 'pagination'>
+): NonNullable<SourceAdapterResult['coverage']> {
   const ambiguous =
     fixture.pagination.returnedCount >= USGS_SGMC_MAX_RECORD_COUNT &&
     fixture.pagination.completion === 'UNKNOWN';
@@ -691,24 +757,8 @@ function direct(sourceField: string, targetField: string, required: boolean): So
   };
 }
 
-function featureFields(fixture: SgmcFixture): Record<string, unknown> {
-  const feature = fixture.feature;
-  return {
-    ...(feature.OBJECTID === undefined ? {} : { OBJECTID: feature.OBJECTID }),
-    ...(feature.STATE === undefined ? {} : { STATE: feature.STATE }),
-    ...(feature.SGMC_LABEL === undefined ? {} : { SGMC_LABEL: feature.SGMC_LABEL }),
-    ...(feature.UNIT_LINK === undefined ? {} : { UNIT_LINK: feature.UNIT_LINK }),
-    ...(feature.UNIT_NAME === undefined ? {} : { UNIT_NAME: feature.UNIT_NAME }),
-    ...(feature.AGE_MIN === undefined ? {} : { AGE_MIN: feature.AGE_MIN }),
-    ...(feature.AGE_MAX === undefined ? {} : { AGE_MAX: feature.AGE_MAX }),
-    ...(feature.GENERALIZED_LITH === undefined
-      ? {}
-      : { GENERALIZED_LITH: feature.GENERALIZED_LITH }),
-    ...(feature.NGMDB1 === undefined ? {} : { NGMDB1: feature.NGMDB1 }),
-    ...(feature.NGMDB2 === undefined ? {} : { NGMDB2: feature.NGMDB2 }),
-    ...(feature.NGMDB3 === undefined ? {} : { NGMDB3: feature.NGMDB3 }),
-    geometry: feature.geometry,
-  };
+function featureFields(feature: SgmcFixture['feature']): Record<string, unknown> {
+  return { ...feature };
 }
 
 function assertAgesStayOffTheClock(result: SourceAdapterResult): void {
