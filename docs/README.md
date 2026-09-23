@@ -75,7 +75,8 @@ The Build Document (provided by user) is the master specification. All implement
 25. Decision outcomes use [Decision Evaluator R1](DECISION_EVALUATOR.md); an outcome follows only from a valid snapshot and an exact synthetic rule set
 26. Decision outcomes are frozen by [Decision Receipt R1](DECISION_RECEIPT.md); the receipt records the produced outcome and does not re-evaluate
 27. The [First Live Provider Readiness Gate](FIRST_LIVE_PROVIDER_READINESS_GATE.md) is an audit, not a provider; live ingestion stays closed until the recorded conditions pass
-28. [Live Read Path Controls R1](LIVE_READ_PATH_CONTROLS.md) and [Disclosure Governance R1](DISCLOSURE_GOVERNANCE.md) decide operation authorization and spatial release separately; neither selects a provider
+28. [Live Read Path Controls R1](LIVE_READ_PATH_CONTROLS.md) and [Disclosure Governance R1](DISCLOSURE_GOVERNANCE.md) decide operation authorization and spatial release separately
+29. [First Live Provider Selection R1](FIRST_LIVE_PROVIDER_SELECTION.md) names one candidate source and does not authorize a live call
 
 ## Architecture Constraints
 

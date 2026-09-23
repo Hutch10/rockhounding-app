@@ -16,16 +16,18 @@
 - `ROCKHOUNDING_DECISION_RECEIPT_R1` is CLOSED and STABLE at `706f849f8829f6caf787af2231196f9cbd4a7cd0` (65 files, 828 tests)
 - `ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE` is CONDITIONALLY READY and CLOSED
 - Gate decision: `CONDITIONALLY_READY_FOR_FIRST_LIVE_READ_ONLY_PROVIDER`
-- This document travels with `ROCKHOUNDING_LIVE_READ_PATH_CONTROLS_R1`
+- `ROCKHOUNDING_LIVE_READ_PATH_CONTROLS_R1` is CLOSED and STABLE at `2dfcf750fbdf89f1a577beee239318e095bfaf1a` (67 files, 847 tests)
+- This document travels with `ROCKHOUNDING_FIRST_LIVE_PROVIDER_SELECTION_R1`
 - Decision Receipt is CLOSED and STABLE. It freezes the evaluator outcome, exact rule set, and exact evaluator version
-- Live Read Path Controls R1 is ACTIVE
-- The two remediated blockers are the disclosure boundary and the license-to-operation binding
+- Live Read Path Controls R1 is CLOSED and STABLE
+- First Live Provider Selection R1 is ACTIVE
+- Selected candidate: USGS State Geologic Map Compilation geology polygons, DOI `10.5066/F7WH2N65`, purpose `GEOLOGICAL_CONTEXT`, operation `AUTOMATED_QUERY`
+- The selection has no live authority and no live call is authorized
 - Replay and reanalysis stay separate
 - Fixture success does not imply source admission
 - Live ingestion stays closed
 - Network access stays prohibited
-- No provider is selected and no live call is authorized
-- Next phase after these controls pass: `ROCKHOUNDING_FIRST_LIVE_PROVIDER_SELECTION_R1`
+- Next phase: `ROCKHOUNDING_FIRST_PROVIDER_OFFLINE_CONTRACT_AND_FIXTURE_R1`
 
 Reconfirm branch, HEAD, origin, and `git status` before every implementation phase. This snapshot goes stale the moment the branch moves.
 
@@ -127,8 +129,8 @@ Package exports for foundational modules are subpath exports in `packages/shared
 
 `rockhounding:decision-receipt` is CLOSED and STABLE at 1.0.0. It freezes the outcome produced from an immutable snapshot by an exact evaluator and rule-set version. `ROCKHOUNDING_DECISION_EVALUATOR_R1` is CLOSED and STABLE. `ROCKHOUNDING_DECISION_SNAPSHOT_R1` is CLOSED and STABLE. `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` is CLOSED and STABLE. Historical receipts stay immutable. Replay uses the pinned versions. Reanalysis creates a new receipt. Offline fixture adapters remain an implementation of `rockhounding:source-adapter-contract`. R1 rules are synthetic. Live ingestion stays closed. Network access stays prohibited.
 
-`ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE` is CONDITIONALLY READY and CLOSED. Its decision remains `CONDITIONALLY_READY_FOR_FIRST_LIVE_READ_ONLY_PROVIDER`. `ROCKHOUNDING_LIVE_READ_PATH_CONTROLS_R1` is ACTIVE. It adds the disclosure boundary and the license-to-operation binding. It does not select a provider, contact an API, or grant production decision authority. Live ingestion stays closed. Network access stays prohibited.
+`ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE` is CONDITIONALLY READY and CLOSED. Its decision remains `CONDITIONALLY_READY_FOR_FIRST_LIVE_READ_ONLY_PROVIDER`. `ROCKHOUNDING_LIVE_READ_PATH_CONTROLS_R1` is CLOSED and STABLE. `ROCKHOUNDING_FIRST_LIVE_PROVIDER_SELECTION_R1` is ACTIVE. The selected candidate is the USGS State Geologic Map Compilation geology layer for `GEOLOGICAL_CONTEXT` only. Selection does not admit records, disclose coordinates, or authorize a live call. Live ingestion stays closed. Network access stays prohibited.
 
-A source still has to answer two separate questions: whether this operation is allowed, and whether this spatial precision may be disclosed for this purpose. Neither answer implies the other. The next phase is `ROCKHOUNDING_FIRST_LIVE_PROVIDER_SELECTION_R1`. That phase may research and select one source. It must not implement a live adapter.
+A source still has to answer two separate questions: whether this operation is allowed, and whether this spatial precision may be disclosed for this purpose. Neither answer implies the other. The next phase is `ROCKHOUNDING_FIRST_PROVIDER_OFFLINE_CONTRACT_AND_FIXTURE_R1`. That phase builds a fixture and adapter with no network.
 
 `.cursor/` is local orchestration configuration only. This document is the portable repository coordinator contract.
