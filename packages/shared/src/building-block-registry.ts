@@ -22,6 +22,7 @@ export const TRUTH_CLOCK_BLOCK_ID = 'rockhounding:truth-clock';
 export const SOURCE_ADAPTER_CONTRACT_BLOCK_ID = 'rockhounding:source-adapter-contract';
 export const EVIDENCE_QUARANTINE_BLOCK_ID = 'rockhounding:evidence-quarantine';
 export const EVIDENCE_ADMISSION_BLOCK_ID = 'rockhounding:evidence-admission';
+export const DECISION_EVIDENCE_CONTRACT_BLOCK_ID = 'rockhounding:decision-evidence-contract';
 
 export type BuildingBlockId = string;
 
@@ -1374,6 +1375,66 @@ export const BUILTIN_BUILDING_BLOCK_DEFINITIONS: readonly BuildingBlockDefinitio
   draftBlock(
     EVIDENCE_ADMISSION_BLOCK_ID,
     'Evidence Admission',
+    'PROCESS_CONTRACT',
+    'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
+  ),
+  validateBuildingBlockDefinition({
+    id: DECISION_EVIDENCE_CONTRACT_BLOCK_ID,
+    schemaVersion: BUILDING_BLOCK_REGISTRY_SCHEMA_VERSION,
+    name: 'Decision Evidence Contract',
+    version: { major: 1, minor: 0, patch: 0 },
+    category: 'PROCESS_CONTRACT',
+    lifecycleStatus: BuildingBlockLifecycleStatus.STABLE,
+    purpose:
+      'Specifies the admitted evidence a decision class requires before evaluation. Completeness is not a permission, access, closure, or safety result.',
+    boundary: 'PROCESS_CONTRACT',
+    documentationRef: 'docs/DECISION_EVIDENCE_CONTRACTS.md',
+    dependencies: [
+      EVIDENCE_ADMISSION_BLOCK_ID,
+      TRUTH_CLOCK_BLOCK_ID,
+      PROVENANCE_ACTIVITY_BLOCK_ID,
+      UGES_BLOCK_ID,
+      OBSERVATION_BLOCK_ID,
+      SAMPLE_BLOCK_ID,
+    ].map((targetBuildingBlockId) => ({
+      kind: BuildingBlockRelationshipKind.REFERENCES,
+      targetBuildingBlockId,
+      versionRequirement: {
+        mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+        version:
+          targetBuildingBlockId === UGES_BLOCK_ID
+            ? { major: 1, minor: 1, patch: 0 }
+            : { major: 1, minor: 0, patch: 0 },
+      },
+    })),
+    validators: [
+      { kind: 'SCHEMA_VALIDATOR', ref: 'DecisionEvidenceContractSchema' },
+      { kind: 'TEST_SUITE', ref: 'packages/shared/src/decision-evidence-contracts.test.ts' },
+    ],
+    examples: [
+      { kind: 'VALID', ref: 'collection permission completeness without a permission result' },
+    ],
+    conformance: {
+      schemaValidation: true,
+      semanticValidation: true,
+      requiredTests: ['packages/shared/src/decision-evidence-contracts.test.ts'],
+      requiredDocumentation: ['docs/DECISION_EVIDENCE_CONTRACTS.md'],
+      requiredInvariants: [
+        'completeness-is-not-outcome',
+        'admitted-evidence-only',
+        'domain-isolation',
+        'no-silent-incompleteness',
+      ],
+    },
+    implementation: {
+      ...IMPLEMENTED,
+      modulePath: 'packages/shared/src/decision-evidence-contracts.ts',
+      exportSubpath: '@rockhounding/shared/decision-evidence-contracts',
+    },
+  }),
+  draftBlock(
+    DECISION_EVIDENCE_CONTRACT_BLOCK_ID,
+    'Decision Evidence Contract',
     'PROCESS_CONTRACT',
     'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
   ),

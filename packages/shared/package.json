@@ -81,6 +81,10 @@
       "types": "./dist/evidence-admission.d.ts",
       "default": "./dist/evidence-admission.js"
     },
+    "./decision-evidence-contracts": {
+      "types": "./dist/decision-evidence-contracts.d.ts",
+      "default": "./dist/decision-evidence-contracts.js"
+    },
     "./offline-fixture-adapters": {
       "types": "./dist/offline-fixture-adapters.d.ts",
       "default": "./dist/offline-fixture-adapters.js"

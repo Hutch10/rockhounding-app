@@ -70,6 +70,7 @@ The Build Document (provided by user) is the master specification. All implement
 20. Material that cannot safely proceed uses [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md); quarantine preserves and explains, and it does not accept, discard, or verify evidence
 21. The first executable source translation is [Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md); fixtures are local and deterministic, and they do not open live ingestion
 22. Purpose-specific eligibility uses [Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md); admission is not truth, permission, or a field decision
+23. Decision completeness uses [Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md); a complete evidence set is not a permission, access, closure, or safety result
 
 ## Architecture Constraints
 

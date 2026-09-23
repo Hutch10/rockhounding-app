@@ -53,6 +53,7 @@ Rockhound is a mobile-first, offline-capable platform for geological fieldwork, 
 - Holding state: **[Evidence Quarantine R1](EVIDENCE_QUARANTINE.md)** — preserves material that cannot safely proceed; not a rejection bin, not admission, and not verification
 - First executable translation: **[Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md)** — deterministic local fixtures through the closed contracts; not a live provider and not evidence admission
 - Purpose gate: **[Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md)** — whether candidate evidence may support a specified purpose; not a field decision and not a live provider
+- Decision evidence: **[Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md)** — which admitted evidence a decision class requires; completeness is not the decision outcome
 - Arrows indicate data flow: FieldSession orchestrates, FindLog and CaptureSession feed data, Camera → Specimen Pipeline classifies, Collection Management aggregates, Dashboard visualizes, Telemetry tracks, Sync Engine synchronizes, Offline Storage caches, Settings personalizes, Shared Libraries provide core logic
 
 ---

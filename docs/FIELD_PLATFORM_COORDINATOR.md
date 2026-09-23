@@ -9,12 +9,14 @@
 - Branch: `feat/sprint-4-field-mode`
 - `ROCKHOUNDING_EVIDENCE_QUARANTINE_R1` is closed and STABLE
 - `ROCKHOUNDING_OFFLINE_FIXTURE_ADAPTERS_R1` is closed at `27d5eeb050d61321f04fcb749a9bdc905edd978e` (60 files, 781 tests)
-- This document travels with `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1`
-- Evidence Admission is the active purpose-specific gate
+- `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1` is closed at `1a92dba335070ffffef7a44fe963c6d24ef23d58` (61 files, 797 tests)
+- This document travels with `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1`
+- Decision Evidence Contracts are the active completeness specification
+- Completeness is distinct from a permission, access, closure, or safety outcome
 - Fixture success does not imply source admission
 - Live ingestion stays closed
 - Network access stays prohibited
-- Next phase after that pass: `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1`
+- Next phase after that pass: `ROCKHOUNDING_DECISION_SNAPSHOT_R1`
 
 Reconfirm branch, HEAD, origin, and `git status` before every implementation phase. This snapshot goes stale the moment the branch moves.
 
@@ -31,19 +33,20 @@ Reconfirm branch, HEAD, origin, and `git status` before every implementation pha
 
 These are governed interfaces. Do not silently change their semantics.
 
-| Contract                                                         | Version               | Export                                            |
-| ---------------------------------------------------------------- | --------------------- | ------------------------------------------------- |
-| UGES                                                             | 1.1.0                 | `@rockhounding/shared/uges`                       |
-| Geological Layer Registry                                        | 1.0.0                 | `@rockhounding/shared/geological-layer-registry`  |
-| Resource Catalog                                                 | 1.0.0                 | `@rockhounding/shared/resource-catalog`           |
-| Source Governance Contract                                       | 1.0.0                 | `@rockhounding/shared/source-governance-contract` |
-| Building Block Registry                                          | registry of the above | `@rockhounding/shared/building-block-registry`    |
-| Observation, Sample, Sampling Event                              | 1.0.0 each            | `@rockhounding/shared/observation-sample-model`   |
-| Provenance Activity                                              | 1.0.0                 | `@rockhounding/shared/provenance-activity-kernel` |
-| Truth Clock / Evidence Availability                              | 1.0.0                 | `@rockhounding/shared/truth-clock-availability`   |
-| Source Adapter Contract (`rockhounding:source-adapter-contract`) | 1.0.0                 | `@rockhounding/shared/source-adapter-contract`    |
-| Evidence Quarantine (`rockhounding:evidence-quarantine`)         | 1.0.0                 | `@rockhounding/shared/evidence-quarantine`        |
-| Evidence Admission (`rockhounding:evidence-admission`)           | 1.0.0                 | `@rockhounding/shared/evidence-admission`         |
+| Contract                                                               | Version               | Export                                             |
+| ---------------------------------------------------------------------- | --------------------- | -------------------------------------------------- |
+| UGES                                                                   | 1.1.0                 | `@rockhounding/shared/uges`                        |
+| Geological Layer Registry                                              | 1.0.0                 | `@rockhounding/shared/geological-layer-registry`   |
+| Resource Catalog                                                       | 1.0.0                 | `@rockhounding/shared/resource-catalog`            |
+| Source Governance Contract                                             | 1.0.0                 | `@rockhounding/shared/source-governance-contract`  |
+| Building Block Registry                                                | registry of the above | `@rockhounding/shared/building-block-registry`     |
+| Observation, Sample, Sampling Event                                    | 1.0.0 each            | `@rockhounding/shared/observation-sample-model`    |
+| Provenance Activity                                                    | 1.0.0                 | `@rockhounding/shared/provenance-activity-kernel`  |
+| Truth Clock / Evidence Availability                                    | 1.0.0                 | `@rockhounding/shared/truth-clock-availability`    |
+| Source Adapter Contract (`rockhounding:source-adapter-contract`)       | 1.0.0                 | `@rockhounding/shared/source-adapter-contract`     |
+| Evidence Quarantine (`rockhounding:evidence-quarantine`)               | 1.0.0                 | `@rockhounding/shared/evidence-quarantine`         |
+| Evidence Admission (`rockhounding:evidence-admission`)                 | 1.0.0                 | `@rockhounding/shared/evidence-admission`          |
+| Decision Evidence Contract (`rockhounding:decision-evidence-contract`) | 1.0.0                 | `@rockhounding/shared/decision-evidence-contracts` |
 
 Truth Clock is STABLE because R1 passed. `rockhounding:evidence-availability` and `rockhounding:decision-snapshot` remain DRAFT. Prior DRAFT 0.1.0 rows stay queryable when a block is promoted. Do not change other STABLE versions while promoting one block.
 
@@ -109,8 +112,8 @@ Package exports for foundational modules are subpath exports in `packages/shared
 
 ## Next phase boundary
 
-`rockhounding:evidence-admission` is the active STABLE 1.0.0 gate. It answers whether candidate evidence may support a specified purpose. Offline fixture adapters are closed and remain an implementation of `rockhounding:source-adapter-contract`. Fixture success does not imply admission. Live ingestion stays closed. Network access stays prohibited.
+`rockhounding:decision-evidence-contract` is the active STABLE 1.0.0 specification. It answers whether admitted evidence is complete enough to evaluate a decision class. `rockhounding:evidence-admission` remains the purpose gate. Offline fixture adapters remain an implementation of `rockhounding:source-adapter-contract`. Fixture success does not imply admission. Completeness does not choose a field outcome. Live ingestion stays closed. Network access stays prohibited.
 
-If admission passes, the next phase is `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1`. That phase defines, for each decision class, the required domains, roles, authority, time, coverage, independence, contradiction policy, and unresolved factors. A live read-only provider waits until those contracts exist.
+If these contracts pass, the next phase is `ROCKHOUNDING_DECISION_SNAPSHOT_R1`. That phase freezes the contract version, target context, admitted receipts, gaps, and a reproducibility hash. A live read-only provider waits until a snapshot contract exists. `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` is the phase recorded here.
 
 `.cursor/` is local orchestration configuration only. This document is the portable repository coordinator contract.

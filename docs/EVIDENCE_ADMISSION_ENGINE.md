@@ -100,7 +100,7 @@ Where a gate needs an affirmative state and the input is unknown, missing, unres
 
 ## Future Decision Evidence Contracts
 
-`ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` should define, per decision class, required domains, roles, authority, time, coverage, independence, contradiction policy, completeness, and unresolved factors. Examples include collection permission, site access, route access, closure, safety, and geological opportunity.
+[Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md) is the completeness layer after admission. `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` defines, per decision class, required domains, roles, authority, time, coverage, independence, contradiction policy, and unresolved factors. Completeness is not a field outcome. The next phase is `ROCKHOUNDING_DECISION_SNAPSHOT_R1`.
 
 ## R1 limitations
 
