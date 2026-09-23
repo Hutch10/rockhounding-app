@@ -89,6 +89,10 @@
       "types": "./dist/decision-snapshot.d.ts",
       "default": "./dist/decision-snapshot.js"
     },
+    "./decision-evaluator": {
+      "types": "./dist/decision-evaluator.d.ts",
+      "default": "./dist/decision-evaluator.js"
+    },
     "./offline-fixture-adapters": {
       "types": "./dist/offline-fixture-adapters.d.ts",
       "default": "./dist/offline-fixture-adapters.js"

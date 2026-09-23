@@ -72,6 +72,7 @@ The Build Document (provided by user) is the master specification. All implement
 22. Purpose-specific eligibility uses [Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md); admission is not truth, permission, or a field decision
 23. Decision completeness uses [Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md); a complete evidence set is not a permission, access, closure, or safety result
 24. Decision context is frozen by [Decision Snapshot R1](DECISION_SNAPSHOT.md); the snapshot records what was evaluated and does not produce an outcome
+25. Decision outcomes use [Decision Evaluator R1](DECISION_EVALUATOR.md); an outcome follows only from a valid snapshot and an exact synthetic rule set
 
 ## Architecture Constraints
 

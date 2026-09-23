@@ -24,6 +24,7 @@ export const EVIDENCE_QUARANTINE_BLOCK_ID = 'rockhounding:evidence-quarantine';
 export const EVIDENCE_ADMISSION_BLOCK_ID = 'rockhounding:evidence-admission';
 export const DECISION_EVIDENCE_CONTRACT_BLOCK_ID = 'rockhounding:decision-evidence-contract';
 export const DECISION_SNAPSHOT_BLOCK_ID = 'rockhounding:decision-snapshot';
+export const DECISION_EVALUATOR_BLOCK_ID = 'rockhounding:decision-evaluator';
 
 export type BuildingBlockId = string;
 
@@ -1498,4 +1499,52 @@ export const BUILTIN_BUILDING_BLOCK_DEFINITIONS: readonly BuildingBlockDefinitio
     'DECISION_MODEL',
     'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
   ),
+  validateBuildingBlockDefinition({
+    id: DECISION_EVALUATOR_BLOCK_ID,
+    schemaVersion: BUILDING_BLOCK_REGISTRY_SCHEMA_VERSION,
+    name: 'Decision Evaluator',
+    version: { major: 1, minor: 0, patch: 0 },
+    category: 'DECISION_MODEL',
+    lifecycleStatus: BuildingBlockLifecycleStatus.STABLE,
+    purpose:
+      'Produces a decision outcome from a valid snapshot and an exact synthetic rule set. Does not query live providers.',
+    boundary: 'DECISION_MODEL',
+    documentationRef: 'docs/DECISION_EVALUATOR.md',
+    dependencies: [
+      DECISION_SNAPSHOT_BLOCK_ID,
+      DECISION_EVIDENCE_CONTRACT_BLOCK_ID,
+      EVIDENCE_ADMISSION_BLOCK_ID,
+      TRUTH_CLOCK_BLOCK_ID,
+      PROVENANCE_ACTIVITY_BLOCK_ID,
+    ].map((targetBuildingBlockId) => ({
+      kind: BuildingBlockRelationshipKind.REFERENCES,
+      targetBuildingBlockId,
+      versionRequirement: {
+        mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+        version: { major: 1, minor: 0, patch: 0 },
+      },
+    })),
+    validators: [
+      { kind: 'SCHEMA_VALIDATOR', ref: 'DecisionEvaluationResultSchema' },
+      { kind: 'TEST_SUITE', ref: 'packages/shared/src/decision-evaluator.test.ts' },
+    ],
+    examples: [{ kind: 'VALID', ref: 'synthetic collection prohibition yields prohibited' }],
+    conformance: {
+      schemaValidation: true,
+      semanticValidation: true,
+      requiredTests: ['packages/shared/src/decision-evaluator.test.ts'],
+      requiredDocumentation: ['docs/DECISION_EVALUATOR.md'],
+      requiredInvariants: [
+        'evaluator-consumes-a-snapshot',
+        'evaluator-fails-closed',
+        'synthetic-rules-only',
+        'outcome-is-not-uges-certainty',
+      ],
+    },
+    implementation: {
+      ...IMPLEMENTED,
+      modulePath: 'packages/shared/src/decision-evaluator.ts',
+      exportSubpath: '@rockhounding/shared/decision-evaluator',
+    },
+  }),
 ];
