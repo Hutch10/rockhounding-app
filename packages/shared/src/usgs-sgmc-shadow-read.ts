@@ -378,6 +378,7 @@ export async function interpretSgmcShadowResponse(input: {
   retrievedAt: string;
   semanticHeaders: Record<string, string>;
   maxRecordCount: number | undefined;
+  provenanceMode?: 'CAPTURE' | 'REPLAY';
 }): Promise<SgmcShadowInterpretation> {
   const contentHash = hashSgmcResponseBytes(input.rawBody);
   const rateLimitHeaders = rateHeaders(input.semanticHeaders);
@@ -445,7 +446,10 @@ export async function interpretSgmcShadowResponse(input: {
       resultCount: features.length,
     };
   }
-  const provenanceGraph = await shadowProvenance(translated, contentHash, input.retrievedAt);
+  const provenanceGraph =
+    input.provenanceMode === 'REPLAY'
+      ? undefined
+      : await shadowProvenance(translated, contentHash, input.retrievedAt);
   const promotable =
     translated.status === SourceAdapterResultStatus.SUCCESS ||
     translated.status === SourceAdapterResultStatus.PARTIAL_SUCCESS;
@@ -463,7 +467,7 @@ export async function interpretSgmcShadowResponse(input: {
     comparison,
     materialDrift,
     result: translated,
-    provenanceGraph,
+    ...(provenanceGraph === undefined ? {} : { provenanceGraph }),
     ...(disclosure === undefined ? {} : { disclosure }),
     ...(admission === undefined ? {} : { admissionStatus: admission.status }),
     rateLimitHeaders,

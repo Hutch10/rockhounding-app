@@ -64,4 +64,6 @@ Redistribution and offline caching remain `UNKNOWN`. The raw response, service m
 
 ## Limits
 
-One successful feature. No pagination campaign. No outage campaign beyond the first client timeout. No production decision. No schema update from the live record. External schema and terms can still change. The next phase is `ROCKHOUNDING_FIRST_PROVIDER_SHADOW_CERTIFICATION_R1`, which must pass before any repeated shadow mode.
+One successful feature. No pagination campaign. No outage campaign beyond the first client timeout. No production decision. No schema update from the live record. External schema and terms can still change.
+
+The certification of this read is [USGS SGMC Shadow Certification](USGS_SGMC_SHADOW_CERTIFICATION.md). A certification pass authorizes only `BOUNDED_REPEATED_SHADOW_READ`. It does not authorize production ingestion.

@@ -116,6 +116,10 @@
     "./usgs-sgmc-shadow-read": {
       "types": "./dist/usgs-sgmc-shadow-read.d.ts",
       "default": "./dist/usgs-sgmc-shadow-read.js"
+    },
+    "./usgs-sgmc-shadow-certification": {
+      "types": "./dist/usgs-sgmc-shadow-certification.d.ts",
+      "default": "./dist/usgs-sgmc-shadow-certification.js"
     }
   },
   "scripts": {
