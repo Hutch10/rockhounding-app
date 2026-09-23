@@ -65,4 +65,4 @@ Materialization is `QA_SCOPE` only. Explore, Site Detail, Field Mode, the public
 
 One successful feature. The transfer-limit path and the zero-result path were not observed live. The rate limit was not published on the response. Terms remain the reviewed `AUTOMATED_QUERY` grant. External schema and service identity can still change, and the next request must re-check them.
 
-The bounded repeated shadow campaign is recorded in [USGS SGMC Bounded Repeated Shadow](USGS_SGMC_BOUNDED_REPEATED_SHADOW.md). Its decision is `ROCKHOUNDING_SGMC_BOUNDED_REPEATED_SHADOW_R1_PASS`. That pass does not authorize production ingestion. The next gate is `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1`.
+The bounded repeated shadow campaign is recorded in [USGS SGMC Bounded Repeated Shadow](USGS_SGMC_BOUNDED_REPEATED_SHADOW.md). Its decision is `ROCKHOUNDING_SGMC_BOUNDED_REPEATED_SHADOW_R1_PASS`. The production readiness gate is [USGS SGMC Production Readiness Gate](USGS_SGMC_PRODUCTION_READINESS_GATE.md). Its decision is `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1_CONDITIONALLY_READY`. Neither result authorizes production ingestion.

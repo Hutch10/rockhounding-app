@@ -79,4 +79,4 @@ Redistribution and local cache rights remain `UNKNOWN`. Raw response bytes and p
 
 ## Production boundary
 
-Production ingestion stays closed. Production geological context is not authorized. Ordinary-user display stays closed. The next phase is `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1`. That gate has not started. Repeated shadow reads are evidence about interface consistency. They are not production trust.
+Production ingestion stays closed. Production geological context is not authorized. Ordinary-user display stays closed. The production readiness gate is [USGS SGMC Production Readiness Gate](USGS_SGMC_PRODUCTION_READINESS_GATE.md). Its decision is `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1_CONDITIONALLY_READY`. Repeated shadow reads are evidence about interface consistency. They are not production trust.
