@@ -94,7 +94,7 @@ Every contract has an id, a version, and a decision class. `selectDecisionEviden
 
 ## Future Decision Snapshot
 
-`ROCKHOUNDING_DECISION_SNAPSHOT_R1` should freeze the decision class, contract id and version, target context and time, admitted receipts, gaps, contradiction state, rule versions, provenance references, evaluation time, and a reproducibility hash. `rockhounding:decision-snapshot` stays DRAFT until that phase.
+[Decision Snapshot R1](DECISION_SNAPSHOT.md) freezes the contract version, admitted receipts, gaps, contradictions, and target time used for an evaluation. `ROCKHOUNDING_DECISION_SNAPSHOT_R1` does not produce an outcome. The next phase is `ROCKHOUNDING_DECISION_EVALUATOR_R1`.
 
 ## R1 limitations
 

@@ -964,7 +964,7 @@ describe('decision evidence contracts', () => {
       expect(getLatestStableBuildingBlock(registry, id)?.version).toEqual(VERSION);
     }
     expect(
-      listBuildingBlocksByCategory(registry, 'DECISION_MODEL').every(
+      listBuildingBlocksByCategory(registry, 'AVAILABILITY_MODEL').every(
         (item) => item.lifecycleStatus !== BuildingBlockLifecycleStatus.STABLE
       )
     ).toBe(true);

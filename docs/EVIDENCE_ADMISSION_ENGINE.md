@@ -100,7 +100,7 @@ Where a gate needs an affirmative state and the input is unknown, missing, unres
 
 ## Future Decision Evidence Contracts
 
-[Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md) is the completeness layer after admission. `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` defines, per decision class, required domains, roles, authority, time, coverage, independence, contradiction policy, and unresolved factors. Completeness is not a field outcome. The next phase is `ROCKHOUNDING_DECISION_SNAPSHOT_R1`.
+[Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md) is the completeness layer after admission. [Decision Snapshot R1](DECISION_SNAPSHOT.md) freezes that evaluation context. `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` is closed. The next phase is `ROCKHOUNDING_DECISION_EVALUATOR_R1`.
 
 ## R1 limitations
 

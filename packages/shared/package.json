@@ -85,6 +85,10 @@
       "types": "./dist/decision-evidence-contracts.d.ts",
       "default": "./dist/decision-evidence-contracts.js"
     },
+    "./decision-snapshot": {
+      "types": "./dist/decision-snapshot.d.ts",
+      "default": "./dist/decision-snapshot.js"
+    },
     "./offline-fixture-adapters": {
       "types": "./dist/offline-fixture-adapters.d.ts",
       "default": "./dist/offline-fixture-adapters.js"

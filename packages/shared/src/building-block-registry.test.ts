@@ -501,7 +501,7 @@ describe('foundation registration without semantic takeover', () => {
       drafts.every((block) => block.lifecycleStatus !== BuildingBlockLifecycleStatus.STABLE)
     ).toBe(true);
     expect(
-      listBuildingBlocksByCategory(registry, 'DECISION_MODEL').every(
+      listBuildingBlocksByCategory(registry, 'AVAILABILITY_MODEL').every(
         (block) => block.lifecycleStatus !== BuildingBlockLifecycleStatus.STABLE
       )
     ).toBe(true);

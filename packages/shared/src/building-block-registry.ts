@@ -23,6 +23,7 @@ export const SOURCE_ADAPTER_CONTRACT_BLOCK_ID = 'rockhounding:source-adapter-con
 export const EVIDENCE_QUARANTINE_BLOCK_ID = 'rockhounding:evidence-quarantine';
 export const EVIDENCE_ADMISSION_BLOCK_ID = 'rockhounding:evidence-admission';
 export const DECISION_EVIDENCE_CONTRACT_BLOCK_ID = 'rockhounding:decision-evidence-contract';
+export const DECISION_SNAPSHOT_BLOCK_ID = 'rockhounding:decision-snapshot';
 
 export type BuildingBlockId = string;
 
@@ -1444,10 +1445,57 @@ export const BUILTIN_BUILDING_BLOCK_DEFINITIONS: readonly BuildingBlockDefinitio
     'AVAILABILITY_MODEL',
     'Planned evidence availability state. Not implemented in R1.'
   ),
+  validateBuildingBlockDefinition({
+    id: DECISION_SNAPSHOT_BLOCK_ID,
+    schemaVersion: BUILDING_BLOCK_REGISTRY_SCHEMA_VERSION,
+    name: 'Decision Snapshot',
+    version: { major: 1, minor: 0, patch: 0 },
+    category: 'DECISION_MODEL',
+    lifecycleStatus: BuildingBlockLifecycleStatus.STABLE,
+    purpose:
+      'Freezes the evidence, contract version, gaps, contradictions, and time used to prepare a decision. Does not produce a decision outcome.',
+    boundary: 'DECISION_MODEL',
+    documentationRef: 'docs/DECISION_SNAPSHOT.md',
+    dependencies: [
+      DECISION_EVIDENCE_CONTRACT_BLOCK_ID,
+      EVIDENCE_ADMISSION_BLOCK_ID,
+      TRUTH_CLOCK_BLOCK_ID,
+      PROVENANCE_ACTIVITY_BLOCK_ID,
+    ].map((targetBuildingBlockId) => ({
+      kind: BuildingBlockRelationshipKind.REFERENCES,
+      targetBuildingBlockId,
+      versionRequirement: {
+        mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+        version: { major: 1, minor: 0, patch: 0 },
+      },
+    })),
+    validators: [
+      { kind: 'SCHEMA_VALIDATOR', ref: 'DecisionSnapshotSchema' },
+      { kind: 'TEST_SUITE', ref: 'packages/shared/src/decision-snapshot.test.ts' },
+    ],
+    examples: [{ kind: 'VALID', ref: 'field visit readiness context frozen without an outcome' }],
+    conformance: {
+      schemaValidation: true,
+      semanticValidation: true,
+      requiredTests: ['packages/shared/src/decision-snapshot.test.ts'],
+      requiredDocumentation: ['docs/DECISION_SNAPSHOT.md'],
+      requiredInvariants: [
+        'snapshot-pins-exact-contract-version',
+        'snapshot-does-not-emit-an-outcome',
+        'historical-snapshot-is-immutable',
+        'integrity-hash-is-not-a-signature',
+      ],
+    },
+    implementation: {
+      ...IMPLEMENTED,
+      modulePath: 'packages/shared/src/decision-snapshot.ts',
+      exportSubpath: '@rockhounding/shared/decision-snapshot',
+    },
+  }),
   draftBlock(
-    'rockhounding:decision-snapshot',
+    DECISION_SNAPSHOT_BLOCK_ID,
     'Decision Snapshot',
     'DECISION_MODEL',
-    'Planned decision snapshot contract. Not implemented in R1.'
+    'Historical DRAFT placeholder retained for identity continuity. Use STABLE 1.0.0.'
   ),
 ];

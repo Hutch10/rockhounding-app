@@ -216,12 +216,11 @@ Source Governance owns admission/restriction of source use. The building-block r
 
 ## Implemented and reserved blocks
 
-Observation, Sample, Sampling Event, Provenance Activity, Truth Clock, Source Adapter Contract, Evidence Quarantine, Evidence Admission, and Decision Evidence Contract are STABLE 1.0.0. Historical DRAFT 0.1.0 records remain queryable. See [Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md), [Provenance Activity Kernel R1](PROVENANCE_ACTIVITY_KERNEL.md), [Truth Clock / Evidence Availability R1](TRUTH_CLOCK_AVAILABILITY.md), [Source Adapter Contract R1](SOURCE_ADAPTER_CONTRACT.md), [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md), [Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md), [Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md), and [Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md). Offline fixtures implement the source-adapter contract and do not add a building block. Evidence availability semantics inside Truth Clock stay there. `rockhounding:evidence-availability` remains a DRAFT placeholder. `rockhounding:decision-snapshot` remains DRAFT.
+Observation, Sample, Sampling Event, Provenance Activity, Truth Clock, Source Adapter Contract, Evidence Quarantine, Evidence Admission, Decision Evidence Contract, and Decision Snapshot are STABLE 1.0.0. Historical DRAFT 0.1.0 records remain queryable. See [Observation / Sample Model R1](OBSERVATION_SAMPLE_MODEL.md), [Provenance Activity Kernel R1](PROVENANCE_ACTIVITY_KERNEL.md), [Truth Clock / Evidence Availability R1](TRUTH_CLOCK_AVAILABILITY.md), [Source Adapter Contract R1](SOURCE_ADAPTER_CONTRACT.md), [Evidence Quarantine R1](EVIDENCE_QUARANTINE.md), [Offline Fixture Adapters R1](OFFLINE_FIXTURE_ADAPTERS.md), [Evidence Admission Engine R1](EVIDENCE_ADMISSION_ENGINE.md), [Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md), and [Decision Snapshot R1](DECISION_SNAPSHOT.md). Offline fixtures implement the source-adapter contract and do not add a building block. Evidence availability semantics inside Truth Clock stay there. `rockhounding:evidence-availability` remains a DRAFT placeholder.
 
 Still **DRAFT** v0.1.0 with no separate implementation:
 
 - `rockhounding:evidence-availability`
-- `rockhounding:decision-snapshot`
 
 Planned but **not registered**: Process Contract, Disclosure Policy, Evidence Admission Contract.
 
