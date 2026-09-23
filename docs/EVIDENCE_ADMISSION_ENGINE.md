@@ -100,7 +100,7 @@ Where a gate needs an affirmative state and the input is unknown, missing, unres
 
 ## Future Decision Evidence Contracts
 
-[Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md) is the completeness layer after admission. [Decision Snapshot R1](DECISION_SNAPSHOT.md) freezes that evaluation context. [Decision Evaluator R1](DECISION_EVALUATOR.md) produces an outcome from that snapshot. `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` is closed. The next phase is `ROCKHOUNDING_DECISION_RECEIPT_R1`.
+[Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md) is the completeness layer after admission. [Decision Snapshot R1](DECISION_SNAPSHOT.md) freezes that evaluation context. [Decision Evaluator R1](DECISION_EVALUATOR.md) produces an outcome from that snapshot. [Decision Receipt R1](DECISION_RECEIPT.md) freezes the outcome. `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` is closed. The next phase is `ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE`.
 
 ## R1 limitations
 

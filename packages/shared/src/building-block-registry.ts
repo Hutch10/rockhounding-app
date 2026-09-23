@@ -25,6 +25,7 @@ export const EVIDENCE_ADMISSION_BLOCK_ID = 'rockhounding:evidence-admission';
 export const DECISION_EVIDENCE_CONTRACT_BLOCK_ID = 'rockhounding:decision-evidence-contract';
 export const DECISION_SNAPSHOT_BLOCK_ID = 'rockhounding:decision-snapshot';
 export const DECISION_EVALUATOR_BLOCK_ID = 'rockhounding:decision-evaluator';
+export const DECISION_RECEIPT_BLOCK_ID = 'rockhounding:decision-receipt';
 
 export type BuildingBlockId = string;
 
@@ -1545,6 +1546,55 @@ export const BUILTIN_BUILDING_BLOCK_DEFINITIONS: readonly BuildingBlockDefinitio
       ...IMPLEMENTED,
       modulePath: 'packages/shared/src/decision-evaluator.ts',
       exportSubpath: '@rockhounding/shared/decision-evaluator',
+    },
+  }),
+  validateBuildingBlockDefinition({
+    id: DECISION_RECEIPT_BLOCK_ID,
+    schemaVersion: BUILDING_BLOCK_REGISTRY_SCHEMA_VERSION,
+    name: 'Decision Receipt',
+    version: { major: 1, minor: 0, patch: 0 },
+    category: 'DECISION_MODEL',
+    lifecycleStatus: BuildingBlockLifecycleStatus.STABLE,
+    purpose:
+      'Freezes the outcome, rule-set version, and evaluator version produced from a Decision Snapshot. Does not re-evaluate.',
+    boundary: 'DECISION_MODEL',
+    documentationRef: 'docs/DECISION_RECEIPT.md',
+    dependencies: [
+      DECISION_EVALUATOR_BLOCK_ID,
+      DECISION_SNAPSHOT_BLOCK_ID,
+      DECISION_EVIDENCE_CONTRACT_BLOCK_ID,
+      PROVENANCE_ACTIVITY_BLOCK_ID,
+    ].map((targetBuildingBlockId) => ({
+      kind: BuildingBlockRelationshipKind.REFERENCES,
+      targetBuildingBlockId,
+      versionRequirement: {
+        mode: BuildingBlockVersionRequirementMode.AT_LEAST,
+        version: { major: 1, minor: 0, patch: 0 },
+      },
+    })),
+    validators: [
+      { kind: 'SCHEMA_VALIDATOR', ref: 'DecisionReceiptSchema' },
+      { kind: 'TEST_SUITE', ref: 'packages/shared/src/decision-receipt.test.ts' },
+    ],
+    examples: [
+      { kind: 'VALID', ref: 'synthetic collection outcome frozen without rewriting the snapshot' },
+    ],
+    conformance: {
+      schemaValidation: true,
+      semanticValidation: true,
+      requiredTests: ['packages/shared/src/decision-receipt.test.ts'],
+      requiredDocumentation: ['docs/DECISION_RECEIPT.md'],
+      requiredInvariants: [
+        'receipt-pins-snapshot-hash',
+        'receipt-does-not-reevaluate',
+        'historical-receipt-is-immutable',
+        'integrity-hash-is-not-a-signature',
+      ],
+    },
+    implementation: {
+      ...IMPLEMENTED,
+      modulePath: 'packages/shared/src/decision-receipt.ts',
+      exportSubpath: '@rockhounding/shared/decision-receipt',
     },
   }),
 ];

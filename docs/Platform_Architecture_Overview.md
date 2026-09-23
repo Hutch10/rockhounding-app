@@ -56,6 +56,7 @@ Rockhound is a mobile-first, offline-capable platform for geological fieldwork, 
 - Decision evidence: **[Decision Evidence Contracts R1](DECISION_EVIDENCE_CONTRACTS.md)** — which admitted evidence a decision class requires; completeness is not the decision outcome
 - Decision context: **[Decision Snapshot R1](DECISION_SNAPSHOT.md)** — immutable record of the contract, receipts, gaps, and time used to prepare an evaluation; not an outcome
 - Decision outcome: **[Decision Evaluator R1](DECISION_EVALUATOR.md)** — deterministic outcome from a valid snapshot and an exact synthetic rule set
+- Decision receipt: **[Decision Receipt R1](DECISION_RECEIPT.md)** — immutable record of that outcome, pinned to the snapshot hash, rule set, and evaluator version
 - Arrows indicate data flow: FieldSession orchestrates, FindLog and CaptureSession feed data, Camera → Specimen Pipeline classifies, Collection Management aggregates, Dashboard visualizes, Telemetry tracks, Sync Engine synchronizes, Offline Storage caches, Settings personalizes, Shared Libraries provide core logic
 
 ---

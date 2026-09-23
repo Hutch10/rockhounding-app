@@ -12,13 +12,15 @@
 - `ROCKHOUNDING_EVIDENCE_ADMISSION_ENGINE_R1` is closed at `1a92dba335070ffffef7a44fe963c6d24ef23d58` (61 files, 797 tests)
 - `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` is CLOSED and STABLE at `30a67267d2c0b1af0f09de9bc69bca5e61e1003d` (62 files, 806 tests)
 - `ROCKHOUNDING_DECISION_SNAPSHOT_R1` is CLOSED and STABLE at `a370168a53c3d6746f10336800f0ac5ec4ff5824` (63 files, 813 tests)
-- This document travels with `ROCKHOUNDING_DECISION_EVALUATOR_R1`
-- Decision Evaluator is the active outcome engine
-- An outcome comes only from a valid snapshot and an exact synthetic rule set
+- `ROCKHOUNDING_DECISION_EVALUATOR_R1` is CLOSED and STABLE at `5353b7356adcc63d8e5861b6b9d5025418fd8f3b` (64 files, 821 tests)
+- This document travels with `ROCKHOUNDING_DECISION_RECEIPT_R1`
+- Decision Receipt is the active immutable outcome record
+- A receipt freezes the evaluator outcome, exact rule set, and exact evaluator version
+- Replay and reanalysis stay separate
 - Fixture success does not imply source admission
 - Live ingestion stays closed
 - Network access stays prohibited
-- Next phase after that pass: `ROCKHOUNDING_DECISION_RECEIPT_R1`
+- Next phase after that pass: `ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE`
 
 Reconfirm branch, HEAD, origin, and `git status` before every implementation phase. This snapshot goes stale the moment the branch moves.
 
@@ -51,6 +53,7 @@ These are governed interfaces. Do not silently change their semantics.
 | Decision Evidence Contract (`rockhounding:decision-evidence-contract`) | 1.0.0                 | `@rockhounding/shared/decision-evidence-contracts` |
 | Decision Snapshot (`rockhounding:decision-snapshot`)                   | 1.0.0                 | `@rockhounding/shared/decision-snapshot`           |
 | Decision Evaluator (`rockhounding:decision-evaluator`)                 | 1.0.0                 | `@rockhounding/shared/decision-evaluator`          |
+| Decision Receipt (`rockhounding:decision-receipt`)                     | 1.0.0                 | `@rockhounding/shared/decision-receipt`            |
 
 Truth Clock is STABLE because R1 passed. `rockhounding:evidence-availability` remains DRAFT. `rockhounding:decision-snapshot` is STABLE 1.0.0, and its DRAFT 0.1.0 row stays queryable. Do not change other STABLE versions while promoting one block.
 
@@ -116,8 +119,8 @@ Package exports for foundational modules are subpath exports in `packages/shared
 
 ## Next phase boundary
 
-`rockhounding:decision-evaluator` is the active STABLE 1.0.0 engine. It answers what outcome follows from an immutable snapshot and an exact synthetic rule set. `ROCKHOUNDING_DECISION_SNAPSHOT_R1` is CLOSED and STABLE. `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` is CLOSED and STABLE. `rockhounding:evidence-admission` remains the purpose gate. Offline fixture adapters remain an implementation of `rockhounding:source-adapter-contract`. Fixture success does not imply admission. R1 rules are synthetic. Live ingestion stays closed. Network access stays prohibited.
+`rockhounding:decision-receipt` is the active STABLE 1.0.0 record. It freezes the outcome produced from an immutable snapshot by an exact evaluator and rule-set version. `ROCKHOUNDING_DECISION_EVALUATOR_R1` is CLOSED and STABLE. `ROCKHOUNDING_DECISION_SNAPSHOT_R1` is CLOSED and STABLE. `ROCKHOUNDING_DECISION_EVIDENCE_CONTRACTS_R1` is CLOSED and STABLE. Historical receipts stay immutable. Replay uses the pinned versions. Reanalysis creates a new receipt. Offline fixture adapters remain an implementation of `rockhounding:source-adapter-contract`. R1 rules are synthetic. Live ingestion stays closed. Network access stays prohibited.
 
-If this evaluator passes, the next phase is `ROCKHOUNDING_DECISION_RECEIPT_R1`. That phase freezes the outcome separately from the snapshot. A live read-only provider waits for an explicit readiness gate after the receipt. `ROCKHOUNDING_DECISION_EVALUATOR_R1` is the phase recorded here.
+If this receipt passes, the next phase is `ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE`. That step is a gate, not a provider implementation. `ROCKHOUNDING_DECISION_RECEIPT_R1` is the phase recorded here.
 
 `.cursor/` is local orchestration configuration only. This document is the portable repository coordinator contract.

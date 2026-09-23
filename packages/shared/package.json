@@ -93,6 +93,10 @@
       "types": "./dist/decision-evaluator.d.ts",
       "default": "./dist/decision-evaluator.js"
     },
+    "./decision-receipt": {
+      "types": "./dist/decision-receipt.d.ts",
+      "default": "./dist/decision-receipt.js"
+    },
     "./offline-fixture-adapters": {
       "types": "./dist/offline-fixture-adapters.d.ts",
       "default": "./dist/offline-fixture-adapters.js"

@@ -62,7 +62,7 @@ The same snapshot, rule-set version, and evaluator version `1.0.0` produce the s
 
 ## Provenance and neighboring contracts
 
-The caller may attach a provenance activity id. Upstream provenance ids are not invented. Source Governance is not called. UGES certainty and confidence are not mutated. The result keeps the snapshot id, hash, contract version, and evidence and receipt ids so a future Decision Receipt can freeze the outcome.
+The caller may attach a provenance activity id. Upstream provenance ids are not invented. Source Governance is not called. UGES certainty and confidence are not mutated. The result keeps a receipt candidate. [Decision Receipt R1](DECISION_RECEIPT.md) freezes that candidate. The evaluator does not store the receipt. The next phase is `ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE`.
 
 ## R1 limitations
 
@@ -79,6 +79,6 @@ The caller may attach a provenance activity id. Upstream provenance ids are not 
 - No probabilistic scoring
 - No machine-learned decisioning
 - No universal safety guarantee
-- No Decision Receipt implementation yet
+- No Decision Receipt storage inside the evaluator
 - No automated replay engine
 - No automated reanalysis engine

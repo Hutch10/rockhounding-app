@@ -94,7 +94,7 @@ Every contract has an id, a version, and a decision class. `selectDecisionEviden
 
 ## Future Decision Snapshot
 
-[Decision Snapshot R1](DECISION_SNAPSHOT.md) freezes the contract version, admitted receipts, gaps, contradictions, and target time used for an evaluation. [Decision Evaluator R1](DECISION_EVALUATOR.md) is the outcome layer. `ROCKHOUNDING_DECISION_EVALUATOR_R1` does not authorize a live provider. The preferred next phase is `ROCKHOUNDING_DECISION_RECEIPT_R1`.
+[Decision Snapshot R1](DECISION_SNAPSHOT.md) freezes the contract version, admitted receipts, gaps, contradictions, and target time used for an evaluation. [Decision Evaluator R1](DECISION_EVALUATOR.md) is the outcome layer. [Decision Receipt R1](DECISION_RECEIPT.md) freezes that outcome. `ROCKHOUNDING_DECISION_EVALUATOR_R1` does not authorize a live provider. The next phase is `ROCKHOUNDING_FIRST_LIVE_PROVIDER_READINESS_GATE`.
 
 ## R1 limitations
 
