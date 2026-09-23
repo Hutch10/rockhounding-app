@@ -1,0 +1,1 @@
+Raw SGMC responses and per-feature observations stay in this directory and are gitignored. Redistribution and offline caching remain UNKNOWN. The committed integrity record is the hash list in `campaign-summary.json`.

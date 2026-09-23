@@ -183,15 +183,20 @@ export function resolveSgmcFeatureServerUrl(catalog: unknown): string | undefine
   return match?.[0];
 }
 
-export function buildSgmcShadowQueryUrl(featureServerRoot: string): string {
+export type SgmcShadowBbox = {
+  xmin: number;
+  ymin: number;
+  xmax: number;
+  ymax: number;
+  inSR?: number;
+};
+
+export function buildSgmcBoundedQueryUrl(featureServerRoot: string, bbox: SgmcShadowBbox): string {
   const root = featureServerRoot.endsWith('/') ? featureServerRoot : `${featureServerRoot}/`;
   const query = new URL(`${USGS_SGMC_LAYER_ID}/query`, root);
-  query.searchParams.set(
-    'geometry',
-    `${USGS_SGMC_SHADOW_BBOX.xmin},${USGS_SGMC_SHADOW_BBOX.ymin},${USGS_SGMC_SHADOW_BBOX.xmax},${USGS_SGMC_SHADOW_BBOX.ymax}`
-  );
+  query.searchParams.set('geometry', `${bbox.xmin},${bbox.ymin},${bbox.xmax},${bbox.ymax}`);
   query.searchParams.set('geometryType', 'esriGeometryEnvelope');
-  query.searchParams.set('inSR', String(USGS_SGMC_SHADOW_BBOX.inSR));
+  query.searchParams.set('inSR', String(bbox.inSR ?? 4326));
   query.searchParams.set('spatialRel', 'esriSpatialRelIntersects');
   query.searchParams.set('outFields', USGS_SGMC_SHADOW_OUT_FIELDS.join(','));
   query.searchParams.set('returnGeometry', 'true');
@@ -200,6 +205,10 @@ export function buildSgmcShadowQueryUrl(featureServerRoot: string): string {
   query.searchParams.set('where', '1=1');
   query.searchParams.set('f', 'json');
   return query.toString();
+}
+
+export function buildSgmcShadowQueryUrl(featureServerRoot: string): string {
+  return buildSgmcBoundedQueryUrl(featureServerRoot, USGS_SGMC_SHADOW_BBOX);
 }
 
 export function gateSgmcServiceMetadata(input: {
@@ -475,6 +484,28 @@ export async function interpretSgmcShadowResponse(input: {
       ? { failure: failureFromAdapter(translated.failureCode) }
       : {}),
   };
+}
+
+export function translateSgmcShadowFeature(input: {
+  attributes: Record<string, unknown>;
+  geometry: unknown;
+  spatialReference: unknown;
+  retrievedAt: string;
+  featureCount: number;
+  pagination: 'COMPLETE' | 'PARTIAL' | 'UNKNOWN';
+}): SourceAdapterResult {
+  const spatial = spatialReferenceToken(input.spatialReference);
+  const geojson = esriPolygonToGeoJson(input.geometry);
+  const observed = observedRecord(
+    input.attributes,
+    geojson,
+    spatial,
+    input.featureCount,
+    input.pagination
+  );
+  return translateSgmcObservedRecord(observed, sgmcAdapterDefinition(), {
+    retrievedAt: input.retrievedAt,
+  });
 }
 
 export function shadowMaterializationAllowed(projection: DisclosureProjection): boolean {

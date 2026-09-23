@@ -120,6 +120,10 @@
     "./usgs-sgmc-shadow-certification": {
       "types": "./dist/usgs-sgmc-shadow-certification.d.ts",
       "default": "./dist/usgs-sgmc-shadow-certification.js"
+    },
+    "./usgs-sgmc-repeated-shadow": {
+      "types": "./dist/usgs-sgmc-repeated-shadow.d.ts",
+      "default": "./dist/usgs-sgmc-repeated-shadow.js"
     }
   },
   "scripts": {

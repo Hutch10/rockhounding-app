@@ -80,6 +80,7 @@ The Build Document (provided by user) is the master specification. All implement
 30. [USGS SGMC Provider Contract](USGS_SGMC_PROVIDER_CONTRACT.md) proves that candidate offline with documentation-derived fixtures
 31. [USGS SGMC Shadow Read](USGS_SGMC_SHADOW_READ.md) records the first bounded non-production read
 32. [USGS SGMC Shadow Certification](USGS_SGMC_SHADOW_CERTIFICATION.md) authorizes only a bounded repeated shadow read
+33. [USGS SGMC Bounded Repeated Shadow](USGS_SGMC_BOUNDED_REPEATED_SHADOW.md) records four operator-triggered reads and does not authorize production
 
 ## Architecture Constraints
 

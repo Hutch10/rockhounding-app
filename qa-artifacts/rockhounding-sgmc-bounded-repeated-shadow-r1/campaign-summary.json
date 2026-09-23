@@ -1,0 +1,229 @@
+{
+  "policy": {
+    "provider": "USGS_SGMC",
+    "mode": "SHADOW_ONLY",
+    "adapterVersion": "1.0.0",
+    "operation": "AUTOMATED_QUERY",
+    "layer": "SGMC_Geology",
+    "layerId": 3,
+    "maxCampaignQueries": 4,
+    "maxBBoxWidthDegrees": 0.02,
+    "maxBBoxHeightDegrees": 0.02,
+    "maxFeatures": 5,
+    "parallelism": 1,
+    "automaticRetry": false,
+    "automaticPagination": false,
+    "backgroundPolling": false,
+    "publicMaterialization": false,
+    "productionAuthority": "NONE",
+    "governanceCheckPerRequest": true,
+    "disclosureCheckPerMaterialization": true,
+    "admissionCheckPerCandidate": true,
+    "quarantineOnDrift": true,
+    "offSwitch": "governance suspension",
+    "pauseMs": 5000,
+    "requestTimeoutMs": 60000
+  },
+  "featureServerUrl": "https://services.arcgis.com/v01gqwM5QqNysAAi/arcgis/rest/services/SB_5888bf4fe4b05ccb964bab9d_USGS_SGMC_feature/FeatureServer",
+  "offSwitchBefore": "AUTHORIZATION_BLOCKED",
+  "offSwitchAfter": "AUTHORIZATION_BLOCKED",
+  "gate": {
+    "ok": true,
+    "maxRecordCount": 2000
+  },
+  "networkRequests": [
+    {
+      "purpose": "FEATURE_SERVER_METADATA",
+      "at": "2026-09-23T22:30:50.591Z",
+      "status": 200
+    },
+    {
+      "purpose": "LAYER_METADATA",
+      "at": "2026-09-23T22:30:50.717Z",
+      "status": 200
+    },
+    {
+      "purpose": "READ_A",
+      "at": "2026-09-23T22:31:49.833Z",
+      "status": 504
+    },
+    {
+      "purpose": "READ_B",
+      "at": "2026-09-23T22:34:42.376Z",
+      "status": 504
+    },
+    {
+      "purpose": "READ_C",
+      "at": "2026-09-23T22:35:28.204Z",
+      "status": 200
+    },
+    {
+      "purpose": "READ_D",
+      "at": "2026-09-23T22:35:38.601Z",
+      "status": 200
+    }
+  ],
+  "stoppedEarly": null,
+  "reads": [
+    {
+      "readId": "READ_A",
+      "purpose": "ORDINARY_URBAN_ALLUVIAL_PLAIN",
+      "placeLabel": "Downtown Omaha, Nebraska",
+      "bbox": {
+        "xmin": -95.94,
+        "ymin": 41.256,
+        "xmax": -95.928,
+        "ymax": 41.264,
+        "inSR": 4326
+      },
+      "authorizationStatus": "ALLOWED_WITH_CONSTRAINTS",
+      "requestStartedAt": "2026-09-23T22:30:50.719Z",
+      "responseReceivedAt": "2026-09-23T22:31:49.833Z",
+      "httpStatus": 504,
+      "contentType": null,
+      "rateLimitHeaders": {
+        "cache-control": "no-store, no-cache"
+      },
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "featureCount": 0,
+      "pagination": "UNKNOWN",
+      "geologicalAbsence": false,
+      "failure": "HTTP_ERROR",
+      "materialDrift": false,
+      "replayMatches": true,
+      "provenanceActivityIds": [],
+      "adapterStatuses": [],
+      "quarantineCount": 0,
+      "admissionStatuses": [],
+      "disclosureStatuses": [],
+      "lithologyClasses": [],
+      "ageRepresentations": [],
+      "identityAmbiguousCount": 0,
+      "duplicateScopedKeyCount": 0,
+      "outsideGeologyRejected": true
+    },
+    {
+      "readId": "READ_B",
+      "purpose": "ORDINARY_URBAN_PIEDMONT",
+      "placeLabel": "Downtown Atlanta, Georgia",
+      "bbox": {
+        "xmin": -84.392,
+        "ymin": 33.753,
+        "xmax": -84.38,
+        "ymax": 33.761,
+        "inSR": 4326
+      },
+      "authorizationStatus": "ALLOWED_WITH_CONSTRAINTS",
+      "requestStartedAt": "2026-09-23T22:33:42.877Z",
+      "responseReceivedAt": "2026-09-23T22:34:42.376Z",
+      "httpStatus": 504,
+      "contentType": null,
+      "rateLimitHeaders": {
+        "cache-control": "no-store, no-cache"
+      },
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "featureCount": 0,
+      "pagination": "UNKNOWN",
+      "geologicalAbsence": false,
+      "failure": "HTTP_ERROR",
+      "materialDrift": false,
+      "replayMatches": true,
+      "provenanceActivityIds": [],
+      "adapterStatuses": [],
+      "quarantineCount": 0,
+      "admissionStatuses": [],
+      "disclosureStatuses": [],
+      "lithologyClasses": [],
+      "ageRepresentations": [],
+      "identityAmbiguousCount": 0,
+      "duplicateScopedKeyCount": 0,
+      "outsideGeologyRejected": true
+    },
+    {
+      "readId": "READ_C",
+      "purpose": "ORDINARY_URBAN_DIFFERENT_STATE_LINEAGE",
+      "placeLabel": "Downtown Austin, Texas",
+      "bbox": {
+        "xmin": -97.748,
+        "ymin": 30.266,
+        "xmax": -97.736,
+        "ymax": 30.274,
+        "inSR": 4326
+      },
+      "authorizationStatus": "ALLOWED_WITH_CONSTRAINTS",
+      "requestStartedAt": "2026-09-23T22:34:47.391Z",
+      "responseReceivedAt": "2026-09-23T22:35:28.204Z",
+      "httpStatus": 200,
+      "contentType": "application/json; charset=utf-8",
+      "rateLimitHeaders": {
+        "cache-control": "private, max-age=30, s-maxage=30",
+        "content-type": "application/json; charset=utf-8",
+        "etag": "sd432329_94817039"
+      },
+      "contentHash": "f96fec6b0bce881e5bddd66c918eb14f73e13a249997c1583eadd9844208e672",
+      "featureCount": 2,
+      "pagination": "COMPLETE",
+      "geologicalAbsence": false,
+      "materialDrift": false,
+      "replayMatches": true,
+      "provenanceActivityIds": [
+        "act:live:e45503efe10af97fb54cf32504288932:a-retrieval",
+        "act:live:e45503efe10af97fb54cf32504288932:b-import"
+      ],
+      "adapterStatuses": ["SUCCESS", "SUCCESS"],
+      "quarantineCount": 0,
+      "admissionStatuses": ["ADMITTED", "ADMITTED"],
+      "disclosureStatuses": ["ALLOWED", "ALLOWED"],
+      "lithologyClasses": ["KNOWN", "KNOWN"],
+      "ageRepresentations": ["TEXT", "TEXT"],
+      "identityAmbiguousCount": 0,
+      "duplicateScopedKeyCount": 0,
+      "geometryMark": "MATCH",
+      "spatialMark": "MATCH",
+      "outsideGeologyRejected": true
+    },
+    {
+      "readId": "READ_D",
+      "purpose": "ORDINARY_URBAN_STATE_LINE_ADJACENT",
+      "placeLabel": "Downtown Kansas City, Missouri",
+      "bbox": {
+        "xmin": -94.59,
+        "ymin": 39.098,
+        "xmax": -94.578,
+        "ymax": 39.106,
+        "inSR": 4326
+      },
+      "authorizationStatus": "ALLOWED_WITH_CONSTRAINTS",
+      "requestStartedAt": "2026-09-23T22:35:33.228Z",
+      "responseReceivedAt": "2026-09-23T22:35:38.601Z",
+      "httpStatus": 200,
+      "contentType": "application/json; charset=utf-8",
+      "rateLimitHeaders": {
+        "cache-control": "private, max-age=30, s-maxage=30",
+        "content-type": "application/json; charset=utf-8",
+        "etag": "sd432329_94817039"
+      },
+      "contentHash": "5c22d8cf17c6d558f8703af2c0d998b826df9918ea6336bd1ec3f7836454108c",
+      "featureCount": 1,
+      "pagination": "COMPLETE",
+      "geologicalAbsence": false,
+      "materialDrift": false,
+      "replayMatches": true,
+      "provenanceActivityIds": [
+        "act:live:787227942d7388b77e14f8058c65d8d6:a-retrieval",
+        "act:live:787227942d7388b77e14f8058c65d8d6:b-import"
+      ],
+      "adapterStatuses": ["SUCCESS"],
+      "quarantineCount": 0,
+      "admissionStatuses": ["ADMITTED"],
+      "disclosureStatuses": ["ALLOWED"],
+      "lithologyClasses": ["KNOWN"],
+      "ageRepresentations": ["TEXT"],
+      "identityAmbiguousCount": 0,
+      "duplicateScopedKeyCount": 0,
+      "geometryMark": "MATCH",
+      "spatialMark": "MATCH",
+      "outsideGeologyRejected": true
+    }
+  ]
+}

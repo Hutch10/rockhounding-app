@@ -66,4 +66,4 @@ Redistribution and offline caching remain `UNKNOWN`. The raw response, service m
 
 One successful feature. No pagination campaign. No outage campaign beyond the first client timeout. No production decision. No schema update from the live record. External schema and terms can still change.
 
-The certification of this read is [USGS SGMC Shadow Certification](USGS_SGMC_SHADOW_CERTIFICATION.md). A certification pass authorizes only `BOUNDED_REPEATED_SHADOW_READ`. It does not authorize production ingestion.
+The certification of this read is [USGS SGMC Shadow Certification](USGS_SGMC_SHADOW_CERTIFICATION.md). A certification pass authorizes only `BOUNDED_REPEATED_SHADOW_READ`. The later bounded campaign is [USGS SGMC Bounded Repeated Shadow](USGS_SGMC_BOUNDED_REPEATED_SHADOW.md). Neither result authorizes production ingestion.
