@@ -1,6 +1,7 @@
 'use client';
 
 import type { LocationV1 } from '@rockhounding/shared';
+import type { ReactNode } from 'react';
 import Link from 'next/link';
 
 import {
@@ -34,32 +35,15 @@ export type GeologicalContextView = {
 
 interface LocationDetailClientProps {
   location: LocationDetailV1;
-  geology?: GeologicalContextView | null;
+  geologySection?: ReactNode;
 }
 
 /**
  * FE-006: Site detail Tier-1 — access banner, trust badge, materials, action row.
  */
-function geologyMessage(state: GeologicalContextView['state']): string {
-  switch (state) {
-    case 'SUCCESS':
-      return 'USGS geological source for this site.';
-    case 'NO_SGMC_POLYGON_RETURNED':
-      return 'No SGMC map unit was returned for this location.';
-    case 'OUTSIDE_PROVIDER_COVERAGE':
-      return 'SGMC geological context is not available for this region.';
-    case 'PARTIAL_UNSAFE':
-      return 'SGMC returned an incomplete page. Geological context is not shown as complete.';
-    case 'DISCLOSURE_WITHHELD':
-      return 'Map geometry is withheld.';
-    default:
-      return 'Geological context temporarily unavailable.';
-  }
-}
-
 export function LocationDetailClient({
   location,
-  geology = null,
+  geologySection = null,
 }: LocationDetailClientProps): JSX.Element {
   const trust = trustFromMetadata(location.metadata);
   const accessStatus = normalizeAccessStatus(location.access_status);
@@ -101,36 +85,7 @@ export function LocationDetailClient({
         </div>
       )}
 
-      {geology != null ? (
-        <section
-          aria-label="Geological context"
-          className="rounded-xl border border-stone-300 bg-stone-50 p-3"
-        >
-          <h2 className="text-sm font-bold text-stone-900">Geological context</h2>
-          <p className="mt-1 text-sm text-stone-800">{geologyMessage(geology.state)}</p>
-          <p className="mt-1 text-xs text-stone-700">
-            This is map context only. It does not say whether collecting, access, or travel is
-            allowed. It is not stored for offline use.
-          </p>
-          {geology.state === 'SUCCESS'
-            ? geology.units.map((unit) => (
-                <p key={`${unit.unitName}-${unit.ageMin}`} className="mt-2 text-sm text-stone-900">
-                  {unit.unitName}. {unit.lithology}. Geologic age {unit.ageMin} to {unit.ageMax}.
-                </p>
-              ))
-            : null}
-          {geology.attribution != null ? (
-            <p className="mt-2 text-xs text-stone-700">
-              Source: {geology.attribution.source}, {geology.attribution.product}, DOI{' '}
-              {geology.attribution.doi}. Rockhounding is not a USGS product.
-              {geology.compilationYear != null
-                ? ` Source compilation: ${geology.compilationYear}.`
-                : ''}
-              {geology.retrievedAt != null ? ` Retrieved: ${geology.retrievedAt}.` : ''}
-            </p>
-          ) : null}
-        </section>
-      ) : null}
+      {geologySection}
 
       <div className="flex gap-3 pt-2">
         <button

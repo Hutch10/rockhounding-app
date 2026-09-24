@@ -15,6 +15,7 @@ import {
   USGS_SGMC_PRODUCTION_FEATURE_SERVER,
   USGS_SGMC_PRODUCTION_PROFILE,
   getProductionGeologicalContext,
+  loadSiteGeologicalContext,
 } from './usgs-sgmc-production-context';
 import {
   SgmcShadowFailure,
@@ -306,5 +307,39 @@ describe('SGMC production geological context', () => {
     });
     expect(JSON.stringify(shown.units)).not.toContain('42');
     expect(shown.observation.outcome).toBe('success');
+  });
+
+  it('withholds display when disclosure or admission fails and stays off when disabled', async () => {
+    const { transport, calls } = transportOf(polygonBody());
+    const withheld = await getProductionGeologicalContext({
+      bbox: BBOX,
+      transport,
+      retrievedAt: WHEN,
+      disclosureClassification: DisclosureClassification.UNKNOWN,
+    });
+    expect(withheld.state).toBe('DISCLOSURE_WITHHELD');
+    expect(withheld.units).toEqual([]);
+    expect(withheld.observation.disclosureBlocked).toBe(true);
+    expect(JSON.stringify(withheld)).not.toContain('rings');
+
+    const denied = await getProductionGeologicalContext({
+      bbox: BBOX,
+      transport,
+      retrievedAt: WHEN,
+      admit: () => ({ status: 'REJECTED' }),
+    });
+    expect(denied.state).toBe('PROVIDER_UNAVAILABLE');
+    expect(denied.units).toEqual([]);
+    expect(denied.observation.outcome).toBe('admission_failure');
+    expect(denied.observation.admissionFailures).toBe(1);
+
+    const disabledCalls: string[] = [];
+    const disabled = await loadSiteGeologicalContext(
+      { latitude: 41.26, longitude: -95.934, retrievedAt: WHEN },
+      { enabled: false }
+    );
+    expect(disabled).toBeNull();
+    expect(disabledCalls).toEqual([]);
+    expect(calls.length).toBeGreaterThan(0);
   });
 });

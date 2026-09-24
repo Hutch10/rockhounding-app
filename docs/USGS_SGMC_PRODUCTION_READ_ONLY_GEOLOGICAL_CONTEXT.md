@@ -28,4 +28,4 @@ Provider failure, timeout, and HTTP 5xx say geological context is temporarily un
 
 Observability is the request-scoped `observation` object: outcome, failure class, feature count, latency, quarantine count, admission failures, and disclosure or display blocks. The raw body is not logged.
 
-Normal tests use a mock transport and make no live provider calls. No production smoke request was issued. The next phase is `ROCKHOUNDING_SGMC_PRODUCTION_ACCEPTANCE_R1`.
+Normal tests use a mock transport and make no live provider calls. No production smoke request was issued. `ROCKHOUNDING_SGMC_PRODUCTION_ACCEPTANCE_R1` is CONDITIONAL. Site Detail now renders access and the rest of the page while geological context loads in its own section. An authenticated live-browser check is still open. See [USGS SGMC Production Acceptance](USGS_SGMC_PRODUCTION_ACCEPTANCE.md).

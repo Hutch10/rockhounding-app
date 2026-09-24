@@ -96,12 +96,16 @@ export function sgmcProductionContextEnabled(): boolean {
   return USGS_SGMC_PRODUCTION_CONTEXT_ENABLED;
 }
 
-export async function loadSiteGeologicalContext(point: {
-  latitude: number;
-  longitude: number;
-  retrievedAt: string;
-}): Promise<SgmcProductionContext | null> {
-  if (!USGS_SGMC_PRODUCTION_CONTEXT_ENABLED) return null;
+export async function loadSiteGeologicalContext(
+  point: {
+    latitude: number;
+    longitude: number;
+    retrievedAt: string;
+  },
+  options?: { enabled?: boolean }
+): Promise<SgmcProductionContext | null> {
+  const enabled = options?.enabled ?? USGS_SGMC_PRODUCTION_CONTEXT_ENABLED;
+  if (!enabled) return null;
   if (!Number.isFinite(point.latitude) || !Number.isFinite(point.longitude)) return null;
   try {
     return await getProductionGeologicalContext({
@@ -182,6 +186,8 @@ export async function getProductionGeologicalContext(input: {
   retrievedAt: string;
   queryAuthorization?: () => SourceOperationAuthorizationRequest;
   displayAuthorization?: () => SourceOperationAuthorizationRequest;
+  disclosureClassification?: (typeof DisclosureClassification)[keyof typeof DisclosureClassification];
+  admit?: (result: ReturnType<typeof translateSgmcShadowFeature>) => { status: string };
 }): Promise<SgmcProductionContext> {
   const started = Date.now();
   const span = bboxSpan(input.bbox);
@@ -293,7 +299,7 @@ export async function getProductionGeologicalContext(input: {
       quarantined += 1;
       continue;
     }
-    const admission = admitSgmcForGeologicalContext(translated);
+    const admission = (input.admit ?? admitSgmcForGeologicalContext)(translated);
     if (admission.status !== 'ADMITTED') {
       admissionFailures += 1;
       continue;
@@ -331,16 +337,22 @@ export async function getProductionGeologicalContext(input: {
     }
     units.push({ unitName: name, lithology, ageMin, ageMax });
   }
-  if (quarantined > 0 && units.length === 0) {
-    return unavailable('PROVIDER_UNAVAILABLE', input.retrievedAt, 1, 'schema_drift', {
-      failureClass: 'SCHEMA_DRIFT',
-      latencyMs,
-      quarantined,
-      admissionFailures,
-    });
+  if (units.length === 0) {
+    return unavailable(
+      'PROVIDER_UNAVAILABLE',
+      input.retrievedAt,
+      1,
+      admissionFailures > 0 ? 'admission_failure' : 'schema_drift',
+      {
+        failureClass: admissionFailures > 0 ? 'ADMISSION_FAILURE' : 'SCHEMA_DRIFT',
+        latencyMs,
+        quarantined,
+        admissionFailures,
+      }
+    );
   }
   const disclosure = projectSgmcDisclosure(
-    DisclosureClassification.PUBLIC,
+    input.disclosureClassification ?? DisclosureClassification.PUBLIC,
     DisclosurePurpose.PUBLIC_MAP
   );
   if (!shadowMaterializationAllowed(disclosure)) {

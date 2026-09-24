@@ -84,6 +84,7 @@ The Build Document (provided by user) is the master specification. All implement
 34. [USGS SGMC Production Readiness Gate](USGS_SGMC_PRODUCTION_READINESS_GATE.md) is conditionally ready and leaves ordinary-user display closed
 35. [USGS SGMC Public Display Rights](USGS_SGMC_PUBLIC_DISPLAY_RIGHTS.md) grants constrained display of this SGMC release
 36. [USGS SGMC Production Geological Context](USGS_SGMC_PRODUCTION_READ_ONLY_GEOLOGICAL_CONTEXT.md) enables bounded Site Detail geological context only
+37. [USGS SGMC Production Acceptance](USGS_SGMC_PRODUCTION_ACCEPTANCE.md) records a conditional acceptance pending a live signed-in Site Detail check
 
 ## Architecture Constraints
 
