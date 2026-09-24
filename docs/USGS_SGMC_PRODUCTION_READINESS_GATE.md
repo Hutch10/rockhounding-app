@@ -107,4 +107,6 @@ Future tests stay offline in normal CI: unit, contract, replay, and shadow tests
 
 Production implementation stays unauthorized until that condition is closed. If the review grants display, the following implementation phase is `ROCKHOUNDING_SGMC_PRODUCTION_READ_ONLY_GEOLOGICAL_CONTEXT_R1`, still geology-only, read-only, bounded, and fail-closed. If the review refuses display, live authority remains `BOUNDED_REPEATED_SHADOW_READ`.
 
-That condition is now closed. `ROCKHOUNDING_SGMC_PUBLIC_DISPLAY_RIGHTS_REVIEW_R1` recorded `SGMC_PUBLIC_DISPLAY_ALLOWED_WITH_CONSTRAINTS`. This historical section is unchanged as the gate's requirement. The closure does not enable a product surface.
+That condition is now closed. `ROCKHOUNDING_SGMC_PUBLIC_DISPLAY_RIGHTS_REVIEW_R1` recorded `SGMC_PUBLIC_DISPLAY_ALLOWED_WITH_CONSTRAINTS`. This historical section is unchanged as the gate's requirement.
+
+`ROCKHOUNDING_SGMC_PRODUCTION_READ_ONLY_GEOLOGICAL_CONTEXT_R1` later enabled Site Detail only. The historical gate token stays `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1_CONDITIONALLY_READY`.

@@ -124,6 +124,10 @@
     "./usgs-sgmc-repeated-shadow": {
       "types": "./dist/usgs-sgmc-repeated-shadow.d.ts",
       "default": "./dist/usgs-sgmc-repeated-shadow.js"
+    },
+    "./usgs-sgmc-production-context": {
+      "types": "./dist/usgs-sgmc-production-context.d.ts",
+      "default": "./dist/usgs-sgmc-production-context.js"
     }
   },
   "scripts": {

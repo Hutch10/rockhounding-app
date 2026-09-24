@@ -1,9 +1,14 @@
 import { LocationV1Schema } from '@rockhounding/shared';
+import { loadSiteGeologicalContext } from '@rockhounding/shared/usgs-sgmc-production-context';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { z } from 'zod';
 
-import { LocationDetailClient, type LocationDetailV1 } from './LocationDetailClient';
+import {
+  LocationDetailClient,
+  type GeologicalContextView,
+  type LocationDetailV1,
+} from './LocationDetailClient';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -68,6 +73,29 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   }
 }
 
+async function siteGeology(location: LocationDetailV1): Promise<GeologicalContextView | null> {
+  const context = await loadSiteGeologicalContext({
+    latitude: location.latitude,
+    longitude: location.longitude,
+    retrievedAt: new Date().toISOString(),
+  });
+  if (context == null) return null;
+  return {
+    state: context.state,
+    units: context.units,
+    attribution:
+      context.attribution == null
+        ? null
+        : {
+            source: context.attribution.source,
+            product: context.attribution.product,
+            doi: context.attribution.doi,
+          },
+    compilationYear: context.compilationYear,
+    retrievedAt: context.retrievedAt,
+  };
+}
+
 export default async function LocationDetailPage(props: PageProps): Promise<JSX.Element> {
   const params = await props.params;
   const parsed = ParamsSchema.safeParse(params);
@@ -89,7 +117,7 @@ export default async function LocationDetailPage(props: PageProps): Promise<JSX.
           <p className="text-sm text-gray-600 mt-1">{location.description}</p>
         ) : null}
       </header>
-      <LocationDetailClient location={location} />
+      <LocationDetailClient location={location} geology={await siteGeology(location)} />
     </main>
   );
 }

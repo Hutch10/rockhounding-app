@@ -17,14 +17,50 @@ export type LocationDetailV1 = LocationV1 & {
   materials?: { id: string; name: string; abundance: string | null }[];
 };
 
+export type GeologicalContextView = {
+  state:
+    | 'SUCCESS'
+    | 'PROVIDER_UNAVAILABLE'
+    | 'NO_SGMC_POLYGON_RETURNED'
+    | 'OUTSIDE_PROVIDER_COVERAGE'
+    | 'PARTIAL_UNSAFE'
+    | 'DISCLOSURE_WITHHELD'
+    | 'BOUNDS_REJECTED';
+  units: Array<{ unitName: string; lithology: string; ageMin: string; ageMax: string }>;
+  attribution: { source: string; product: string; doi: string } | null;
+  compilationYear: 2017 | null;
+  retrievedAt: string | null;
+};
+
 interface LocationDetailClientProps {
   location: LocationDetailV1;
+  geology?: GeologicalContextView | null;
 }
 
 /**
  * FE-006: Site detail Tier-1 — access banner, trust badge, materials, action row.
  */
-export function LocationDetailClient({ location }: LocationDetailClientProps): JSX.Element {
+function geologyMessage(state: GeologicalContextView['state']): string {
+  switch (state) {
+    case 'SUCCESS':
+      return 'USGS geological source for this site.';
+    case 'NO_SGMC_POLYGON_RETURNED':
+      return 'No SGMC map unit was returned for this location.';
+    case 'OUTSIDE_PROVIDER_COVERAGE':
+      return 'SGMC geological context is not available for this region.';
+    case 'PARTIAL_UNSAFE':
+      return 'SGMC returned an incomplete page. Geological context is not shown as complete.';
+    case 'DISCLOSURE_WITHHELD':
+      return 'Map geometry is withheld.';
+    default:
+      return 'Geological context temporarily unavailable.';
+  }
+}
+
+export function LocationDetailClient({
+  location,
+  geology = null,
+}: LocationDetailClientProps): JSX.Element {
   const trust = trustFromMetadata(location.metadata);
   const accessStatus = normalizeAccessStatus(location.access_status);
   const collectingDisabled = isCollectingDisabled(accessStatus);
@@ -64,6 +100,37 @@ export function LocationDetailClient({ location }: LocationDetailClientProps): J
           </div>
         </div>
       )}
+
+      {geology != null ? (
+        <section
+          aria-label="Geological context"
+          className="rounded-xl border border-stone-300 bg-stone-50 p-3"
+        >
+          <h2 className="text-sm font-bold text-stone-900">Geological context</h2>
+          <p className="mt-1 text-sm text-stone-800">{geologyMessage(geology.state)}</p>
+          <p className="mt-1 text-xs text-stone-700">
+            This is map context only. It does not say whether collecting, access, or travel is
+            allowed. It is not stored for offline use.
+          </p>
+          {geology.state === 'SUCCESS'
+            ? geology.units.map((unit) => (
+                <p key={`${unit.unitName}-${unit.ageMin}`} className="mt-2 text-sm text-stone-900">
+                  {unit.unitName}. {unit.lithology}. Geologic age {unit.ageMin} to {unit.ageMax}.
+                </p>
+              ))
+            : null}
+          {geology.attribution != null ? (
+            <p className="mt-2 text-xs text-stone-700">
+              Source: {geology.attribution.source}, {geology.attribution.product}, DOI{' '}
+              {geology.attribution.doi}. Rockhounding is not a USGS product.
+              {geology.compilationYear != null
+                ? ` Source compilation: ${geology.compilationYear}.`
+                : ''}
+              {geology.retrievedAt != null ? ` Retrieved: ${geology.retrievedAt}.` : ''}
+            </p>
+          ) : null}
+        </section>
+      ) : null}
 
       <div className="flex gap-3 pt-2">
         <button

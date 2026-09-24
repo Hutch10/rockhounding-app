@@ -58,4 +58,4 @@ The explicit grant is `PUBLIC_DISPLAY` on `res-usgs-sgmc-geology` only.
 
 The readiness gate's open condition was `PUBLIC_DISPLAY` = `UNKNOWN`. This review closes that condition. The historical gate decision stays `ROCKHOUNDING_SGMC_PRODUCTION_READINESS_GATE_R1_CONDITIONALLY_READY`. The condition is satisfied by this phase.
 
-Live authority remains `BOUNDED_REPEATED_SHADOW_READ`. Production implementation may begin. Production ingestion and ordinary-user display stay closed until that implementation passes. The display grant does not turn a surface on.
+`ROCKHOUNDING_SGMC_PRODUCTION_READ_ONLY_GEOLOGICAL_CONTEXT_R1` uses this grant on Site Detail. Production ingestion stays closed. The display grant still does not admit evidence or authorize collection.
