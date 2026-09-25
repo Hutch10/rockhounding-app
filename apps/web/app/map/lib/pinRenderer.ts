@@ -35,6 +35,12 @@ export function applyPinStyles(el: HTMLElement, pin: LocationV1, options: PinSty
   el.style.cursor = 'pointer';
   el.dataset.trustCategory = trust;
   el.dataset.accessStatus = status;
+  el.setAttribute('role', 'button');
+  el.tabIndex = 0;
+  el.setAttribute(
+    'aria-label',
+    `${pin.name}. Recorded access status ${status}. This pin is not collecting permission.`
+  );
 
   // The actual visual pin
   const visualPin = document.createElement('div');

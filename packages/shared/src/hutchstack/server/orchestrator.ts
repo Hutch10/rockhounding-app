@@ -83,7 +83,9 @@ function buildRecommendations(components: HarnessComponentResults): string[] {
     recs.push(`Site gaps: ${components.site_verification!.gaps.join(', ')}`);
   }
   if (components.permit_validation?.fail_closed === true) {
-    recs.push('Permit fail-closed: apply caution advisory until resolved.');
+    recs.push(
+      'Recorded access is not cleared. Unknown stays unresolved and is not prohibited. This is not collecting permission.'
+    );
   }
   if (components.moderation != null && !components.moderation.ready) {
     recs.push(`Moderation blockers: ${components.moderation.blockers.join(', ')}`);

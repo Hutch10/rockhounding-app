@@ -9,7 +9,7 @@ function geologyMessage(state: GeologicalContextView['state']): string {
     case 'SUCCESS':
       return 'USGS geological map context for this site.';
     case 'NO_SGMC_POLYGON_RETURNED':
-      return 'No SGMC map unit was returned for this location.';
+      return 'This SGMC query returned no map unit. That is not confirmed absence of geology or of a unit.';
     case 'OUTSIDE_PROVIDER_COVERAGE':
       return 'SGMC geological context is not available for this region.';
     case 'PARTIAL_UNSAFE':

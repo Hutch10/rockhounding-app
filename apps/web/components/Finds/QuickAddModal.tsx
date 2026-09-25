@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { ensureStorageManager } from '@/lib/storage/manager';
+import { saveLocalFieldPhoto } from '@/lib/field/local-photo';
 import { createClient } from '@/lib/supabase/client';
 import { syncManager } from '@/lib/sync/orchestrator';
 import { enqueueFindCreate } from '@/lib/sync/queue';
@@ -29,6 +30,9 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ onClose }) => {
   const [lon, setLon] = useState<string>('');
   const [gpsStatus, setGpsStatus] = useState<'idle' | 'acquiring' | 'ready' | 'denied'>('idle');
   const [accessState, setAccessState] = useState<AccessState>('unknown');
+  const [photoId, setPhotoId] = useState<string | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
 
   const isOffline = typeof navigator !== 'undefined' && !navigator.onLine;
   const canSubmit = canSubmitQuickLog(accessState, isOffline);
@@ -100,9 +104,14 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ onClose }) => {
       return;
     }
 
+    const userNotes = (formData.get('notes') as string) || '';
+    const photoNote =
+      photoId == null
+        ? ''
+        : `\n\nLocal photo ${photoId} is held on this device as a candidate image. It is not a confirmed identification and it is not uploaded with this queue record.`;
     const payload = {
       material_name: String(formData.get('material_name')),
-      notes: (formData.get('notes') as string) || null,
+      notes: `${userNotes}${photoNote}`.trim() || null,
       discovered_at: new Date().toISOString(),
       location: { lat: latNum, lon: lonNum },
     };
@@ -159,7 +168,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ onClose }) => {
           <button
             onClick={onClose}
             aria-label="Close"
-            className="p-2 text-white/50 hover:text-white transition-colors"
+            className="min-h-12 min-w-12 p-2 text-white/50 hover:text-white transition-colors"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
@@ -172,7 +181,58 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ onClose }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4" data-testid="quick-add-form">
+        <form
+          onSubmit={handleSubmit}
+          className="max-h-[70vh] overflow-y-auto p-6 space-y-4"
+          data-testid="quick-add-form"
+        >
+          <div>
+            <label
+              className="block text-[10px] font-bold text-white/40 uppercase mb-1.5 ml-1"
+              htmlFor="quick-log-photo"
+            >
+              Photo first
+            </label>
+            <input
+              id="quick-log-photo"
+              name="photo"
+              type="file"
+              accept="image/*"
+              capture="environment"
+              className="block w-full min-h-12 text-sm text-white"
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (file == null) return;
+                void saveLocalFieldPhoto(file)
+                  .then((id) => {
+                    setPhotoId(id);
+                    setPhotoPreview(URL.createObjectURL(file));
+                    setPhotoError(null);
+                  })
+                  .catch(() => {
+                    setPhotoError(
+                      'The photo stayed out of local storage. You can continue without it.'
+                    );
+                  });
+              }}
+            />
+            <p className="mt-1 text-xs text-white/60">
+              A photo is a candidate observation. It is not a confirmed identification. Skipping a
+              photo does not decide collecting permission.
+            </p>
+            {photoPreview != null ? (
+              // Local blob preview. next/image does not accept this session URL.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={photoPreview}
+                alt="Candidate field photo preview"
+                className="mt-2 max-h-40 rounded-lg"
+              />
+            ) : null}
+            {photoError != null ? (
+              <p className="mt-1 text-xs text-amber-200">{photoError}</p>
+            ) : null}
+          </div>
           {queued && (
             <div className="p-3 bg-emerald-500/20 border border-emerald-500/40 rounded-xl text-emerald-200 text-sm">
               Queued for sync{isOffline ? ' — will upload when back online' : ''}.
@@ -184,7 +244,8 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ onClose }) => {
               className="p-3 bg-rose-500/20 border border-rose-500/40 rounded-xl text-rose-200 text-sm"
               data-testid="quick-add-prohibited-banner"
             >
-              Collection is prohibited at this location. Quick Log is disabled.
+              Recorded access status is prohibited, so Quick Log save is held while online. This is
+              not a collecting verdict. A candidate observation is not a confirmed identification.
             </div>
           )}
 
@@ -211,7 +272,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ onClose }) => {
                 disabled={isProhibited}
                 className="w-full px-2 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-blue-500 transition-colors disabled:opacity-50 text-sm"
               >
-                <option value="identified">Identified</option>
+                <option value="identified">Candidate ID — not confirmed</option>
                 <option value="possible">Possible ID</option>
                 <option value="unknown">Unknown</option>
               </select>

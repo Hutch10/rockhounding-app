@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 import Providers from './providers';
 
 import { ConnectivityListener } from '@/components/ConnectivityListener';
+import { HighGlareBoot } from '@/components/Field/HighGlareControl';
 import { MainShell } from '@/components/Navigation/MainShell';
 import { SyncStatusPanel } from '@/components/Sync/SyncStatusPanel';
 
@@ -19,7 +20,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
   themeColor: '#000000',
 };
 
@@ -28,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
     <html lang="en">
       <body>
         <Providers>
+          <HighGlareBoot />
           <MainShell>{children}</MainShell>
           <ConnectivityListener />
           <SyncStatusPanel />

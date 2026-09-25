@@ -55,7 +55,7 @@ export function BottomTabNav(): JSX.Element | null {
             <li key={href} className="flex-1">
               <Link
                 href={href}
-                className={`flex min-h-[44px] flex-col items-center justify-center gap-0.5 rounded-xl px-2 py-1 text-[10px] font-bold uppercase tracking-wider transition-colors ${
+                className={`flex min-h-12 min-w-12 flex-col items-center justify-center gap-0.5 rounded-xl px-2 py-1 text-[10px] font-bold uppercase tracking-wider transition-colors ${
                   active
                     ? 'text-blue-400'
                     : isField && fieldActive

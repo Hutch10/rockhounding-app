@@ -1,6 +1,6 @@
 /**
  * UI Components
- * 
+ *
  * Reusable components with mobile-first layouts and dark mode support
  */
 
@@ -38,31 +38,25 @@ export function StatCard({ label, value, icon, trend, loading }: StatCardProps) 
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-            {label}
-          </p>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white">
-            {value}
-          </p>
+          <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">{label}</p>
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">{value}</p>
         </div>
         {icon && (
-          <div className="flex-shrink-0 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-            {icon}
-          </div>
+          <div className="flex-shrink-0 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">{icon}</div>
         )}
       </div>
       {trend && (
         <div className="mt-4 flex items-center gap-1">
-          <span className={`text-sm font-medium ${
-            trend.direction === 'up' 
-              ? 'text-green-600 dark:text-green-400' 
-              : 'text-red-600 dark:text-red-400'
-          }`}>
+          <span
+            className={`text-sm font-medium ${
+              trend.direction === 'up'
+                ? 'text-green-600 dark:text-green-400'
+                : 'text-red-600 dark:text-red-400'
+            }`}
+          >
             {trend.direction === 'up' ? '↑' : '↓'} {Math.abs(trend.value)}%
           </span>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
-            vs last period
-          </span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">vs last period</span>
         </div>
       )}
     </div>
@@ -86,9 +80,7 @@ export function MetricCard({ title, children, action, loading, cacheStatus }: Me
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            {title}
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
           <div className="flex items-center gap-2">
             {cacheStatus && <CacheStatusBadge status={cacheStatus} />}
             {action}
@@ -122,12 +114,12 @@ export interface ProgressBarProps {
   showPercentage?: boolean;
 }
 
-export function ProgressBar({ 
-  value, 
-  max = 100, 
-  color = 'blue', 
-  label, 
-  showPercentage = true 
+export function ProgressBar({
+  value,
+  max = 100,
+  color = 'blue',
+  label,
+  showPercentage = true,
 }: ProgressBarProps) {
   const percentage = Math.min((value / max) * 100, 100);
 
@@ -142,9 +134,7 @@ export function ProgressBar({
     <div>
       {label && (
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            {label}
-          </span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
           {showPercentage && (
             <span className="text-sm text-gray-500 dark:text-gray-400">
               {percentage.toFixed(0)}%
@@ -192,7 +182,9 @@ export function Badge({ children, variant = 'default', size = 'md' }: BadgeProps
   };
 
   return (
-    <span className={`inline-flex items-center rounded-full font-medium ${variantClasses[variant]} ${sizeClasses[size]}`}>
+    <span
+      className={`inline-flex items-center rounded-full font-medium ${variantClasses[variant]} ${sizeClasses[size]}`}
+    >
       {children}
     </span>
   );
@@ -208,15 +200,19 @@ export interface CacheStatusBadgeProps {
 
 export function CacheStatusBadge({ status }: CacheStatusBadgeProps) {
   const statusConfig = {
-    FRESH: { label: 'Fresh', variant: 'success' as const },
-    STALE: { label: 'Stale', variant: 'warning' as const },
+    FRESH: { label: 'Cached copy', variant: 'default' as const },
+    STALE: { label: 'Cached — recheck', variant: 'default' as const },
     CALCULATING: { label: 'Calculating', variant: 'info' as const },
     ERROR: { label: 'Error', variant: 'error' as const },
   };
 
   const config = statusConfig[status];
 
-  return <Badge variant={config.variant} size="sm">{config.label}</Badge>;
+  return (
+    <Badge variant={config.variant} size="sm">
+      {config.label}
+    </Badge>
+  );
 }
 
 // =====================================================
@@ -235,14 +231,10 @@ export function EmptyState({ icon, title, description, action }: EmptyStateProps
     <div className="text-center py-12">
       {icon && (
         <div className="flex justify-center mb-4">
-          <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded-full">
-            {icon}
-          </div>
+          <div className="p-3 bg-gray-100 dark:bg-gray-800 rounded-full">{icon}</div>
         </div>
       )}
-      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-        {title}
-      </h3>
+      <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{title}</h3>
       {description && (
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
           {description}
@@ -270,7 +262,11 @@ export function LoadingSpinner({ size = 'md', label }: LoadingSpinnerProps) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-8" role="status" aria-live="polite">
+    <div
+      className="flex flex-col items-center justify-center py-8"
+      role="status"
+      aria-live="polite"
+    >
       <svg
         className={`animate-spin text-blue-600 dark:text-blue-400 ${sizeClasses[size]}`}
         xmlns="http://www.w3.org/2000/svg"
@@ -291,11 +287,7 @@ export function LoadingSpinner({ size = 'md', label }: LoadingSpinnerProps) {
           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
         />
       </svg>
-      {label && (
-        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-          {label}
-        </p>
-      )}
+      {label && <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{label}</p>}
       <span className="sr-only">{label || 'Loading'}</span>
     </div>
   );
@@ -325,11 +317,7 @@ export function GridLayout({ children, cols = 3, gap = 'md' }: GridLayoutProps) 
     lg: 'gap-8',
   };
 
-  return (
-    <div className={`grid ${colsClasses[cols]} ${gapClasses[gap]}`}>
-      {children}
-    </div>
-  );
+  return <div className={`grid ${colsClasses[cols]} ${gapClasses[gap]}`}>{children}</div>;
 }
 
 // =====================================================
@@ -347,13 +335,9 @@ export function SectionHeader({ title, description, action }: SectionHeaderProps
     <div className="mb-6">
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            {title}
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{title}</h2>
           {description && (
-            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-              {description}
-            </p>
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{description}</p>
           )}
         </div>
         {action && <div className="ml-4">{action}</div>}

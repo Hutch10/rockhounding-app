@@ -6,6 +6,8 @@ import { Compass, MapPin, Plus, Wifi, WifiOff, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
+import { FieldPermissionSummary } from '@/components/Access/FieldPermissionSummary';
+import { HighGlareToggle } from '@/components/Field/HighGlareControl';
 import { QuickAddModal } from '@/components/Finds/QuickAddModal';
 import { TrustBadge, trustFromMetadata } from '@/components/Trust/TrustBadge';
 import { findNearestSite, formatDistance, type NearestSiteResult } from '@/lib/gis/nearestSite';
@@ -26,6 +28,7 @@ export function FieldModeClient(): JSX.Element {
   const [nearest, setNearest] = useState<NearestSiteResult | null>(null);
   const [geoError, setGeoError] = useState<string | null>(null);
   const [quickLogOpen, setQuickLogOpen] = useState(false);
+  const [selectedSite, setSelectedSite] = useState<LocationV1 | null>(null);
 
   useEffect(() => {
     setOnline(navigator.onLine);
@@ -94,6 +97,9 @@ export function FieldModeClient(): JSX.Element {
     maxZoom: 18,
   };
 
+  const sheetSite = selectedSite ?? nearest?.site ?? null;
+  const sheetDistance = selectedSite == null ? nearest?.distanceM : null;
+
   return (
     <div
       className="relative w-screen h-[100dvh] bg-[var(--slate-900)] overflow-hidden"
@@ -101,51 +107,82 @@ export function FieldModeClient(): JSX.Element {
     >
       {/* Map Background */}
       <div className="absolute inset-0 z-0">
-        <MapClient config={mapConfig} />
+        <MapClient
+          config={mapConfig}
+          onPinSelect={(pin) => {
+            setSelectedSite(pin);
+          }}
+        />
       </div>
 
       {/* Top Status Strip Overlay (Persistent Field Status) */}
       <header className="absolute top-0 left-0 right-0 z-10 px-4 pt-safe-top pb-3 bg-gradient-to-b from-black/80 to-transparent pointer-events-none">
         <div className="flex items-center justify-between pt-4 pointer-events-auto">
-          <div className="flex items-center gap-2 bg-black/60 backdrop-blur-md rounded-full pr-4 pl-1 py-1 border border-white/10 shadow-lg">
+          <div
+            className="flex items-center gap-2 bg-black/60 backdrop-blur-md rounded-full pr-4 pl-1 py-1 border border-white/10 shadow-lg"
+            data-testid="field-gps-strip"
+            data-high-glare-surface
+          >
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center ${online ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}
             >
               {online ? <Wifi className="w-4 h-4" /> : <WifiOff className="w-4 h-4" />}
             </div>
             <div className="flex flex-col">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-white leading-tight">
+              <span
+                data-testid="field-connectivity-pill"
+                className="text-[10px] font-bold uppercase tracking-widest text-white leading-tight"
+              >
                 {online ? 'Online' : 'Offline'}
               </span>
               <span className="text-[9px] text-white/60 font-mono leading-tight">{gpsLabel}</span>
             </div>
           </div>
 
-          <Link
-            href="/dashboard"
-            className="w-10 h-10 bg-black/60 backdrop-blur-md rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 active:scale-95 transition-transform"
-            aria-label="More options"
-          >
-            <Menu className="w-5 h-5" />
-          </Link>
+          <div className="flex items-center gap-2">
+            <HighGlareToggle />
+            <Link
+              href="/dashboard"
+              className="min-h-12 min-w-12 bg-black/60 backdrop-blur-md rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 active:scale-95 transition-transform"
+              aria-label="More options"
+            >
+              <Menu className="w-5 h-5" />
+            </Link>
+          </div>
         </div>
       </header>
 
       {/* Selected Site Bottom Sheet (Simplified for now) */}
-      {nearest != null && (
-        <div className="absolute bottom-28 left-4 right-4 z-10 pointer-events-auto">
-          <div className="bg-[#1e293b]/95 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl flex items-center justify-between">
-            <div className="flex-1 pr-4">
-              <h3 className="text-white font-bold text-sm line-clamp-1">{nearest.site.name}</h3>
-              <div className="flex items-center gap-2 mt-1">
-                <TrustBadge trustCategory={trustFromMetadata(nearest.site.metadata)} size="sm" />
-                <span className="text-[10px] text-white/50 uppercase tracking-widest">
-                  {formatDistance(nearest.distanceM)}
-                </span>
+      {sheetSite != null && (
+        <div className="absolute bottom-28 left-3 right-3 z-10 max-h-[46vh] overflow-y-auto pointer-events-auto">
+          <div
+            data-high-glare-surface
+            className="bg-[#1e293b]/95 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"
+          >
+            <div className="min-w-0 flex-1">
+              <h3 className="text-white font-bold text-sm break-words">{sheetSite.name}</h3>
+              <div className="flex flex-wrap items-center gap-2 mt-1">
+                <TrustBadge trustCategory={trustFromMetadata(sheetSite.metadata)} size="sm" />
+                {sheetDistance != null ? (
+                  <span className="text-[10px] text-white/50 uppercase tracking-widest">
+                    {formatDistance(sheetDistance)}
+                  </span>
+                ) : (
+                  <span className="text-[10px] text-white/50 uppercase tracking-widest">
+                    Selected pin
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-[10px] text-white/70">
+                Map pin. Recorded access status {sheetSite.access_status} is not collecting
+                permission.
+              </p>
+              <div className="mt-2">
+                <FieldPermissionSummary recordedAccessStatus={sheetSite.access_status} />
               </div>
             </div>
             <Link
-              href={`/location/${nearest.site.id}`}
+              href={`/location/${sheetSite.id}`}
               className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors"
               style={{ minHeight: '48px', minWidth: '48px', display: 'flex', alignItems: 'center' }}
             >
@@ -156,7 +193,7 @@ export function FieldModeClient(): JSX.Element {
       )}
 
       {/* Quick Log FAB */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 pointer-events-auto pb-safe">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[60] pointer-events-auto pb-safe">
         <button
           type="button"
           onClick={() => setQuickLogOpen(true)}

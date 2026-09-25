@@ -16,9 +16,11 @@ export const SyncStatusPanel: React.FC<{ inline?: boolean }> = ({ inline = false
   const { pendingCount, failedCount, isSyncing, lastSyncAt, triggerSync } = useSyncState();
   const pathname = usePathname();
   const isLoginPage = pathname === '/login';
+  const isFieldMode = pathname === '/field' || pathname.startsWith('/field/');
 
   // Prevent duplicate floating panel on login page
-  if (isLoginPage && !inline) {
+  // Field Mode has its own status strip; the floating panel would cover Quick Log.
+  if ((isLoginPage || isFieldMode) && !inline) {
     return null;
   }
 

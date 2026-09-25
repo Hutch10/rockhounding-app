@@ -7,10 +7,12 @@ export type QuickLogAccessState =
   | 'checking';
 
 /**
- * Whether Quick Log submit is permitted for the current access + connectivity state.
+ * Whether a Quick Log observation may be enqueued.
+ * Enqueue is not collecting permission and is not a legal verdict.
  *
- * Offline: access API is unavailable — submit is allowed (deferred enforcement on sync).
- * Online + prohibited: submit is blocked (MVP-M5).
+ * Offline: the access check is unavailable. The record stays unresolved and may still be queued.
+ * Unavailable is not allowed, and it is not prohibited.
+ * Online + recorded prohibited: enqueue is held. The hold is not a collecting verdict.
  */
 export function canSubmitQuickLog(accessState: QuickLogAccessState, isOffline: boolean): boolean {
   if (isOffline) return true;
@@ -21,8 +23,9 @@ export function canSubmitQuickLog(accessState: QuickLogAccessState, isOffline: b
 
 export function describeOfflineProhibitedBehavior(): string {
   return (
-    'While offline, Quick Log skips /api/v1/access/check, sets accessState to unknown, ' +
-    'and allows enqueue. Prohibited-site blocking applies only when online with a ' +
-    'successful access check returning legalState=prohibited. Deferred review occurs at sync time.'
+    'While offline, Quick Log skips /api/v1/access/check and records accessState as unknown. ' +
+    'The observation may be queued. Queueing is not collecting permission. ' +
+    'A recorded prohibited status holds enqueue only when online and the access check returns that status. ' +
+    'Deferred review at sync time does not rewrite the original observation.'
   );
 }

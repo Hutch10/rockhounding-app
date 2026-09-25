@@ -16,27 +16,39 @@ type BannerConfig = {
 const BANNER_CONFIG: Record<AccessStatus, BannerConfig> = {
   prohibited: {
     show: true,
-    title: 'Access Prohibited',
-    body: 'Collecting is strictly forbidden in this zone.',
+    title: 'Recorded access status: prohibited',
+    body: 'This is a recorded access status. It is not a collecting verdict, and it does not decide visit, observation, photography, or entry.',
     className: 'bg-rose-950/90 border-rose-500 text-rose-100',
-    icon: '🚫',
+    icon: '!',
   },
   restricted: {
     show: true,
-    title: 'Restricted Access',
-    body: 'Specific permits or seasonal restrictions apply.',
+    title: 'Recorded access status: restricted',
+    body: 'A permit or seasonal note is not current entry authorization. Collecting stays unresolved.',
     className: 'bg-orange-950/90 border-orange-500 text-orange-100',
-    icon: '🚫',
+    icon: '!',
   },
   caution: {
     show: true,
-    title: 'Proceed with Caution',
-    body: 'Verify land boundaries and local rules before collecting.',
+    title: 'Recorded access status: caution',
+    body: 'Boundaries and rules remain unresolved. This status does not grant collecting permission.',
     className: 'bg-amber-950/90 border-amber-500 text-amber-100',
-    icon: '⚠️',
+    icon: '!',
   },
-  allowed: { show: false, title: '', body: '', className: '', icon: '' },
-  unknown: { show: false, title: '', body: '', className: '', icon: '' },
+  allowed: {
+    show: true,
+    title: 'Recorded access status: allowed',
+    body: 'A recorded allowed status is not collecting permission, ownership permission, or current entry authorization.',
+    className: 'bg-emerald-950/90 border-emerald-500 text-emerald-100',
+    icon: 'i',
+  },
+  unknown: {
+    show: true,
+    title: 'Recorded access status: unresolved',
+    body: 'Unknown stays unresolved. It is not allowed, and it is not prohibited.',
+    className: 'bg-slate-900/90 border-slate-400 text-slate-100',
+    icon: '?',
+  },
 };
 
 export function AccessBanner({
@@ -80,6 +92,10 @@ export function normalizeAccessStatus(value: string | undefined): AccessStatus {
   return 'unknown';
 }
 
+/**
+ * Holds Quick Log save for recorded prohibited or restricted access.
+ * The hold is operational. It is not a collecting verdict.
+ */
 export function isCollectingDisabled(accessStatus: string | undefined): boolean {
   const status = normalizeAccessStatus(accessStatus);
   return status === 'prohibited' || status === 'restricted';

@@ -80,8 +80,17 @@ export function evaluatePermitValidation(input: PermitValidationInput): PermitVa
     }
   } else {
     reason_codes.push('never_verified');
-    is_stale = true;
+    // A missing verification time is not a stale record and is not an invented timestamp.
+    is_stale = false;
     confidence_penalty += 0.2;
+  }
+
+  reason_codes.push('recorded_access_status_is_not_collecting_permission');
+  if (permit_status === 'unknown') {
+    reason_codes.push('unknown_is_not_prohibited');
+  }
+  if (advisory_level === 'safe') {
+    reason_codes.push('advisory_safe_is_not_collecting_permission');
   }
 
   if (input.material_restricted === true) {

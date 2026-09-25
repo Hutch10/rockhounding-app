@@ -4,8 +4,8 @@
  */
 
 /**
- * Legal status for collecting at a location
- * Drives legal gating UI logic
+ * Recorded location tag from the build document.
+ * A tag is not current collecting permission or entry authorization.
  */
 export enum LegalTag {
   LEGAL_PUBLIC = 'LEGAL_PUBLIC',
@@ -27,8 +27,8 @@ export enum SourceTier {
 }
 
 /**
- * Operational status of a location
- * Indicates whether the site is currently accessible
+ * Recorded operational status of a location.
+ * OPEN is not collecting permission. CLOSED is not a collecting verdict.
  */
 export enum Status {
   OPEN = 'OPEN',

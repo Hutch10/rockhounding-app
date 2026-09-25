@@ -7,8 +7,8 @@ import { createClient } from '@/lib/supabase/server';
 /**
  * ACCESS CHECK API (V1)
  *
- * Performs high-precision geospatial intersection to determine legal
- * collection status at a specific coordinate.
+ * Returns the recorded access-check contract for a coordinate.
+ * The response is not collecting permission, ownership permission, or current entry authorization.
  */
 
 export async function POST(req: NextRequest) {

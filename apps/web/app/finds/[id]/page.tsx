@@ -118,13 +118,13 @@ export default async function FindDetailPage({
           <div className="space-y-8">
             <div className="p-6 bg-zinc-900 border border-white/10 rounded-2xl shadow-xl">
               <h2 className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-6">
-                Confidence Matrix
+                Recorded confidence
               </h2>
 
               <div className="space-y-6">
                 <div>
                   <div className="flex justify-between items-end mb-2">
-                    <span className="text-xs text-white/60">Total Intelligence</span>
+                    <span className="text-xs text-white/60">Recorded confidence score</span>
                     <span className="text-xl font-bold text-blue-400">
                       {Math.round((confidenceMetrics.total ?? 0) * 100)}%
                     </span>
@@ -162,12 +162,29 @@ export default async function FindDetailPage({
 
             <div className="p-6 bg-blue-600/10 border border-blue-500/20 rounded-2xl">
               <h2 className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-3">
-                Sync Metadata
+                Sync metadata
               </h2>
+              <p className="mb-2 text-[11px] text-blue-100/80">
+                A cached or queued copy is not the current record. Confidence is not certainty and
+                is not a confirmed identification.
+              </p>
               <div className="text-[11px] text-blue-200/60 font-mono break-all font-light">
                 KEY: {find.idempotency_key}
               </div>
             </div>
+
+            <section
+              className="p-6 bg-zinc-900 border border-white/10 rounded-2xl"
+              aria-label="Provenance"
+            >
+              <h2 className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-3">
+                Provenance
+              </h2>
+              <p className="text-sm text-white/80">
+                No provenance events are appended from this screen. Provenance would explain
+                lineage. It would not create truth, and a later note would be a new record.
+              </p>
+            </section>
           </div>
         </div>
       </main>

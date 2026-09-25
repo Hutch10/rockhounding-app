@@ -73,26 +73,33 @@ export default function MapPage(): JSX.Element {
         <MapClient config={MAP_CONFIG} />
 
         {/* Map Overlays */}
-        <div className="absolute top-6 left-6 z-20 w-72 space-y-4">
+        <div className="absolute top-3 left-3 z-20 max-w-[min(18rem,calc(100vw-1.5rem))] space-y-4">
           <div className="p-4 bg-zinc-900/90 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl">
             <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-3">
-              Land Access Engine
+              Recorded access display
+            </p>
+            <p className="text-[11px] text-white/70 mb-3 leading-relaxed">
+              Pin fill shows a recorded access status. A pin on the map is not collecting
+              permission.
             </p>
             <div className="space-y-2 text-xs text-white/80">
               <p className="text-[9px] font-bold text-white/40 uppercase tracking-widest">
-                Fill = Access
+                Fill = recorded access status
               </p>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" /> Allowed
+                <span className="w-2 h-2 rounded-full bg-emerald-500" /> Recorded allowed
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-amber-500" /> Caution
+                <span className="w-2 h-2 rounded-full bg-amber-500" /> Recorded caution
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-orange-500" /> Restricted
+                <span className="w-2 h-2 rounded-full bg-orange-500" /> Recorded restricted
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-rose-500" /> Prohibited
+                <span className="w-2 h-2 rounded-full bg-rose-500" /> Recorded prohibited
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-slate-500" /> Recorded unresolved
               </div>
               <p className="text-[9px] font-bold text-white/40 uppercase tracking-widest pt-1">
                 Ring = Trust

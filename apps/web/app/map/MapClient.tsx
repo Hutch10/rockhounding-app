@@ -16,13 +16,16 @@ import { ZOOM_THRESHOLDS } from './types';
 
 interface MapClientProps {
   config: MapConfig;
+  onPinSelect?: (pin: LocationV1) => void;
 }
 
-export function MapClient({ config }: MapClientProps): JSX.Element {
+export function MapClient({ config, onPinSelect }: MapClientProps): JSX.Element {
   const mapContainer = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<MapboxMap | null>(null);
   const [mapConfigError, setMapConfigError] = useState<string | null>(null);
   const markersRef = useRef<Marker[]>([]);
+  const onPinSelectRef = useRef(onPinSelect);
+  onPinSelectRef.current = onPinSelect;
 
   const { pins, loading, error } = useMapPins({ map });
 
@@ -86,6 +89,10 @@ export function MapClient({ config }: MapClientProps): JSX.Element {
     pins.forEach((pin: LocationV1) => {
       const el = document.createElement('div');
       applyPinStyles(el, pin, { zoom, simplified });
+
+      el.addEventListener('click', () => {
+        onPinSelectRef.current?.(pin);
+      });
 
       const marker = new mapboxgl.Marker(el)
         .setLngLat([pin.longitude ?? 0, pin.latitude ?? 0])

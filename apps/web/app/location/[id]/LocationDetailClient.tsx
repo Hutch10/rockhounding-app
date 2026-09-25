@@ -9,6 +9,7 @@ import {
   isCollectingDisabled,
   normalizeAccessStatus,
 } from '@/components/Access/AccessBanner';
+import { FieldPermissionSummary } from '@/components/Access/FieldPermissionSummary';
 import { TrustBadge, trustFromMetadata } from '@/components/Trust/TrustBadge';
 import { openExternalMaps } from '@/lib/gis/openExternalMaps';
 
@@ -53,6 +54,7 @@ export function LocationDetailClient({
   return (
     <div className="space-y-4" data-testid="site-detail">
       <AccessBanner accessStatus={accessStatus} />
+      <FieldPermissionSummary recordedAccessStatus={accessStatus} />
 
       <div className="flex flex-wrap items-center gap-2">
         <TrustBadge trustCategory={trust} />
@@ -64,8 +66,17 @@ export function LocationDetailClient({
       </div>
 
       {location.collecting_summary != null && location.collecting_summary !== '' ? (
-        <p className="text-sm text-gray-700">{location.collecting_summary}</p>
+        <p className="text-sm text-gray-700">
+          Recorded collecting note: {location.collecting_summary}. This note is not collecting
+          permission.
+        </p>
       ) : null}
+
+      <p className="text-sm text-gray-700">
+        {location.permit_summary != null && location.permit_summary !== ''
+          ? `Recorded permit note: ${location.permit_summary}. A permit note is not current entry authorization.`
+          : 'No permit note is on this record. That absence is not a decision that a permit is unnecessary.'}
+      </p>
 
       {materials.length > 0 && (
         <div>
@@ -97,16 +108,20 @@ export function LocationDetailClient({
             }
           }}
           disabled={location.fuzzy_location?.lat == null || location.fuzzy_location.lon == null}
-          className="flex-1 min-h-[44px] px-4 py-2 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 disabled:opacity-40"
+          className="flex-1 min-h-12 px-4 py-2 bg-gray-900 text-white rounded-xl text-sm font-bold hover:bg-gray-800 disabled:opacity-40"
         >
           Navigate
         </button>
         <button
           type="button"
           disabled={collectingDisabled}
-          title={collectingDisabled ? 'Collecting disabled for this access status' : undefined}
+          title={
+            collectingDisabled
+              ? 'Quick Log save is held for this recorded access status. The hold is not a collecting verdict.'
+              : 'Quick Log records a candidate observation. It does not authorize collecting.'
+          }
           data-testid="quick-log-button"
-          className="flex-1 min-h-[44px] px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="flex-1 min-h-12 px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Quick Log
         </button>
@@ -114,7 +129,8 @@ export function LocationDetailClient({
 
       {collectingDisabled && (
         <p className="text-xs text-rose-700 bg-rose-50 border border-rose-200 rounded-lg p-3">
-          Quick Log is disabled — this site has {accessStatus} access status.
+          Quick Log save is held while the recorded access status is {accessStatus}. That status
+          does not decide collecting, and unknown is not treated as allowed.
         </p>
       )}
 

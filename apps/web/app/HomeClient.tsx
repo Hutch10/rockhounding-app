@@ -97,7 +97,9 @@ export function HomeClient(): JSX.Element {
               <TrustBadge trustCategory={trustFromMetadata(nearest.site.metadata)} size="sm" />
               <span className="text-xs text-white/50">{formatDistance(nearest.distanceM)}</span>
               {nearest.withinGeofence ? (
-                <span className="text-[10px] font-bold text-emerald-400 uppercase">In range</span>
+                <span className="text-[10px] font-bold text-emerald-400 uppercase">
+                  Within distance window
+                </span>
               ) : null}
             </div>
             <Link
@@ -115,14 +117,14 @@ export function HomeClient(): JSX.Element {
       <div className="grid grid-cols-2 gap-3 pt-2">
         <Link
           href="/map"
-          className="min-h-[44px] flex items-center justify-center gap-2 rounded-xl bg-blue-600 text-white text-xs font-bold uppercase tracking-wider hover:bg-blue-500"
+          className="min-h-12 flex items-center justify-center gap-2 rounded-xl bg-blue-600 text-white text-xs font-bold uppercase tracking-wider hover:bg-blue-500"
         >
           <Map className="w-4 h-4" />
           Open Map
         </Link>
         <Link
           href="/finds"
-          className="min-h-[44px] flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/10"
+          className="min-h-12 flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/10"
         >
           <Plus className="w-4 h-4" />
           Quick Log
