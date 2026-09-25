@@ -13,13 +13,13 @@
 
 ## Repository identity
 
-| Item                   | Value                                                  |
-| ---------------------- | ------------------------------------------------------ |
-| Workspace              | `C:\Users\hetfw\Rockhounding Project`                  |
-| Branch                 | `feat/sprint-4-field-mode`                             |
-| Starting SHA           | `2553d733aa5e4999051ae9bcb8a5dbe4c2ae3558`             |
-| Final local commit SHA | _(branch tip after freeze docs stamp)_                 |
-| Origin tracking        | `origin/feat/sprint-4-field-mode` — no push this phase |
+| Item                   | Value                                                      |
+| ---------------------- | ---------------------------------------------------------- |
+| Workspace              | `C:\Users\hetfw\Rockhounding Project`                      |
+| Branch                 | `feat/sprint-4-field-mode`                                 |
+| Starting SHA           | `2553d733aa5e4999051ae9bcb8a5dbe4c2ae3558`                 |
+| Final local commit SHA | Branch tip after freeze commits (see `git rev-parse HEAD`) |
+| Origin tracking        | `origin/feat/sprint-4-field-mode` — no push this phase     |
 
 ## Root-lint baseline proof
 
