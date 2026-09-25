@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap');
 
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* Tactical Dashboard Color Palette */
   --background: #0a0c10;
@@ -177,4 +180,38 @@ h1, h2, h3, h4 {
     grid-template-columns: 1fr;
     height: auto;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 2px;
+}
+
+html[data-high-glare='on'] {
+  --background: #fffdf8;
+  --foreground: #1c1917;
+  --surface: #fff7e8;
+  --muted-foreground: #44403c;
+}
+
+html[data-high-glare='on'] body {
+  background: #fffdf8;
+  color: #1c1917;
+}
+
+html[data-high-glare='on'] [data-high-glare-surface] {
+  background: #fff8e6 !important;
+  color: #1c1917 !important;
+  border-color: #1c1917 !important;
 }
