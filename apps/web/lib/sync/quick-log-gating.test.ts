@@ -12,6 +12,8 @@ describe('quick-log-gating', () => {
   });
 
   it('documents offline prohibited behavior', () => {
-    expect(describeOfflineProhibitedBehavior()).toMatch(/access\/check/);
+    const description = describeOfflineProhibitedBehavior();
+    expect(description).toMatch(/access\/check/);
+    expect(description).toMatch(/not collecting permission/);
   });
 });
