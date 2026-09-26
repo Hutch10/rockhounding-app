@@ -49,6 +49,8 @@ async function processFindCreate(
       notes: payload.notes ?? null,
       discovered_at: payload.discovered_at ?? new Date().toISOString(),
       exact_location: toGeographyWkt(lat, lon),
+      // Override DB default that does not match FindV1 ConfidenceBreakdownSchema.
+      confidence_metrics: { total: 0, metrics: {} },
       client_operation_id: clientOperationId,
       idempotency_key: idempotencyKey,
     })

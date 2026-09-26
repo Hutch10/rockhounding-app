@@ -87,8 +87,14 @@ export class SyncManager {
         throw new Error(errBody.error || `Sync failed: ${response.statusText}`);
       }
 
-      const result = SyncBatchResponseSchema.parse(await response.json());
-      await this.handleSyncResults(result, readyOps);
+      const rawBody: unknown = await response.json();
+      const parsed = SyncBatchResponseSchema.safeParse(rawBody);
+      if (!parsed.success) {
+        throw new Error(
+          `Sync response contract mismatch: ${parsed.error.issues.map((i) => i.message).join('; ')}`
+        );
+      }
+      await this.handleSyncResults(parsed.data, readyOps);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Network/Server Error';
       console.error('SyncManager: Batch process failed:', message);

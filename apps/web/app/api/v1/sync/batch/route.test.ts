@@ -135,6 +135,7 @@ describe('processSyncBatch (TEST-002)', () => {
         exact_location: 'SRID=4326;POINT(-120.5 35.5)',
         material_name: 'Smoky Quartz',
         client_operation_id: CLIENT_OP_ID,
+        confidence_metrics: { total: 0, metrics: {} },
       })
     );
   });
