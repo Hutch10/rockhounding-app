@@ -1,7 +1,8 @@
-import { FindV1Schema, type FindV1 } from '@rockhounding/shared';
+import type { FindV1 } from '@rockhounding/shared';
 import Link from 'next/link';
 import React from 'react';
 
+import { mapFindRowsToV1 } from '@/lib/finds/map-find-row';
 import { createClient } from '@/lib/supabase/server';
 
 /**
@@ -21,14 +22,17 @@ async function getFinds(): Promise<FindV1[]> {
 
   const { data, error } = await supabase
     .from('finds')
-    .select('*')
+    .select(
+      'id, user_id, trip_id, material_name, material_taxonomy_id, is_fuzzy, confidence_metrics, notes, discovered_at, created_at, idempotency_key'
+    )
     .eq('user_id', user.id)
     .order('discovered_at', { ascending: false });
 
   if (error !== null || data === null) {
     return [];
   }
-  return data.map((row) => FindV1Schema.parse(row));
+  // Never throw on row shape — empty or partial maps render safely after sync.
+  return mapFindRowsToV1(data);
 }
 
 export default async function FindsPage(): Promise<React.JSX.Element> {
