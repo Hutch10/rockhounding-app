@@ -3,11 +3,11 @@ import { test, expect } from '@playwright/test';
 test.describe('FE-010 Field Mode shell', () => {
   test('CB-F1: enters Field Mode in one tap from Home', async ({ page }) => {
     await page.goto('/');
-    await page
+    const fieldLink = page
       .getByRole('navigation', { name: 'Main navigation' })
-      .getByRole('link', { name: 'Field' })
-      .click();
-    await expect(page).toHaveURL(/\/field/);
+      .getByRole('link', { name: 'Field' });
+    await expect(fieldLink).toBeVisible();
+    await Promise.all([page.waitForURL(/\/field/), fieldLink.click()]);
     await expect(page.getByTestId('field-mode-shell')).toBeVisible();
   });
 
@@ -25,12 +25,23 @@ test.describe('FE-010 Field Mode shell', () => {
 
     await page.goto('/field');
     await expect(page.getByTestId('field-gps-strip')).toBeVisible();
+    await expect(page.getByTestId('high-glare-toggle')).toBeVisible();
     const fab = page.getByTestId('field-quick-log-fab');
     await fab.scrollIntoViewIfNeeded();
     await expect(fab).toBeVisible();
     const box = await fab.boundingBox();
     expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
     expect(box?.width ?? 0).toBeGreaterThanOrEqual(44);
+  });
+
+  test('CB-HG: High-Glare toggle persists on documentElement', async ({ page }) => {
+    await page.goto('/field');
+    const toggle = page.getByTestId('high-glare-toggle');
+    await expect(toggle).toBeVisible();
+    await toggle.click();
+    await expect.poll(async () => page.locator('html').getAttribute('data-high-glare')).toBe('on');
+    await page.reload();
+    await expect.poll(async () => page.locator('html').getAttribute('data-high-glare')).toBe('on');
   });
 
   test('CB-F4: nearest site card renders when GPS and locations available', async ({
