@@ -28,3 +28,4 @@
 - Not owner-browser acceptance complete.
 - No physical device run (Chromium Pixel 5 + viewport matrix only).
 - Production env values not applied by agent (owner-only).
+- OPRD trust pack lives in `04-trust-*` artifacts only; Supabase sprint2 demo seed is not replaced in-app until a separate ingest phase.

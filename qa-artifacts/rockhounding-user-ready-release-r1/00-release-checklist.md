@@ -1,9 +1,8 @@
 # ROCKHOUNDING — User-Ready Release Checklist R1
 
 **Branch:** `feat/sprint-4-field-mode`  
-**SHA under evaluation:** `25b82ba889ba4673e880a17ca2b1b250d2470c21`  
-**Corrected preview:** https://rockhound-mzzbgdmp8-hutchs-projects-ef99514e.vercel.app  
-**Deployment:** `dpl_9H53Ta8Ux53uKacY5NK3UEf9Re5h`  
+**SHA under evaluation:** `97da640` (local release-candidate tip; **ahead of origin** — redeploy preview before owner acceptance)  
+**Prior deployed preview SHA:** `25b82ba` → https://rockhound-mzzbgdmp8-hutchs-projects-ef99514e.vercel.app  
 **Supabase:** Rockhounding v1 `dcbjjvygjhmngwzuwdjj` ACTIVE_HEALTHY  
 **Date:** 2026-09-28
 
