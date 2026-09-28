@@ -1,0 +1,93 @@
+.                                        | ΓÇëWARNΓÇë Unsupported engine: wanted: {"node":"20.x"} (current: {"node":"v24.12.0","pnpm":"10.33.0"})
+
+> web@0.1.0 build C:\Users\hetfw\Rockhounding Project\apps\web
+> next build
+
+  Γû▓ Next.js 14.2.35
+  - Environments: .env.local
+  - Experiments (use with caution):
+    ┬╖ instrumentationHook
+
+   Creating an optimized production build ...
+> [PWA] Compile server
+[@sentry/nextjs] It seems like you don't have a global error handler set up. It is recommended that you add a 'global-error.js' file with Sentry instrumentation so that React rendering errors are reported to Sentry. Read more: https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#react-render-errors-in-app-router (you can suppress this warning by setting SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING=1 as environment variable)
+> [PWA] Compile server
+> [PWA] Compile client (static)
+> [PWA] Auto register service worker with: C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next-pwa@5.6.0_@babel+core@_50bda86370eed3e66b59da14470d26e7\node_modules\next-pwa\register.js
+> [PWA] Service worker: C:\Users\hetfw\Rockhounding Project\apps\web\public\sw.js
+> [PWA]   url: /sw.js
+> [PWA]   scope: /
+[@sentry/nextjs] DEPRECATION WARNING: It is recommended renaming your `sentry.client.config.ts` file, or moving its content to `instrumentation-client.ts`. When using Turbopack `sentry.client.config.ts` will no longer work. Read more about the `instrumentation-client.ts` file: https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation-client
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (127kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ΓÜá Compiled with warnings
+
+/_next/static/chunks/c62d7054-4017e36b924fabb0.js.map is 4 MB, and won't be precached. Configure maximumFileSizeToCacheInBytes to change this limit.
+
+   Skipping linting
+   Checking validity of types ...
+ ΓÜá TypeScript project references are not fully supported. Attempting to build in incremental mode.
+   Collecting page data ...
+   Generating static pages (0/32) ...
+   Generating static pages (8/32) 
+   Generating static pages (16/32) 
+   Generating static pages (24/32) 
+ Γ£ô Generating static pages (32/32)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+Γöî Γùï /                                    3.41 kB         195 kB
+Γö£ Γùï /_not-found                          1.03 kB         158 kB
+Γö£ Γùï /admin/moderation                    2.61 kB         160 kB
+Γö£ ╞Æ /api/admin/moderate                  0 B                0 B
+Γö£ ╞Æ /api/exports                         0 B                0 B
+Γö£ ╞Æ /api/exports/[id]                    0 B                0 B
+Γö£ ╞Æ /api/locations                       0 B                0 B
+Γö£ ╞Æ /api/locations/[id]                  0 B                0 B
+Γö£ ╞Æ /api/observations                    0 B                0 B
+Γö£ ╞Æ /api/state-packs                     0 B                0 B
+Γö£ ╞Æ /api/state-packs/[state]             0 B                0 B
+Γö£ ╞Æ /api/sync/batch                      0 B                0 B
+Γö£ ╞Æ /api/telemetry/ingest                0 B                0 B
+Γö£ ╞Æ /api/v1/access/check                 0 B                0 B
+Γö£ ╞Æ /api/v1/hutchstack/evaluate          0 B                0 B
+Γö£ ╞Æ /api/v1/locations                    0 B                0 B
+Γö£ ╞Æ /api/v1/locations/[id]               0 B                0 B
+Γö£ ╞Æ /api/v1/me                           0 B                0 B
+Γö£ ╞Æ /api/v1/sync/batch                   0 B                0 B
+Γö£ ╞Æ /auth/callback                       0 B                0 B
+Γö£ Γùï /collection                          356 B           160 kB
+Γö£ Γùï /dashboard                           3.01 kB         239 kB
+Γö£ Γùï /dashboard/collections               1.6 kB          237 kB
+Γö£ Γùï /dashboard/materials                 1.65 kB         237 kB
+Γö£ Γùï /dashboard/storage                   1.77 kB         237 kB
+Γö£ Γùï /dashboard/tags                      1.56 kB         237 kB
+Γö£ Γùï /dashboard/telemetry                 7.07 kB         264 kB
+Γö£ ╞Æ /exports                             1.4 kB          161 kB
+Γö£ Γùï /exports/new                         1.86 kB         161 kB
+Γö£ Γùï /field                               4.55 kB         731 kB
+Γö£ ╞Æ /finds                               355 B           160 kB
+Γö£ ╞Æ /finds/[id]                          2.69 kB         199 kB
+Γö£ ╞Æ /location/[id]                       4.09 kB         164 kB
+Γö£ Γùï /login                               5.44 kB         255 kB
+Γö£ Γùï /map                                 1.8 kB          729 kB
+Γö£ ╞Æ /observations/[id]                   1.06 kB         158 kB
+Γö£ Γùï /observations/new                    1.63 kB         159 kB
+Γö£ Γùï /offline                             4 kB            198 kB
+Γö£ ╞Æ /profile                             2.68 kB         197 kB
+Γö£ ╞Æ /state-packs                         1.33 kB         161 kB
+Γö£ ╞Æ /state-packs/[state]                 2.43 kB         162 kB
+Γöö Γùï /trips                               1.15 kB         161 kB
++ First Load JS shared by all            157 kB
+  Γö£ chunks/731abe61-ed3cea290345c6af.js  53.8 kB
+  Γö£ chunks/9571-ab2dfe635ca2bcfb.js      101 kB
+  Γöö other shared chunks (total)          2.94 kB
+
+
+╞Æ Middleware                             144 kB
+
+Γùï  (Static)   prerendered as static content
+╞Æ  (Dynamic)  server-rendered on demand
+

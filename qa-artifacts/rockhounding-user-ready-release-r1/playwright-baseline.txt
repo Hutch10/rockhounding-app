@@ -1,0 +1,54 @@
+
+[1A[2K[WebServer] [@sentry/nextjs] DEPRECATION WARNING: It is recommended renaming your `sentry.client.config.ts` file, or moving its content to `instrumentation-client.ts`. When using Turbopack `sentry.client.config.ts` will no longer work. Read more about the `instrumentation-client.ts` file: https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation-client
+
+Running 5 tests using 5 workers
+
+
+
+[1A[2K(node:32940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K(node:36176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+
+[1A[2K(node:51372) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K(node:46196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:53132) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K(node:32940) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+
+[1A[2K(node:36176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:46196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1A[2K(node:51372) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+
+[1A[2K(node:53132) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K[1/5] [chromium] ΓÇ║ e2e\collection.spec.ts:4:7 ΓÇ║ Collection empty-state acceptance ΓÇ║ CB-COL: /collection renders empty gallery without server exception
+[1A[2K[2/5] [chromium] ΓÇ║ e2e\offline-sync.spec.ts:35:7 ΓÇ║ TEST-007 offline sync and access gating ΓÇ║ CB-E2 / KR-001 offline: Quick Log allowed when access check unavailable
+[1A[2K[3/5] [chromium] ΓÇ║ e2e\collection.spec.ts:12:7 ΓÇ║ Collection empty-state acceptance ΓÇ║ CB-COL: discovery ledger link opens /finds without crash shell
+[1A[2K[4/5] [chromium] ΓÇ║ e2e\offline-sync.spec.ts:53:7 ΓÇ║ TEST-007 offline sync and access gating ΓÇ║ CB-E2: map Quick Log entry opens modal online
+[1A[2K[5/5] [chromium] ΓÇ║ e2e\offline-sync.spec.ts:9:7 ΓÇ║ TEST-007 offline sync and access gating ΓÇ║ CB-E3 / KR-001 online: prohibited site blocks Quick Log
+
+[1A[2K[WebServer]  ΓÜá Cross origin request detected from 127.0.0.1 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+[WebServer] Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+[1A[2K  5 passed (28.5s)

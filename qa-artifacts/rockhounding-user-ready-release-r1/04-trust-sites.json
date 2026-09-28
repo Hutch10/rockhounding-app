@@ -1,0 +1,970 @@
+{
+  "schemaNote": "Launch trust dataset R1. Certainty states limited to VERIFIED|SUPPORTED|REPORTED|UNRESOLVED|CONFLICTED|STALE|PROHIBITED. Certainty is independent of confidence; PROHIBITED is permission not certainty. Accessibility is not authorization. retrievedAt is not sourceUpdatedAt. Synthetic AZ/OR seed SQL is not treated as production truth.",
+  "retrievedAt": "2026-09-28",
+  "geography": {
+    "id": "or-central-coast-ocean-shore",
+    "label": "Oregon Central Coast ocean shore (Lincoln County corridor: Newport–Waldport–Yachats, plus Fogarty Creek)",
+    "rationale": "Single coherent jurisdiction under OPRD Ocean Shore State Recreation Area with statewide OAR collecting rules, named recreation sites with published coordinates, and checkable marine-reserve / plover overlays. Arizona BLM designated rockhound areas were evaluated but only two official visit pages exist in-state — insufficient alone for ≥10 release-ready sites."
+  },
+  "counts": {
+    "releaseReady": 12,
+    "permitRequired": 0,
+    "managedPay": 6,
+    "permissionRequired": 0,
+    "closedProhibited": 3,
+    "unresolved": 1,
+    "conflicted": 0,
+    "stale": 0,
+    "cataloguedTotal": 16
+  },
+  "gate": {
+    "verdict": "TRUST_PASS",
+    "reason": "12 release-ready OPRD ocean-shore sites with official coordinates, visit OPEN, collecting ALLOWED_LIMITED under OAR 736-021-0090, and outside mapped marine-reserve shorelines where OAR 736-029-0040 prohibits natural-product removal."
+  },
+  "sites": [
+    {
+      "id": "or-oprd-agate-beach-srs",
+      "overallStatus": "RELEASE_READY",
+      "countBuckets": ["releaseReady", "managedPay"],
+      "identity": {
+        "canonicalName": "Agate Beach State Recreation Site",
+        "coordinates": { "lat": 44.659645, "lon": -124.056381, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=152"
+      },
+      "geology": {
+        "expectedMaterials": ["loose agates", "other non-living stones/shells (souvenir class)"],
+        "geologicSource": "OAR 736-021-0090 authorizes souvenir agates/stones statewide on ocean shore; park name/page does not assert a mineral deposit inventory",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No commercial grade, claim, or guaranteed find assertion"
+      },
+      "landAccess": {
+        "administeringAgency": "Oregon Parks and Recreation Department (OPRD)",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "ALLOWED_LIMITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "Loose agates/shells/stones/fossils: ≤1 gallon/person/day, ≤3 gallons/person/year; no digging rock materials except as otherwise allowed by rule",
+        "permitRequirement": "NONE_WITHIN_LIMITS",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking permit required (1-day on-site)",
+        "routeAccess": "Highway 101 wayside; tunnel under old 101 to sandy beach — route uncertainty does not invalidate field use",
+        "closureRestriction": "Not inside Otter Rock or Cape Perpetua marine reserve shorelines; follow posted western snowy plover signs if present; verify current conditions before visit"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=152",
+            "title": "Agate Beach State Recreation Site",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit_parking"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-021-0090",
+            "title": "OAR 736-021-0090 Cultural, Historic, Natural and Wildlife Resources",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": "2024-02-28",
+            "publishedOrSourceDate": "2024-02-28",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_permission"
+          }
+        ],
+        "conflicts": [],
+        "notes": "Collecting permission is rule-based for Ocean Shore State Recreation Area, not a site mineral grant."
+      }
+    },
+    {
+      "id": "or-oprd-beverly-beach-sp",
+      "overallStatus": "RELEASE_READY",
+      "countBuckets": ["releaseReady", "managedPay"],
+      "identity": {
+        "canonicalName": "Beverly Beach State Park",
+        "coordinates": { "lat": 44.725503, "lon": -124.058355, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=164"
+      },
+      "geology": {
+        "expectedMaterials": ["loose agates", "other non-living stones/shells (souvenir class)"],
+        "geologicSource": "OAR 736-021-0090 souvenir class; park describes miles of ocean beach, not a mineral inventory",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No guaranteed agate density claim"
+      },
+      "landAccess": {
+        "administeringAgency": "Oregon Parks and Recreation Department (OPRD)",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "ALLOWED_LIMITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "≤1 gallon/person/day and ≤3 gallons/person/year loose souvenirs; digging rock materials prohibited under OAR 736-021-0090(2)(b) except as allowed in (4)",
+        "permitRequirement": "NONE_WITHIN_LIMITS",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking permit required (1-day on-site)",
+        "routeAccess": "Beach access from park; OPRD describes beach extending toward Yaquina Head and Otter Rock",
+        "closureRestriction": "Park coordinate is north of Devils Punchbowl / Otter Rock Marine Reserve intertidal zone; do not collect inside Otter Rock MR shoreline (see closed sites). Follow plover postings if encountered."
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=164",
+            "title": "Beverly Beach State Park",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": "2026-09-08",
+            "publishedOrSourceDate": "2026-09-08",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit_parking"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-021-0090",
+            "title": "OAR 736-021-0090",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": "2024-02-28",
+            "publishedOrSourceDate": "2024-02-28",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_permission"
+          },
+          {
+            "url": "https://oregonmarinereserves.com/content/uploads/2016/03/OtterRock_shoreside.pdf",
+            "title": "Otter Rock Marine Reserve shoreside summary",
+            "sourceAuthority": "ODFW Marine Reserves program",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "closure_boundary_check"
+          }
+        ],
+        "conflicts": [],
+        "notes": "Southern beach toward Otter Rock MR is excluded from collecting authorization under OAR 736-029-0040."
+      }
+    },
+    {
+      "id": "or-oprd-south-beach-sp",
+      "overallStatus": "RELEASE_READY",
+      "countBuckets": ["releaseReady", "managedPay"],
+      "identity": {
+        "canonicalName": "South Beach State Park",
+        "coordinates": { "lat": 44.5991216, "lon": -124.05934, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=149"
+      },
+      "geology": {
+        "expectedMaterials": ["loose agates", "other non-living stones/shells (souvenir class)"],
+        "geologicSource": "OAR 736-021-0090 souvenir class",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No site mineral inventory claimed"
+      },
+      "landAccess": {
+        "administeringAgency": "Oregon Parks and Recreation Department (OPRD)",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "ALLOWED_LIMITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "≤1 gallon/day, ≤3 gallons/year loose souvenirs",
+        "permitRequirement": "NONE_WITHIN_LIMITS",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking permit required (1-day on-site)",
+        "routeAccess": "Developed state park ocean access south of Yaquina Bay",
+        "closureRestriction": "Outside Otter Rock and Cape Perpetua MR shorelines; follow posted restrictions"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=149",
+            "title": "South Beach State Park",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit_parking"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-021-0090",
+            "title": "OAR 736-021-0090",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": "2024-02-28",
+            "publishedOrSourceDate": "2024-02-28",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_permission"
+          }
+        ],
+        "conflicts": [],
+        "notes": ""
+      }
+    },
+    {
+      "id": "or-oprd-lost-creek-srs",
+      "overallStatus": "RELEASE_READY",
+      "countBuckets": ["releaseReady"],
+      "identity": {
+        "canonicalName": "Lost Creek State Recreation Site",
+        "coordinates": { "lat": 44.543802, "lon": -124.073977, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=145"
+      },
+      "geology": {
+        "expectedMaterials": ["loose agates", "other non-living stones/shells (souvenir class)"],
+        "geologicSource": "OAR 736-021-0090 souvenir class",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No site mineral inventory claimed"
+      },
+      "landAccess": {
+        "administeringAgency": "Oregon Parks and Recreation Department (OPRD)",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "ALLOWED_LIMITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "≤1 gallon/day, ≤3 gallons/year loose souvenirs",
+        "permitRequirement": "NONE_WITHIN_LIMITS",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking requirement not confirmed on retrieved page body — treat parking fee as UNRESOLVED; visit remains ALLOWED",
+        "routeAccess": "Coastal recreation site access from US 101 corridor",
+        "closureRestriction": "Outside mapped MR shorelines for Otter Rock / Cape Perpetua; follow on-site postings"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=145",
+            "title": "Lost Creek State Recreation Site",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-021-0090",
+            "title": "OAR 736-021-0090",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": "2024-02-28",
+            "publishedOrSourceDate": "2024-02-28",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_permission"
+          }
+        ],
+        "conflicts": [],
+        "notes": "Parking fee left UNRESOLVED rather than invented."
+      }
+    },
+    {
+      "id": "or-oprd-brian-booth-sp",
+      "overallStatus": "RELEASE_READY",
+      "countBuckets": ["releaseReady", "managedPay"],
+      "identity": {
+        "canonicalName": "Brian Booth State Park",
+        "coordinates": { "lat": 44.518611, "lon": -124.071388, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=146"
+      },
+      "geology": {
+        "expectedMaterials": ["loose agates", "other non-living stones/shells (souvenir class)"],
+        "geologicSource": "OAR 736-021-0090 souvenir class",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No site mineral inventory claimed"
+      },
+      "landAccess": {
+        "administeringAgency": "Oregon Parks and Recreation Department (OPRD)",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "ALLOWED_LIMITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "≤1 gallon/day, ≤3 gallons/year loose souvenirs",
+        "permitRequirement": "NONE_WITHIN_LIMITS",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking permit required (1-day on-site)",
+        "routeAccess": "US 101 coastal park access (includes Ona Beach area)",
+        "closureRestriction": "Outside Otter Rock / Cape Perpetua MR shorelines; follow postings"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=146",
+            "title": "Brian Booth State Park",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit_parking"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-021-0090",
+            "title": "OAR 736-021-0090",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": "2024-02-28",
+            "publishedOrSourceDate": "2024-02-28",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_permission"
+          }
+        ],
+        "conflicts": [],
+        "notes": ""
+      }
+    },
+    {
+      "id": "or-oprd-seal-rock-srs",
+      "overallStatus": "RELEASE_READY",
+      "countBuckets": ["releaseReady"],
+      "identity": {
+        "canonicalName": "Seal Rock State Recreation Site",
+        "coordinates": { "lat": 44.497357, "lon": -124.083111, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=147"
+      },
+      "geology": {
+        "expectedMaterials": ["loose agates", "other non-living stones/shells (souvenir class)"],
+        "geologicSource": "OAR 736-021-0090 souvenir class; rocky shore present — geological opportunity ≠ collection beyond souvenir rules",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No tidepool specimen or living-material collecting claim"
+      },
+      "landAccess": {
+        "administeringAgency": "Oregon Parks and Recreation Department (OPRD)",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "ALLOWED_LIMITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "Loose non-living souvenirs only; do not disturb wildlife/tidepools (OAR 736-021-0090(13))",
+        "permitRequirement": "NONE_WITHIN_LIMITS",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking requirement not confirmed on retrieved page body — UNRESOLVED",
+        "routeAccess": "US 101 recreation site",
+        "closureRestriction": "Outside Capes Falcon/Cascade Head/Otter Rock/Perpetua/Redfish Rocks MR shorelines; check rocky-habitat postings"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=147",
+            "title": "Seal Rock State Recreation Site",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-021-0090",
+            "title": "OAR 736-021-0090",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": "2024-02-28",
+            "publishedOrSourceDate": "2024-02-28",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_permission"
+          }
+        ],
+        "conflicts": [],
+        "notes": ""
+      }
+    },
+    {
+      "id": "or-oprd-driftwood-beach-srs",
+      "overallStatus": "RELEASE_READY",
+      "countBuckets": ["releaseReady"],
+      "identity": {
+        "canonicalName": "Driftwood Beach State Recreation Site",
+        "coordinates": { "lat": 44.463888, "lon": -124.077777, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=144"
+      },
+      "geology": {
+        "expectedMaterials": [
+          "loose agates",
+          "other non-living stones/shells (souvenir class)",
+          "driftwood (separate OAR limits)"
+        ],
+        "geologicSource": "OAR 736-021-0090 souvenir and driftwood sections",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No mineral deposit claim"
+      },
+      "landAccess": {
+        "administeringAgency": "Oregon Parks and Recreation Department (OPRD)",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "ALLOWED_LIMITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "Agates/stones ≤1 gal/day ≤3 gal/year; driftwood subject to separate cubic-yard limits and hand-load rules",
+        "permitRequirement": "NONE_WITHIN_LIMITS",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking requirement not confirmed on retrieved page body — UNRESOLVED",
+        "routeAccess": "US 101 recreation site",
+        "closureRestriction": "Outside MR shorelines; follow postings"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=144",
+            "title": "Driftwood Beach State Recreation Site",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-021-0090",
+            "title": "OAR 736-021-0090",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": "2024-02-28",
+            "publishedOrSourceDate": "2024-02-28",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_permission"
+          }
+        ],
+        "conflicts": [],
+        "notes": ""
+      }
+    },
+    {
+      "id": "or-oprd-beachside-srs",
+      "overallStatus": "RELEASE_READY",
+      "countBuckets": ["releaseReady"],
+      "identity": {
+        "canonicalName": "Beachside State Recreation Site",
+        "coordinates": { "lat": 44.381474, "lon": -124.088452, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=84"
+      },
+      "geology": {
+        "expectedMaterials": ["loose agates", "other non-living stones/shells (souvenir class)"],
+        "geologicSource": "OAR 736-021-0090 souvenir class",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No mineral deposit claim"
+      },
+      "landAccess": {
+        "administeringAgency": "Oregon Parks and Recreation Department (OPRD)",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "ALLOWED_LIMITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "≤1 gallon/day, ≤3 gallons/year loose souvenirs",
+        "permitRequirement": "NONE_WITHIN_LIMITS",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking requirement not confirmed on retrieved page body — UNRESOLVED",
+        "routeAccess": "US 101 recreation site north of Yachats",
+        "closureRestriction": "North of Cape Perpetua MR shoreline segments; follow postings"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=84",
+            "title": "Beachside State Recreation Site",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-021-0090",
+            "title": "OAR 736-021-0090",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": "2024-02-28",
+            "publishedOrSourceDate": "2024-02-28",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_permission"
+          }
+        ],
+        "conflicts": [],
+        "notes": ""
+      }
+    },
+    {
+      "id": "or-oprd-governor-patterson-srs",
+      "overallStatus": "RELEASE_READY",
+      "countBuckets": ["releaseReady", "managedPay"],
+      "identity": {
+        "canonicalName": "Governor Patterson Memorial State Recreation Site",
+        "coordinates": { "lat": 44.407462, "lon": -124.085148, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=82"
+      },
+      "geology": {
+        "expectedMaterials": ["loose agates", "other non-living stones/shells (souvenir class)"],
+        "geologicSource": "OAR 736-021-0090 souvenir class",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No mineral deposit claim"
+      },
+      "landAccess": {
+        "administeringAgency": "Oregon Parks and Recreation Department (OPRD)",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "ALLOWED_LIMITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "≤1 gallon/day, ≤3 gallons/year loose souvenirs",
+        "permitRequirement": "NONE_WITHIN_LIMITS",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking permit required (1-day on-site)",
+        "routeAccess": "US 101 recreation site",
+        "closureRestriction": "Outside Cape Perpetua MR shoreline; follow postings"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=82",
+            "title": "Governor Patterson Memorial State Recreation Site",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit_parking"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-021-0090",
+            "title": "OAR 736-021-0090",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": "2024-02-28",
+            "publishedOrSourceDate": "2024-02-28",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_permission"
+          }
+        ],
+        "conflicts": [],
+        "notes": ""
+      }
+    },
+    {
+      "id": "or-oprd-smelt-sands-srs",
+      "overallStatus": "RELEASE_READY",
+      "countBuckets": ["releaseReady"],
+      "identity": {
+        "canonicalName": "Smelt Sands State Recreation Site",
+        "coordinates": { "lat": 44.32087, "lon": -124.10278, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=89"
+      },
+      "geology": {
+        "expectedMaterials": ["loose agates", "other non-living stones/shells (souvenir class)"],
+        "geologicSource": "OAR 736-021-0090 souvenir class",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No mineral deposit claim"
+      },
+      "landAccess": {
+        "administeringAgency": "Oregon Parks and Recreation Department (OPRD)",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "ALLOWED_LIMITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "≤1 gallon/day, ≤3 gallons/year loose souvenirs",
+        "permitRequirement": "NONE_WITHIN_LIMITS",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking requirement not confirmed on retrieved page body — UNRESOLVED",
+        "routeAccess": "Yachats oceanfront recreation site",
+        "closureRestriction": "North of Neptune / Cape Perpetua MR shoreline segments; follow postings"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=89",
+            "title": "Smelt Sands State Recreation Site",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-021-0090",
+            "title": "OAR 736-021-0090",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": "2024-02-28",
+            "publishedOrSourceDate": "2024-02-28",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_permission"
+          }
+        ],
+        "conflicts": [],
+        "notes": ""
+      }
+    },
+    {
+      "id": "or-oprd-yachats-sra",
+      "overallStatus": "RELEASE_READY",
+      "countBuckets": ["releaseReady"],
+      "identity": {
+        "canonicalName": "Yachats State Recreation Area",
+        "coordinates": { "lat": 44.310012, "lon": -124.105872, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=94"
+      },
+      "geology": {
+        "expectedMaterials": ["loose agates", "other non-living stones/shells (souvenir class)"],
+        "geologicSource": "OAR 736-021-0090 souvenir class",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No mineral deposit claim"
+      },
+      "landAccess": {
+        "administeringAgency": "Oregon Parks and Recreation Department (OPRD)",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "ALLOWED_LIMITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "≤1 gallon/day, ≤3 gallons/year loose souvenirs",
+        "permitRequirement": "NONE_WITHIN_LIMITS",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking requirement not confirmed on retrieved page body — UNRESOLVED",
+        "routeAccess": "Yachats town oceanfront recreation area",
+        "closureRestriction": "North of Cape Perpetua MR shoreline; do not extend collecting south into Neptune/MR segments"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=94",
+            "title": "Yachats State Recreation Area",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-021-0090",
+            "title": "OAR 736-021-0090",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": "2024-02-28",
+            "publishedOrSourceDate": "2024-02-28",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_permission"
+          }
+        ],
+        "conflicts": [],
+        "notes": ""
+      }
+    },
+    {
+      "id": "or-oprd-fogarty-creek-sra",
+      "overallStatus": "RELEASE_READY",
+      "countBuckets": ["releaseReady", "managedPay"],
+      "identity": {
+        "canonicalName": "Fogarty Creek State Recreation Area",
+        "coordinates": { "lat": 44.841388, "lon": -124.049378, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=158"
+      },
+      "geology": {
+        "expectedMaterials": ["loose agates", "other non-living stones/shells (souvenir class)"],
+        "geologicSource": "OAR 736-021-0090 souvenir class; park highlights tidepools — living material not authorized as souvenirs",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No invertebrate take authorization from park marketing text"
+      },
+      "landAccess": {
+        "administeringAgency": "Oregon Parks and Recreation Department (OPRD)",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "ALLOWED_LIMITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "Loose non-living souvenirs only; tidepool disturbance prohibited",
+        "permitRequirement": "NONE_WITHIN_LIMITS",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking permit required (1-day on-site)",
+        "routeAccess": "US 101 day-use area with beach/creek access",
+        "closureRestriction": "South of Cascade Head Marine Reserve (~45.02°N); outside Otter Rock MR; follow postings"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=158",
+            "title": "Fogarty Creek State Recreation Area",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": "2026-09-09",
+            "publishedOrSourceDate": "2026-09-09",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit_parking"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-021-0090",
+            "title": "OAR 736-021-0090",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": "2024-02-28",
+            "publishedOrSourceDate": "2024-02-28",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_permission"
+          },
+          {
+            "url": "http://oregonmarinereserves.com/content/uploads/2025/09/CascadeHead_20250916.pdf",
+            "title": "Cascade Head Marine Reserve harvest restrictions",
+            "sourceAuthority": "ODFW",
+            "sourceUpdatedAt": "2025-09-16",
+            "publishedOrSourceDate": "2025-09-16",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "closure_boundary_check"
+          }
+        ],
+        "conflicts": [],
+        "notes": ""
+      }
+    },
+    {
+      "id": "or-oprd-devils-punchbowl-sna",
+      "overallStatus": "CLOSED_PROHIBITED",
+      "countBuckets": ["closedProhibited"],
+      "identity": {
+        "canonicalName": "Devils Punchbowl State Natural Area",
+        "coordinates": { "lat": 44.746866, "lon": -124.064748, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=156"
+      },
+      "geology": {
+        "expectedMaterials": ["rocky intertidal shoreline"],
+        "geologicSource": "Park/MR documentation of rocky shore; no collecting opportunity asserted for launch",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "Geological presence ≠ collection permission"
+      },
+      "landAccess": {
+        "administeringAgency": "OPRD (ocean shore) + ODFW Otter Rock Marine Reserve overlay",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "PROHIBITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "OAR 736-029-0040 prohibits removal of living or non-living natural products from ocean shore within Marine Reserve except narrow Director allowances",
+        "permitRequirement": "NOT_APPLICABLE_PROHIBITED",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking permit required (1-day on-site)",
+        "routeAccess": "Developed viewpoint/park access",
+        "closureRestriction": "Inside Otter Rock Marine Reserve intertidal / shoreside no-take zone"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=156",
+            "title": "Devils Punchbowl State Natural Area",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-029-0040",
+            "title": "OAR 736-029-0040 General Restrictions (Marine Reserve/MPA ocean shore)",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_prohibition"
+          },
+          {
+            "url": "https://oregonmarinereserves.com/content/uploads/2016/03/OtterRock_shoreside.pdf",
+            "title": "Otter Rock shoreside summary",
+            "sourceAuthority": "ODFW",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "closure_boundary"
+          }
+        ],
+        "conflicts": [
+          "Some marine-reserve FAQ language suggests small non-living souvenirs may be OK; OAR 736-029-0040 is stricter and controls. Fail closed: PROHIBITED."
+        ],
+        "notes": "Catalogued for launch as closed/prohibited collecting; NOT release-ready."
+      }
+    },
+    {
+      "id": "or-oprd-otter-crest-ssv",
+      "overallStatus": "CLOSED_PROHIBITED",
+      "countBuckets": ["closedProhibited"],
+      "identity": {
+        "canonicalName": "Otter Crest State Scenic Viewpoint",
+        "coordinates": { "lat": 44.760809, "lon": -124.065195, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=162"
+      },
+      "geology": {
+        "expectedMaterials": ["rocky headland / intertidal context"],
+        "geologicSource": "Otter Rock MR rocky shore documentation",
+        "certaintyState": "SUPPORTED",
+        "unsupportedClaimsAvoided": "No collecting opportunity asserted"
+      },
+      "landAccess": {
+        "administeringAgency": "OPRD + ODFW Otter Rock Marine Reserve overlay",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "PROHIBITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "Marine Reserve ocean-shore natural product removal prohibited under OAR 736-029-0040",
+        "permitRequirement": "NOT_APPLICABLE_PROHIBITED",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking requirement not confirmed on retrieved page body — UNRESOLVED",
+        "routeAccess": "Scenic viewpoint access",
+        "closureRestriction": "Adjacent to / overlapping Otter Rock MR shoreside restrictions"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=162",
+            "title": "Otter Crest State Scenic Viewpoint",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-029-0040",
+            "title": "OAR 736-029-0040",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_prohibition"
+          }
+        ],
+        "conflicts": ["FAQ souvenir language vs OAR prohibition — fail closed to PROHIBITED"],
+        "notes": "NOT release-ready for collecting launch."
+      }
+    },
+    {
+      "id": "or-oprd-neptune-ssv",
+      "overallStatus": "CLOSED_PROHIBITED",
+      "countBuckets": ["closedProhibited"],
+      "identity": {
+        "canonicalName": "Neptune State Scenic Viewpoint",
+        "coordinates": { "lat": 44.254073, "lon": -124.111421, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=88"
+      },
+      "geology": {
+        "expectedMaterials": ["agates mentioned on park page at creek/Bob Creek stops"],
+        "geologicSource": "OPRD park narrative mentions agate hunting; geological promise ≠ collection permission under MR overlay",
+        "certaintyState": "REPORTED",
+        "unsupportedClaimsAvoided": "Park marketing does not override OAR 736-029-0040"
+      },
+      "landAccess": {
+        "administeringAgency": "OPRD + ODFW Cape Perpetua Marine Reserve / MPA shoreline overlay",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "PROHIBITED",
+        "collectingCertainty": "VERIFIED",
+        "collectingLimits": "Ocean shore within Marine Reserve/MPA: natural product removal prohibited (OAR 736-029-0040)",
+        "permitRequirement": "NOT_APPLICABLE_PROHIBITED",
+        "permitCertainty": "VERIFIED",
+        "parking": "Day-use parking requirement not confirmed on retrieved page body — UNRESOLVED",
+        "routeAccess": "Multiple Highway 101 pullouts (Gwynn Creek, Neptune, Strawberry Hill, Bob Creek)",
+        "closureRestriction": "Cape Perpetua MR/MPA shoreline segments include areas from Devils Churn through Bob Creek per ODFW harvest summaries"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=88",
+            "title": "Neptune State Scenic Viewpoint",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": "2021-09-20",
+            "publishedOrSourceDate": "2021-09-20",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit_geology_mention"
+          },
+          {
+            "url": "https://secure.sos.state.or.us/oard/view.action?ruleNumber=736-029-0040",
+            "title": "OAR 736-029-0040",
+            "sourceAuthority": "Oregon Secretary of State / OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RULE_IN_FORCE",
+            "role": "collecting_prohibition"
+          },
+          {
+            "url": "http://oregonmarinereserves.com/content/uploads/2025/09/AllSites_20250915.pdf",
+            "title": "Oregon Marine Reserves harvest restrictions (all sites)",
+            "sourceAuthority": "ODFW",
+            "sourceUpdatedAt": "2025-09-15",
+            "publishedOrSourceDate": "2025-09-15",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "closure_boundary"
+          }
+        ],
+        "conflicts": [
+          "OPRD page advertises agate hunting while Cape Perpetua MR/MPA ocean-shore rules prohibit natural-product removal — fail closed: PROHIBITED for collecting launch"
+        ],
+        "notes": "Visit ALLOWED; collecting NOT release-ready."
+      }
+    },
+    {
+      "id": "or-oprd-boiler-bay-ssv",
+      "overallStatus": "UNRESOLVED",
+      "countBuckets": ["unresolved"],
+      "identity": {
+        "canonicalName": "Boiler Bay State Scenic Viewpoint",
+        "coordinates": { "lat": 44.827849, "lon": -124.066053, "confidence": "VERIFIED" },
+        "boundaryConfidence": "SUPPORTED",
+        "locationSource": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=153"
+      },
+      "geology": {
+        "expectedMaterials": ["rocky shoreline"],
+        "geologicSource": "Coastal rocky viewpoint; no official mineral inventory used",
+        "certaintyState": "UNRESOLVED",
+        "unsupportedClaimsAvoided": "No agate/mineral claim recorded"
+      },
+      "landAccess": {
+        "administeringAgency": "OPRD; rocky habitat / Marine Garden designations may apply nearby",
+        "visitPermission": "ALLOWED",
+        "visitCertainty": "VERIFIED",
+        "collectingPermission": "UNRESOLVED",
+        "collectingCertainty": "UNRESOLVED",
+        "collectingLimits": "Invertebrate take restricted in Boiler Bay limited-take / Marine Garden summaries; whether loose rock souvenirs remain authorized under OAR 736-021-0090(4)(a) at this exact shoreline was not resolved to release-ready standard",
+        "permitRequirement": "UNRESOLVED",
+        "permitCertainty": "UNRESOLVED",
+        "parking": "Day-use parking requirement not confirmed on retrieved page body — UNRESOLVED",
+        "routeAccess": "Highway 101 scenic viewpoint",
+        "closureRestriction": "ODFW harvest maps mark Boiler Bay limited-take areas — unresolved for rock souvenirs"
+      },
+      "provenance": {
+        "sources": [
+          {
+            "url": "https://stateparks.oregon.gov/index.cfm?do=park.profile&parkId=153",
+            "title": "Boiler Bay State Scenic Viewpoint",
+            "sourceAuthority": "OPRD",
+            "sourceUpdatedAt": null,
+            "publishedOrSourceDate": null,
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "location_visit"
+          },
+          {
+            "url": "http://oregonmarinereserves.com/content/uploads/2025/09/AllSites_20250915.pdf",
+            "title": "AllSites harvest restrictions (includes Boiler Bay limited take)",
+            "sourceAuthority": "ODFW",
+            "sourceUpdatedAt": "2025-09-15",
+            "publishedOrSourceDate": "2025-09-15",
+            "retrievedAt": "2026-09-28",
+            "freshness": "RETRIEVED_CURRENT",
+            "role": "restriction_context"
+          }
+        ],
+        "conflicts": [],
+        "notes": "Fail closed: not release-ready."
+      }
+    }
+  ]
+}

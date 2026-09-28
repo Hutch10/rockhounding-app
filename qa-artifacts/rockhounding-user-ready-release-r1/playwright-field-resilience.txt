@@ -1,0 +1,69 @@
+
+[1A[2K[WebServer] [@sentry/nextjs] DEPRECATION WARNING: It is recommended renaming your `sentry.client.config.ts` file, or moving its content to `instrumentation-client.ts`. When using Turbopack `sentry.client.config.ts` will no longer work. Read more about the `instrumentation-client.ts` file: https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation-client
+
+Running 12 tests using 6 workers
+
+
+
+[1A[2K(node:41048) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:53508) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:51852) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:22176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:57172) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:53680) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:41048) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:53508) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1A[2K(node:51852) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K(node:22176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+
+
+[1A[2K(node:57172) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1A[2K[1/12] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:144:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-SYNC: refresh with pending offline queue keeps offline path usable
+[1A[2K[2/12] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:51:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-GPS: denied then granted mid-session updates GPS strip
+
+
+[1A[2K(node:53680) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1A[2K[3/12] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:96:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-CAMERA: photo storage failure still allows continuing Quick Log
+[1A[2K[4/12] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:67:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-GPS-LOST: clear watch mid-session falls back to denied/unavailable label
+[1A[2K[5/12] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:282:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-COL-SCALE: /finds ledger renders large mocked client list without crash
+[1A[2K[6/12] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:14:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-NET: offline queue then reconnect restores Online pill
+[1A[2K[WebServer]  ΓÜá Cross origin request detected from 127.0.0.1 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+[WebServer] Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+
+[1A[2K[7/12] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:309:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-HG-CONTRAST: high-glare surfaces inherit dark text on cream
+[1A[2K[8/12] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:330:9 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-VP: Field shell usable at 360x800
+[1A[2K[9/12] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:330:9 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-VP: Field shell usable at 390x844
+[1A[2K[10/12] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:330:9 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-VP: Field shell usable at 412x915
+[1A[2K[11/12] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:330:9 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-VP: Field shell usable at 768x1024
+[1A[2K[12/12] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:330:9 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-VP: Field shell usable at desktop
+[1A[2K  12 passed (1.1m)
