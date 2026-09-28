@@ -1,0 +1,127 @@
+ΓÇëWARNΓÇë Unsupported engine: wanted: {"node":"20.x"} (current: {"node":"v24.12.0","pnpm":"10.33.0"})
+
+> rockhounding-app@0.1.0 test:ci C:\Users\hetfw\Rockhounding Project
+> vitest run
+
+The CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.
+
+ RUN  v1.6.1 C:/Users/hetfw/Rockhounding Project
+
+ Γ£ô packages/shared/src/specimen-identification-schema.test.ts  (59 tests) 30ms
+ Γ£ô packages/shared/src/field-session-schema.test.ts  (58 tests) 43ms
+ Γ£ô packages/shared/src/collection-analytics-schema.test.ts  (63 tests) 57ms
+ Γ£ô packages/shared/src/collection-management-schema.test.ts  (54 tests) 64ms
+ Γ£ô packages/shared/src/universal-geological-evidence-schema.test.ts  (40 tests) 57ms
+ Γ£ô packages/shared/src/provenance-activity-kernel.test.ts  (30 tests) 84ms
+ Γ£ô packages/shared/src/decision-snapshot.test.ts  (7 tests) 110ms
+ Γ£ô packages/shared/src/decision-evidence-contracts.test.ts  (9 tests) 104ms
+ Γ£ô packages/shared/src/source-adapter-contract.test.ts  (18 tests) 41ms
+ Γ£ô packages/shared/src/decision-evaluator.test.ts  (8 tests) 239ms
+ Γ£ô packages/shared/src/decision-receipt.test.ts  (7 tests) 113ms
+ Γ£ô packages/shared/src/observation-sample-model.test.ts  (46 tests) 70ms
+ Γ£ô packages/shared/src/building-block-registry.test.ts  (22 tests) 61ms
+ Γ£ô packages/shared/src/geological-layer-registry.test.ts  (26 tests) 30ms
+ Γ£ô packages/shared/src/evidence-quarantine.test.ts  (11 tests) 88ms
+ Γ£ô packages/shared/src/evidence-admission.test.ts  (16 tests) 58ms
+ Γ£ô packages/shared/src/offline-fixture-adapters.test.ts  (23 tests) 144ms
+ Γ£ô packages/shared/src/truth-clock-availability.test.ts  (14 tests) 35ms
+ Γ£ô packages/shared/src/resource-catalog.test.ts  (25 tests) 40ms
+ Γ£ô packages/shared/src/usgs-sgmc-provider.test.ts  (7 tests) 160ms
+ Γ£ô packages/shared/src/usgs-sgmc-shadow-read.test.ts  (6 tests) 76ms
+ Γ£ô packages/shared/src/usgs-sgmc-shadow-certification.test.ts  (2 tests) 52ms
+ Γ£ô packages/shared/src/usgs-sgmc-production-context.test.ts  (8 tests) 67ms
+ Γ£ô packages/shared/src/source-operation-authorization.test.ts  (8 tests) 12ms
+ Γ£ô packages/shared/src/source-governance-contract.test.ts  (17 tests) 22ms
+ Γ£ô packages/shared/src/disclosure-governance.test.ts  (11 tests) 31ms
+ Γ£ô apps/web/app/api/sync/provenance_events.migration.spec.ts  (19 tests) 33ms
+ Γ£ô apps/web/app/api/sync/sync_security_hardening.migration.spec.ts  (16 tests) 27ms
+ Γ£ô packages/shared/src/usgs-sgmc-repeated-shadow.test.ts  (2 tests) 40ms
+ Γ£ô packages/shared/src/schemas.test.ts  (16 tests) 12ms
+ Γ£ô apps/web/app/map/utils/bboxFromMap.test.ts  (14 tests) 10ms
+ Γ£ô apps/web/app/api/admin/moderate/route.test.ts  (6 tests) 22ms
+ Γ£ô packages/shared/src/usgs-sgmc-public-display-rights.test.ts  (2 tests) 13ms
+ Γ£ô packages/shared/src/hutchstack/hutchstack.test.ts  (13 tests) 20ms
+ Γ£ô apps/web/app/api/exports/route.test.ts  (6 tests) 19ms
+ Γ£ô apps/web/app/api/observations/route.test.ts  (3 tests) 15ms
+ Γ£ô packages/shared/src/enums.test.ts  (12 tests) 7ms
+ Γ£ô packages/shared/src/telemetry.test.ts  (13 tests) 16ms
+ Γ£ô apps/web/app/api/v1/sync/batch/route.test.ts  (4 tests) 15ms
+ Γ£ô apps/web/app/api/locations/[id]/route.test.ts  (13 tests) 28ms
+ Γ£ô apps/web/app/api/locations/route.test.ts  (22 tests) 19ms
+ Γ£ô apps/web/app/api/state-packs/route.test.ts  (6 tests) 24ms
+ Γ£ô apps/web/app/api/v1/locations/[id]/route.test.ts  (3 tests) 26ms
+ Γ£ô apps/web/app/api/v1/locations/route.test.ts  (10 tests) 33ms
+stderr | apps/web/app/api/v1/locations/route.test.ts > GET /api/v1/locations > returns 500 when RPC fails
+[v1/locations] RPC error: { message: 'function does not exist' }
+
+ Γ£ô packages/shared/src/hutchstack/hutchstack-boundary.test.ts  (4 tests) 88ms
+ Γ£ô packages/hutchstack-core/boundary/shim-parity.test.ts  (5 tests) 48ms
+ Γ£ô apps/web/lib/sync/field-validation.meta001a.test.ts  (10 tests) 116ms
+ Γ£ô apps/web/lib/trust/resolveTrustCategory.test.ts  (10 tests) 6ms
+ Γ£ô apps/web/app/api/admin/security.test.ts  (3 tests) 87ms
+ Γ£ô packages/shared/src/hutchstack/components/permit-validation.test.ts  (2 tests) 6ms
+ Γ£ô apps/web/app/api/observations/security.test.ts  (2 tests) 81ms
+stdout | apps/web/lib/env.test.ts > validateEnv minimum-privilege contract > passes with Supabase client vars only (no Mapbox or service role)
+Γ£à Environment variables validated successfully
+
+stderr | apps/web/lib/env.test.ts > validateEnv minimum-privilege contract > passes with Supabase client vars only (no Mapbox or service role)
+ΓÜá∩╕Å  Using default EXPORTS_BUCKET: exports
+ΓÜá∩╕Å  Using default STATE_PACKS_BUCKET: state-packs
+ΓÜá∩╕Å  Using default EXPORTS_BUCKET: exports
+ΓÜá∩╕Å  Using default STATE_PACKS_BUCKET: state-packs
+
+stderr | apps/web/lib/env.test.ts > validateEnv minimum-privilege contract > rejects invalid Mapbox token format when provided
+Γ¥î Environment validation failed:
+Error: NEXT_PUBLIC_MAPBOX_TOKEN must start with pk.
+Got: sk.secret-...
+    at validateEnv (C:\Users\hetfw\Rockhounding Project\apps\web\lib\env.ts:65:11)
+    at C:\Users\hetfw\Rockhounding Project\apps\web\lib\env.ts:130:5
+    at VitestExecutor.runModule (file:///C:/Users/hetfw/Rockhounding%20Project/node_modules/.pnpm/vite-node@1.6.1_@types+node@20.19.39_terser@5.46.1/node_modules/vite-node/dist/client.mjs:362:11)
+    at VitestExecutor.runModule (file:///C:/Users/hetfw/Rockhounding%20Project/node_modules/.pnpm/vitest@1.6.1_@types+node@20.19.39_terser@5.46.1/node_modules/vitest/dist/vendor/execute.fL3szUAI.js:554:20)
+    at VitestExecutor.directRequest (file:///C:/Users/hetfw/Rockhounding%20Project/node_modules/.pnpm/vite-node@1.6.1_@types+node@20.19.39_terser@5.46.1/node_modules/vite-node/dist/client.mjs:346:16)
+    at VitestExecutor.cachedRequest (file:///C:/Users/hetfw/Rockhounding%20Project/node_modules/.pnpm/vite-node@1.6.1_@types+node@20.19.39_terser@5.46.1/node_modules/vite-node/dist/client.mjs:189:14)
+    at VitestExecutor.dependencyRequest (file:///C:/Users/hetfw/Rockhounding%20Project/node_modules/.pnpm/vite-node@1.6.1_@types+node@20.19.39_terser@5.46.1/node_modules/vite-node/dist/client.mjs:233:12)
+    at C:\Users\hetfw\Rockhounding Project\apps\web\lib\env.test.ts:32:29
+    at runTest (file:///C:/Users/hetfw/Rockhounding%20Project/node_modules/.pnpm/@vitest+runner@1.6.1/node_modules/@vitest/runner/dist/index.js:781:11)
+    at runSuite (file:///C:/Users/hetfw/Rockhounding%20Project/node_modules/.pnpm/@vitest+runner@1.6.1/node_modules/@vitest/runner/dist/index.js:909:15)
+
+ Γ£ô apps/web/lib/env.test.ts  (3 tests) 154ms
+stdout | apps/web/lib/env.test.ts > validateEnv minimum-privilege contract > accepts optional public Mapbox pk token when provided
+Γ£à Environment variables validated successfully
+
+stderr | apps/web/lib/env.test.ts > validateEnv minimum-privilege contract > accepts optional public Mapbox pk token when provided
+ΓÜá∩╕Å  Using default EXPORTS_BUCKET: exports
+ΓÜá∩╕Å  Using default STATE_PACKS_BUCKET: state-packs
+ΓÜá∩╕Å  Using default EXPORTS_BUCKET: exports
+ΓÜá∩╕Å  Using default STATE_PACKS_BUCKET: state-packs
+
+ Γ£ô apps/web/app/api/v1/me/route.test.ts  (3 tests) 19ms
+ Γ£ô packages/shared/src/indexeddb-compat.test.ts  (2 tests) 6ms
+ Γ£ô apps/web/lib/finds/map-find-row.test.ts  (3 tests) 9ms
+ Γ£ô apps/web/app/api/v1/finds/rls-isolation.test.ts  (3 tests) 34ms
+ Γ£ô apps/web/app/api/v1/hutchstack/evaluate/route.test.ts  (3 tests) 29ms
+ Γ£ô packages/hutchstack-core/sync-v1/src/golden-compatibility.test.ts  (3 tests) 6ms
+ Γ£ô apps/web/lib/field/permission-summary.test.ts  (3 tests) 6ms
+ Γ£ô packages/hutchstack-core/offline-ledger/src/placeholder.test.ts  (3 tests) 18ms
+ Γ£ô packages/hutchstack-core/telemetry/src/golden-compatibility.test.ts  (3 tests) 8ms
+ Γ£ô apps/web/lib/trust/trust-badge.test.ts  (6 tests) 17ms
+ Γ£ô packages/hutchstack-core/ops/src/golden-compatibility.test.ts  (3 tests) 151ms
+ Γ£ô apps/web/lib/gis/openExternalMaps.test.ts  (3 tests) 10ms
+ Γ£ô packages/hutchstack-core/boundary/policy-yaml.test.ts  (5 tests) 83ms
+ Γ£ô packages/hutchstack-core/readiness/src/placeholder.test.ts  (2 tests) 51ms
+ Γ£ô packages/hutchstack-core/ops-incident/src/placeholder.test.ts  (2 tests) 93ms
+ Γ£ô apps/web/lib/sync/field-mode.fe010.test.ts  (3 tests) 4ms
+ Γ£ô apps/web/lib/sync/batch-mapper.test.ts  (1 test) 3ms
+ Γ£ô packages/hutchstack-core/certification/src/placeholder.test.ts  (2 tests) 124ms
+ Γ£ô apps/web/lib/sync/quick-log-gating.test.ts  (3 tests) 4ms
+ Γ£ô packages/hutchstack-core/regression/src/placeholder.test.ts  (2 tests) 118ms
+ Γ£ô packages/hutchstack-core/provenance/src/placeholder.test.ts  (2 tests) 47ms
+ Γ£ô apps/web/app/map/lib/pinRenderer.test.ts  (2 tests) 5ms
+ Γ£ô packages/hutchstack-core/field-telemetry/src/placeholder.test.ts  (3 tests) 81ms
+ Γ£ô packages/hutchstack-core/boundary/boundary.test.ts  (3 tests) 2288ms
+
+ Test Files  76 passed (76)
+      Tests  882 passed (882)
+   Start at  21:23:24
+   Duration  9.66s (transform 11.83s, setup 4ms, collect 38.60s, tests 6.07s, environment 19ms, prepare 34.74s)
+

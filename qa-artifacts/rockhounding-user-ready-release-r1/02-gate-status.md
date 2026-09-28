@@ -1,31 +1,46 @@
-# Gate status board — release closure (2026-09-28)
+# Gate status board — final handoff (2026-09-28)
 
-**Classification:** `ROCKHOUNDING_USER_READY_RELEASE_CANDIDATE`  
-(TRUST + FIELD + SECURITY + UX PASS; ACCEPTANCE owner-pending; PRODUCTION not authorized.)
+**Classification:** `ROCKHOUNDING_RELEASE_CLOSURE_GATES_BLOCKED`
 
-| Gate            | Status                            | Evidence                                                                                                                                                                                                                                                               |
-| --------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| TRUST_GATE      | **PASS**                          | [04-trust-launch-pack.md](./04-trust-launch-pack.md): **12** release-ready Oregon Central Coast OPRD ocean-shore sites; synthetic AZ/OR seed not used as truth; unresolved **1** / conflicted **0** / stale **0**                                                      |
-| FIELD_GATE      | **PASS**                          | [playwright-field-resilience.txt](./playwright-field-resilience.txt): **12/12** runtime scenarios (reconnect, GPS denied/lost, camera storage failure, pending-sync persistence, collection scale 50, high-glare, viewports 360–desktop)                               |
-| SECURITY_GATE   | **PASS** (owner config remaining) | [03-production-env.md](./03-production-env.md): Production contract defined; Production app env still **empty** — **exact owner-only blocker** is apply §6A vars + Auth URL allowlist; no promote; no secrets printed; Preview branch points at `dcbjjvygjhmngwzuwdjj` |
-| UX_GATE         | **PASS**                          | Commit `a533ff6` freezes glare/copy/nav/sync touch; type-check green; field-resilience 12/12                                                                                                                                                                           |
-| ACCEPTANCE_GATE | **OWNER_PENDING**                 | [05-acceptance-retest.md](./05-acceptance-retest.md) — run only on exact release-candidate deployment SHA                                                                                                                                                              |
-| PRODUCTION_GATE | **BLOCKED**                       | No production promotion authorized                                                                                                                                                                                                                                     |
+Tip Preview is current and FIELD/UX machine evidence is green, but **runtime launch data is not activated** (OPRD pack artifact-only; synthetic seed may still appear). Production §6A env vars are applied (no promote). Owner-browser acceptance and launch-data activation remain.
 
-## Counts (TRUST)
+| Gate                  | Status                                 | Evidence                                                                            |
+| --------------------- | -------------------------------------- | ----------------------------------------------------------------------------------- |
+| TRUST_GATE (artifact) | **PASS**                               | `04-trust-launch-pack.md`: 12 release-ready OPRD sites                              |
+| TRUST_GATE (runtime)  | **BLOCKED**                            | `06-launch-data-activation.md` Option B; synthetic seed not replaced                |
+| FIELD_GATE            | **PASS**                               | Playwright handoff **21/21** incl. field-resilience 12/12                           |
+| SECURITY_GATE         | **PASS** (env applied; Auth URL owner) | Production §6A vars present on `rockhound-web`; Supabase Auth allowlist still owner |
+| UX_GATE               | **PASS**                               | Tip `e9dc638` includes glare/copy/nav/sync commits                                  |
+| ACCEPTANCE_GATE       | **OWNER_PENDING**                      | `05-acceptance-retest.md` → SHA `e9dc638`                                           |
+| PRODUCTION_GATE       | **BLOCKED**                            | No production promotion authorized                                                  |
 
-| Bucket                                            | Count |
-| ------------------------------------------------- | ----: |
-| release-ready                                     |    12 |
-| unresolved                                        |     1 |
-| conflicted                                        |     0 |
-| stale                                             |     0 |
-| closed/prohibited (catalogued, not release-ready) |     3 |
+## Preview identity
+
+| Field      | Value                                                           |
+| ---------- | --------------------------------------------------------------- |
+| SHA        | `e9dc638` (= `origin/feat/sprint-4-field-mode`)                 |
+| Deployment | `dpl_8H7VHPTiohGT6TTzf6WUbMf8vv3x` READY                        |
+| URL        | https://rockhound-j42q1g8ko-hutchs-projects-ef99514e.vercel.app |
+
+## Machine gates (handoff)
+
+| Gate                             | Result                     |
+| -------------------------------- | -------------------------- |
+| test:ci                          | 882/76 PASS                |
+| type-check                       | PASS                       |
+| build                            | PASS (after `.next` clean) |
+| Playwright                       | 21/21 PASS                 |
+| git diff --check (handoff paths) | PASS                       |
+
+## Remaining owner actions
+
+1. Execute `05-acceptance-retest.md` on Preview SHA `e9dc638`
+2. Supabase Auth Site URL + callback allowlist for Preview (+ Production hosts when promoting)
+3. Decide launch-data activation per `06-launch-data-activation.md` (or keep demo non-authoritative)
+4. Explicit authorize production promote (separate)
 
 ## Explicit non-claims
 
-- Not production-promoted.
-- Not owner-browser acceptance complete.
-- No physical device run (Chromium Pixel 5 + viewport matrix only).
-- Production env values not applied by agent (owner-only).
-- OPRD trust pack lives in `04-trust-*` artifacts only; Supabase sprint2 demo seed is not replaced in-app until a separate ingest phase.
+- No production promotion performed.
+- OPRD 12-site pack not in runtime discovery.
+- Synthetic AZ/OR seed not certified as real.

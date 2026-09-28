@@ -1,0 +1,5 @@
+.                                        | ΓÇëWARNΓÇë Unsupported engine: wanted: {"node":"20.x"} (current: {"node":"v24.12.0","pnpm":"10.33.0"})
+
+> web@0.1.0 type-check C:\Users\hetfw\Rockhounding Project\apps\web
+> tsc --noEmit
+

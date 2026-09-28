@@ -1,0 +1,105 @@
+
+[1A[2K[WebServer] [@sentry/nextjs] DEPRECATION WARNING: It is recommended renaming your `sentry.client.config.ts` file, or moving its content to `instrumentation-client.ts`. When using Turbopack `sentry.client.config.ts` will no longer work. Read more about the `instrumentation-client.ts` file: https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation-client
+
+[1A[2K[WebServer]  Γ¿» TypeError: Cannot read properties of undefined (reading 'call')
+[WebServer]     at Object.t [as require] (C:\Users\hetfw\Rockhounding Project\apps\web\.next\server\webpack-runtime.js:1:527)
+[WebServer]     at JSON.parse (<anonymous>)
+[WebServer] digest: "867067104"
+
+[1A[2K[WebServer] TypeError: Cannot read properties of undefined (reading 'call')
+[WebServer]     at Object.t [as require] (C:\Users\hetfw\Rockhounding Project\apps\web\.next\server\webpack-runtime.js:1:527)
+[WebServer]     at require (C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next@14.2.35_@babel+core@7._0bdfec3ace7fb735806742aaff1d4e38\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:17:18811)
+[WebServer]     at A (C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next@14.2.35_@babel+core@7._0bdfec3ace7fb735806742aaff1d4e38\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:94398)
+[WebServer]     at C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next@14.2.35_@babel+core@7._0bdfec3ace7fb735806742aaff1d4e38\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:96726
+[WebServer]     at B._fromJSON (C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next@14.2.35_@babel+core@7._0bdfec3ace7fb735806742aaff1d4e38\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:97164)
+[WebServer]     at JSON.parse (<anonymous>)
+[WebServer]     at I (C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next@14.2.35_@babel+core@7._0bdfec3ace7fb735806742aaff1d4e38\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:94119)
+[WebServer]     at t (C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next@14.2.35_@babel+core@7._0bdfec3ace7fb735806742aaff1d4e38\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:100640)
+
+[1A[2K[WebServer]  Γ¿» TypeError: Cannot read properties of undefined (reading 'call')
+[WebServer]     at Object.t [as require] (C:\Users\hetfw\Rockhounding Project\apps\web\.next\server\webpack-runtime.js:1:527)
+[WebServer]     at require (C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next@14.2.35_@babel+core@7._0bdfec3ace7fb735806742aaff1d4e38\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:17:18811)
+[WebServer]     at A (C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next@14.2.35_@babel+core@7._0bdfec3ace7fb735806742aaff1d4e38\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:94398)
+[WebServer]     at C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next@14.2.35_@babel+core@7._0bdfec3ace7fb735806742aaff1d4e38\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:96726
+[WebServer]     at B._fromJSON (C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next@14.2.35_@babel+core@7._0bdfec3ace7fb735806742aaff1d4e38\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:97164)
+[WebServer]     at JSON.parse (<anonymous>)
+[WebServer]     at I (C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next@14.2.35_@babel+core@7._0bdfec3ace7fb735806742aaff1d4e38\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:94119)
+[WebServer]     at t (C:\Users\hetfw\Rockhounding Project\node_modules\.pnpm\next@14.2.35_@babel+core@7._0bdfec3ace7fb735806742aaff1d4e38\node_modules\next\dist\compiled\next-server\app-page.runtime.prod.js:12:100640) {
+[WebServer]   page: '/'
+[WebServer] }
+
+Running 21 tests using 6 workers
+
+
+
+[1A[2K(node:56988) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K(node:23160) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+
+[1A[2K(node:34384) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:28748) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K(node:49884) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K(node:46712) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+
+[1A[2K(node:23160) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:46712) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K(node:34384) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:49884) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+[1A[2K(node:56988) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:28748) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/21] [chromium] ΓÇ║ e2e\collection.spec.ts:4:7 ΓÇ║ Collection empty-state acceptance ΓÇ║ CB-COL: /collection renders empty gallery without server exception
+[1A[2K[2/21] [chromium] ΓÇ║ e2e\field-mode.spec.ts:14:7 ΓÇ║ FE-010 Field Mode shell ΓÇ║ CB-F2/F3/F5: GPS strip, Quick Log FAB, 44px targets
+[1A[2K[3/21] [chromium] ΓÇ║ e2e\field-mode.spec.ts:47:7 ΓÇ║ FE-010 Field Mode shell ΓÇ║ CB-F4: nearest site card renders when GPS and locations available
+[1A[2K[4/21] [chromium] ΓÇ║ e2e\field-mode.spec.ts:37:7 ΓÇ║ FE-010 Field Mode shell ΓÇ║ CB-HG: High-Glare toggle persists on documentElement
+[1A[2K[5/21] [chromium] ΓÇ║ e2e\field-mode.spec.ts:4:7 ΓÇ║ FE-010 Field Mode shell ΓÇ║ CB-F1: enters Field Mode in one tap from Home
+[1A[2K[6/21] [chromium] ΓÇ║ e2e\collection.spec.ts:12:7 ΓÇ║ Collection empty-state acceptance ΓÇ║ CB-COL: discovery ledger link opens /finds without crash shell
+
+[1A[2K[WebServer]  ΓÜá Cross origin request detected from 127.0.0.1 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+[WebServer] Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+[1A[2K[7/21] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:14:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-NET: offline queue then reconnect restores Online pill
+[1A[2K[8/21] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:51:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-GPS: denied then granted mid-session updates GPS strip
+[1A[2K[9/21] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:67:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-GPS-LOST: clear watch mid-session falls back to denied/unavailable label
+[1A[2K[10/21] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:96:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-CAMERA: photo storage failure still allows continuing Quick Log
+[1A[2K[11/21] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:146:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-SYNC: refresh with pending offline queue keeps offline path usable
+[1A[2K[12/21] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:284:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-COL-SCALE: /finds ledger renders large mocked client list without crash
+[1A[2K[13/21] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:311:7 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-HG-CONTRAST: high-glare surfaces inherit dark text on cream
+[1A[2K[14/21] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:335:9 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-VP: Field shell usable at 360x800
+[1A[2K[15/21] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:335:9 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-VP: Field shell usable at 390x844
+[1A[2K[16/21] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:335:9 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-VP: Field shell usable at 412x915
+[1A[2K[17/21] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:335:9 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-VP: Field shell usable at 768x1024
+[1A[2K[18/21] [chromium] ΓÇ║ e2e\field-resilience.spec.ts:335:9 ΓÇ║ FIELD_GATE resilience ΓÇ║ CB-VP: Field shell usable at desktop
+[1A[2K[19/21] [chromium] ΓÇ║ e2e\offline-sync.spec.ts:9:7 ΓÇ║ TEST-007 offline sync and access gating ΓÇ║ CB-E3 / KR-001 online: prohibited site blocks Quick Log
+[1A[2K[20/21] [chromium] ΓÇ║ e2e\offline-sync.spec.ts:35:7 ΓÇ║ TEST-007 offline sync and access gating ΓÇ║ CB-E2 / KR-001 offline: Quick Log allowed when access check unavailable
+[1A[2K[21/21] [chromium] ΓÇ║ e2e\offline-sync.spec.ts:53:7 ΓÇ║ TEST-007 offline sync and access gating ΓÇ║ CB-E2: map Quick Log entry opens modal online
+[1A[2K  21 passed (2.0m)

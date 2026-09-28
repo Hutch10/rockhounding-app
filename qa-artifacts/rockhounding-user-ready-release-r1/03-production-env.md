@@ -186,11 +186,11 @@ Redeploy/rebuild needed for `NEXT_PUBLIC_*` to bake into client bundles — sche
 
 | Check                                        | Result                            |
 | -------------------------------------------- | --------------------------------- |
-| Production app env populated?                | **FAIL** (empty)                  |
-| Required Supabase public vars on Production? | **FAIL**                          |
+| Production app env populated?                | **PASS** (§6A five vars)          |
+| Required Supabase public vars on Production? | **PASS** (host + anon ref OK)     |
 | Preview branch points at Rockhounding ref?   | **PASS** (`dcbjjvygjhmngwzuwdjj`) |
 | Stale deleted ref on current branch Preview? | **Not observed**                  |
-| Auth URL plan documented?                    | **PASS** (plan only)              |
-| Change set ready without applying?           | **PASS** (§6)                     |
+| Auth URL plan documented?                    | **PASS** (plan only — owner)      |
+| Change set applied without promote?          | **PASS** (§6A)                    |
 
-**Classification:** `ROCKHOUNDING_PRODUCTION_ENV_OWNER_BLOCKER` — owner must apply §6A (+ §5 Auth URLs) before Production can serve authenticated web. Contract + change set are ready; no promote performed.
+**Classification:** `ROCKHOUNDING_PRODUCTION_ENV_§6A_APPLIED_AUTH_URL_OWNER` — §6A vars present on Production; owner must complete §5 Auth URLs before authenticated Production web. No promote performed.
