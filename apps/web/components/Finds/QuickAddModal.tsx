@@ -162,7 +162,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({ onClose }) => {
           <div>
             <h2 className="text-xl font-bold text-white">Log Field Find</h2>
             <p className="text-xs text-white/50 uppercase tracking-widest mt-1">
-              {isOffline ? 'Offline — queued locally' : 'Tactical Entry Mode'}
+              {isOffline ? 'Offline — queued locally' : 'Online — sync when connected'}
             </p>
           </div>
           <button

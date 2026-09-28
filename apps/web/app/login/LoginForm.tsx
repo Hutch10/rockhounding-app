@@ -59,7 +59,7 @@ function LoginContent(): JSX.Element {
           <div className="mb-8 text-center">
             <h1 className="text-2xl font-black text-white tracking-tight uppercase">Rockhound</h1>
             <p className="text-xs text-white/40 font-bold uppercase tracking-widest mt-2">
-              Field Intelligence Login
+              Sign in with magic link
             </p>
           </div>
 

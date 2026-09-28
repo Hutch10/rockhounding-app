@@ -142,9 +142,9 @@ export function FieldModeClient(): JSX.Element {
           <div className="flex items-center gap-2">
             <HighGlareToggle />
             <Link
-              href="/dashboard"
+              href="/"
               className="min-h-12 min-w-12 bg-black/60 backdrop-blur-md rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 active:scale-95 transition-transform"
-              aria-label="More options"
+              aria-label="Home"
             >
               <Menu className="w-5 h-5" />
             </Link>

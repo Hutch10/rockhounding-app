@@ -47,22 +47,22 @@ export const SyncStatusPanel: React.FC<{ inline?: boolean }> = ({ inline = false
               )}
             </div>
             <div className="min-w-0">
-              <h3 className="text-sm font-semibold text-slate-100 truncate">Sync Engine</h3>
+              <h3 className="text-sm font-semibold text-slate-100 truncate">Sync status</h3>
               <p className="text-[10px] text-slate-400 uppercase tracking-widest font-medium truncate">
                 {isLoginPage
                   ? isSyncing
                     ? 'Synchronizing'
                     : 'Waiting for sign-in'
                   : isSyncing
-                    ? 'Synchronizing Operations'
-                    : 'Ledger Standby'}
+                    ? 'Synchronizing'
+                    : 'Idle'}
               </p>
             </div>
           </div>
           <button
             onClick={triggerSync}
             disabled={isSyncing}
-            className="flex-shrink-0 p-2 hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50"
+            className="flex-shrink-0 min-h-12 min-w-12 p-2 hover:bg-slate-700 rounded-lg transition-colors disabled:opacity-50 inline-flex items-center justify-center"
             aria-label="Trigger Sync"
           >
             <ArrowPathIcon
@@ -88,9 +88,7 @@ export const SyncStatusPanel: React.FC<{ inline?: boolean }> = ({ inline = false
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ExclamationTriangleIcon className="h-4 w-4 md:h-3 md:w-3 text-rose-500 flex-shrink-0" />
-                <span className="text-xs text-rose-400 font-medium truncate">
-                  Terminal Failures
-                </span>
+                <span className="text-xs text-rose-400 font-medium truncate">Failed items</span>
               </div>
               <span className="text-xs font-mono font-bold text-rose-500 bg-rose-500/10 px-1.5 rounded">
                 {failedCount}

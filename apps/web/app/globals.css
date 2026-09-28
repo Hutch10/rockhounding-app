@@ -215,3 +215,13 @@ html[data-high-glare='on'] [data-high-glare-surface] {
   color: #1c1917 !important;
   border-color: #1c1917 !important;
 }
+
+/* Force readable copy on cream surfaces (Tailwind text-white/* otherwise stays white). */
+html[data-high-glare='on'] [data-high-glare-surface] * {
+  color: inherit !important;
+}
+
+html[data-high-glare='on'] [data-high-glare-surface] a,
+html[data-high-glare='on'] [data-high-glare-surface] button {
+  color: #1c1917 !important;
+}
