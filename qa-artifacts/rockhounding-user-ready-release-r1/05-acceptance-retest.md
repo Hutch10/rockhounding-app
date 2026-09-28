@@ -5,16 +5,17 @@
 
 ## Exact deployment under test
 
-| Field                | Value                                                                                           |
-| -------------------- | ----------------------------------------------------------------------------------------------- |
-| Vercel project       | `rockhound-web`                                                                                 |
-| Git SHA              | `e9dc638839a04cbc97a00a92978ace9ddf2897f6` (`e9dc638`)                                          |
-| Branch               | `feat/sprint-4-field-mode`                                                                      |
-| Deployment           | `dpl_8H7VHPTiohGT6TTzf6WUbMf8vv3x` **READY**                                                    |
-| Preview URL          | https://rockhound-j42q1g8ko-hutchs-projects-ef99514e.vercel.app                                 |
-| Stable Preview alias | https://rockhound-web-git-feat-sprint-4-db1580-hutchs-projects-ef99514e.vercel.app              |
-| Supabase             | `dcbjjvygjhmngwzuwdjj` (Rockhounding v1) — confirm `ACTIVE_HEALTHY`                             |
-| Auth                 | Site URL + `/auth/callback` allowlist must include this Preview origin before magic-link retest |
+| Field                    | Value                                                                                           |
+| ------------------------ | ----------------------------------------------------------------------------------------------- |
+| Vercel project           | `rockhound-web`                                                                                 |
+| Git SHA                  | `aae4a34a9527a46b896858503df5af142e0de4b2` (`aae4a34`)                                          |
+| Branch                   | `feat/sprint-4-field-mode`                                                                      |
+| Deployment               | `dpl_5KVEZ1CbFxNAYeAoYrrfFsX9kCuq` **READY**                                                    |
+| Preview URL              | https://rockhound-f184i88q6-hutchs-projects-ef99514e.vercel.app                                 |
+| Stable Preview alias     | https://rockhound-web-git-feat-sprint-4-db1580-hutchs-projects-ef99514e.vercel.app              |
+| Product code tip (prior) | `e9dc638` — same UX/FIELD code; `aae4a34` adds handoff docs only                                |
+| Supabase                 | `dcbjjvygjhmngwzuwdjj` (Rockhounding v1) — confirm `ACTIVE_HEALTHY`                             |
+| Auth                     | Site URL + `/auth/callback` allowlist must include this Preview origin before magic-link retest |
 
 ## Launch-data caveat (read before acceptance)
 
@@ -41,5 +42,5 @@
 ## Explicit non-goals
 
 - Not production promotion
-- Not final ACCEPTANCE PASS until this sheet is executed on SHA `e9dc638`
+- Not final ACCEPTANCE PASS until this sheet is executed on SHA `aae4a34`
 - Not launch-data activation (see `06-launch-data-activation.md`)

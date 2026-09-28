@@ -34,7 +34,7 @@ Tip Preview is current and FIELD/UX machine evidence is green, but **runtime lau
 
 ## Remaining owner actions
 
-1. Execute `05-acceptance-retest.md` on Preview SHA `e9dc638`
+1. Execute `05-acceptance-retest.md` on Preview SHA `aae4a34`
 2. Supabase Auth Site URL + callback allowlist for Preview (+ Production hosts when promoting)
 3. Decide launch-data activation per `06-launch-data-activation.md` (or keep demo non-authoritative)
 4. Explicit authorize production promote (separate)

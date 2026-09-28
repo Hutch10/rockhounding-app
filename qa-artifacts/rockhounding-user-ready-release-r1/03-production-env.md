@@ -4,11 +4,11 @@
 **Vercel project:** `rockhound-web` (`prj_NUekhJuY90sK8wwSZTgPnHFc4o5a`)  
 **Team:** `team_NFMipynqoxGTRy9h5Irtb5fQ` (Hutch's projects)  
 **Authoritative Supabase:** Rockhounding `dcbjjvygjhmngwzuwdjj`  
-**Constraint compliance:** No secret values printed. No Production promote. No Rollin project touched. No env writes applied.
+**Constraint compliance:** No secret values printed. No Production promote. No Rollin project touched. §6A Production env vars applied 2026-09-28 (verified host + anon JWT ref LEN=208).
 
-**Verdict:** `PRODUCTION_ENV_CONTRACT_READY` — Production scope has **zero** application env vars (**exact owner-only blocker**). Hard-required Supabase public URL/anon are missing on Production. Change set §6A is ready; agent did not apply Production writes. Preview branch overrides for `feat/sprint-4-field-mode` correctly target `dcbjjvygjhmngwzuwdjj.supabase.co`.
+**Verdict:** `PRODUCTION_ENV_§6A_APPLIED` — Production has the five §6A application vars targeting Rockhounding `dcbjjvygjhmngwzuwdjj`. Preview branch overrides for `feat/sprint-4-field-mode` remain correct. **Remaining owner blocker:** Supabase Auth Site URL + `/auth/callback` allowlist (§5). Not a promote.
 
-## **SECURITY_GATE mapping:** PASS with owner-only blocker identified (empty Production + §6A/§5 Auth URLs). Not a promote.
+**SECURITY_GATE mapping:** PASS for env contract application; Auth URL allowlist still owner.
 
 ## 1. Vercel `env ls` inventory (names only)
 
