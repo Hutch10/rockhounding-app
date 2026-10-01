@@ -39,6 +39,19 @@ export enum Status {
 }
 
 /**
+ * Site access model (Build Document / Postgres access_model).
+ * FEE_SITE is site class, not collecting permission and not operating status.
+ * Product-facing FEE_MINE maps to FEE_SITE via fee-site-support.
+ */
+export enum AccessModel {
+  PUBLIC_LAND = 'PUBLIC_LAND',
+  FEE_SITE = 'FEE_SITE',
+  CLUB_ONLY = 'CLUB_ONLY',
+  PERMISSION_REQUIRED = 'PERMISSION_REQUIRED',
+  UNKNOWN = 'UNKNOWN',
+}
+
+/**
  * Visibility level for user-generated content
  * Used for observations and user submissions
  */

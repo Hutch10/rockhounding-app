@@ -86,3 +86,15 @@ describe('Visibility enum', () => {
     });
   });
 });
+
+describe('AccessModel enum', () => {
+  it('should contain Build Document access_model values', async () => {
+    const { AccessModel } = await import('./enums');
+    expect(AccessModel.PUBLIC_LAND).toBe('PUBLIC_LAND');
+    expect(AccessModel.FEE_SITE).toBe('FEE_SITE');
+    expect(AccessModel.CLUB_ONLY).toBe('CLUB_ONLY');
+    expect(AccessModel.PERMISSION_REQUIRED).toBe('PERMISSION_REQUIRED');
+    expect(AccessModel.UNKNOWN).toBe('UNKNOWN');
+    expect(Object.values(AccessModel)).toHaveLength(5);
+  });
+});

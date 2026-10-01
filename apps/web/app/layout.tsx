@@ -10,11 +10,25 @@ import { SyncStatusPanel } from '@/components/Sync/SyncStatusPanel';
 
 import './globals.css';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+
+const siteDescription =
+  'Launch-cohort rockhounding map and field log. Recorded access is not collecting permission; geological context is not a verified claim.';
+
 export const metadata: Metadata = {
-  title: 'Rockhounding App',
-  description:
-    'National-scale geospatial app for rockhounding locations and geologist observations',
+  metadataBase: new URL(siteUrl),
+  title: 'Rocky Atlas',
+  description: siteDescription,
   manifest: '/manifest.json',
+  icons: {
+    icon: '/favicon.ico',
+  },
+  openGraph: {
+    title: 'Rocky Atlas',
+    description: siteDescription,
+    type: 'website',
+    siteName: 'Rocky Atlas',
+  },
 };
 
 export const viewport: Viewport = {

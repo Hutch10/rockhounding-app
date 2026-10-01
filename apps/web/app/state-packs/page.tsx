@@ -90,8 +90,8 @@ export default async function StatePacksPage(): Promise<React.JSX.Element> {
           <li>
             Each pack contains:
             <ul className="ml-6 mt-1 space-y-1 list-disc list-inside">
-              <li>All approved locations (id, name, lat, lon, difficulty, etc.)</li>
-              <li>Relevant rulesets (legal information for locations)</li>
+              <li>Launch-cohort locations in the pack (id, name, coords, access fields)</li>
+              <li>Recorded access/rules context — not a guarantee of current legality</li>
               <li>Referenced materials (what you can find at each location)</li>
             </ul>
           </li>

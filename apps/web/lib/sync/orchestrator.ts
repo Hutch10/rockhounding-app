@@ -1,14 +1,20 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-floating-promises, @typescript-eslint/no-misused-promises, @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-unused-vars, no-console, @typescript-eslint/no-unnecessary-condition */
 /**
- * Offline Sync Orchestrator (SYNC-002)
+ * Offline Sync Orchestrator (SYNC-002) — CANONICAL sync owner
  *
- * Single path: StorageManager ledger → POST /api/v1/sync/batch
+ * Single path: StorageManager ledger → SyncManager → POST /api/v1/sync/batch
+ *
+ * See `ownership.ts`. Do not reintroduce SyncCoordinator / rockhound-sync queues.
  */
 
 import { SyncBatchResponseSchema, type SyncBatchResponse } from '@rockhounding/shared';
 
 import { ensureStorageManager, getStorageManager } from '@/lib/storage/manager';
 import { mapLedgerToV1Batch } from '@/lib/sync/batch-mapper';
+import { CANONICAL_SYNC_OWNER } from '@/lib/sync/ownership';
+
+/** Asserted at module load so misuse of a second coordinator is hard to miss in reviews. */
+void CANONICAL_SYNC_OWNER;
 
 export class SyncManager {
   private static instance: SyncManager;

@@ -1,19 +1,27 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
-const PUBLIC_PREFIXES = ['/login', '/auth/', '/offline'];
-const PROTECTED_PREFIXES = [
-  '/',
+// Public browse surfaces for launch (catalog is readable without session).
+// Auth still required for Field Mode, Collection, finds, trips, profile.
+const PUBLIC_PREFIXES = [
+  '/login',
+  '/auth/',
+  '/offline',
   '/map',
-  '/finds',
-  '/collection',
-  '/field',
-  '/trips',
   '/location',
-  '/profile',
+  '/fee-mines',
+  '/state',
+  '/state-packs',
+  '/partner',
+  '/robots.txt',
+  '/sitemap.xml',
 ];
+const PROTECTED_PREFIXES = ['/finds', '/collection', '/field', '/trips', '/profile', '/dashboard'];
 
 function isPublicPath(pathname: string): boolean {
+  if (pathname === '/') {
+    return true;
+  }
   if (pathname.startsWith('/api/')) {
     return true;
   }

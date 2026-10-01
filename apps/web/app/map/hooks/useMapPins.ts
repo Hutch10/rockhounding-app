@@ -1,5 +1,6 @@
 import type { LocationV1 } from '@rockhounding/shared';
 import { LocationsListResponseSchema } from '@rockhounding/shared';
+import type { SiteType } from '@rockhounding/shared/fee-site-support';
 import type { Map as MapboxMap } from 'mapbox-gl';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -11,6 +12,7 @@ interface UseMapPinsOptions {
   map: MapboxMap | null;
   debounceMs?: number;
   minZoom?: number;
+  siteTypes?: SiteType[];
 }
 
 interface UseMapPinsResult {
@@ -22,15 +24,19 @@ interface UseMapPinsResult {
 
 /**
  * FE-004: Fetch thin pins from V1 locations API with debounced bbox.
+ * Optional siteTypes → site_type query (fee mine / public / permit filters).
  */
 export function useMapPins({
   map,
   debounceMs = 300,
   minZoom = ZOOM_THRESHOLDS.MIN_VISIBLE,
+  siteTypes,
 }: UseMapPinsOptions): UseMapPinsResult {
   const [pins, setPins] = useState<MapLocationPin[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const siteTypesKey = siteTypes?.slice().sort().join(',') ?? '';
 
   const fetchPins = useCallback(async (): Promise<void> => {
     if (map == null) {
@@ -52,7 +58,13 @@ export function useMapPins({
     setError(null);
 
     try {
-      const response = await fetch(`/api/v1/locations?bbox=${bbox}`, {
+      const params = new URLSearchParams({ bbox });
+      if (siteTypes != null && siteTypes.length > 0) {
+        for (const t of siteTypes) {
+          params.append('site_type', t);
+        }
+      }
+      const response = await fetch(`/api/v1/locations?${params.toString()}`, {
         cache: 'no-store',
       });
 
@@ -70,7 +82,7 @@ export function useMapPins({
     } finally {
       setLoading(false);
     }
-  }, [map, minZoom]);
+  }, [map, minZoom, siteTypesKey]);
 
   useEffect(() => {
     if (map == null) {

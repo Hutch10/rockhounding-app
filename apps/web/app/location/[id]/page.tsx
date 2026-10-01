@@ -8,6 +8,10 @@ import { GeologicalContextPending } from './GeologicalContextPanel';
 import { LocationDetailClient, type LocationDetailV1 } from './LocationDetailClient';
 import { SiteGeologicalContext } from './SiteGeologicalContext';
 
+import { mapDetailRow } from '@/app/api/v1/locations/mappers';
+import type { LocationBboxRow } from '@/app/api/v1/locations/types';
+import { createClient } from '@/lib/supabase/server';
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
@@ -16,38 +20,123 @@ const ParamsSchema = z.object({
   id: z.string().uuid(),
 });
 
-const LocationDetailResponseSchema = z.object({
-  data: LocationV1Schema.extend({
-    permit_summary: z.string().nullable().optional(),
-    collecting_summary: z.string().nullable().optional(),
-    materials: z
-      .array(
-        z.object({
-          id: z.string(),
-          name: z.string(),
-          abundance: z.string().nullable(),
-        })
-      )
-      .optional(),
-  }),
-});
+interface LocationRecord {
+  id: string;
+  name: string;
+  description: string | null;
+  latitude: number | string;
+  longitude: number | string;
+  access_status: string;
+  difficulty_rating: number | null;
+  is_verified: boolean | null;
+  trust_category: string | null;
+  freshness_checked_at: string | null;
+  freshness_status: string | null;
+  metadata: Record<string, unknown> | null;
+  source_tier: string | null;
+}
 
-async function fetchLocation(id: string): Promise<LocationDetailV1 | null> {
-  const base = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000');
-  const response = await fetch(`${base}/api/v1/locations/${id}`, { cache: 'no-store' });
+/**
+ * Load location detail in-process (no HTTP self-fetch).
+ * Avoids Vercel Deployment Protection blocking SSR → /api on Preview.
+ */
+async function loadLocationDetail(id: string): Promise<LocationDetailV1 | null> {
+  const supabase = createClient();
 
-  if (response.status === 404) {
+  const { data: locationData, error: locError } = await supabase
+    .from('locations')
+    .select(
+      'id, name, description, latitude, longitude, access_status, difficulty_rating, is_verified, trust_category, freshness_checked_at, freshness_status, metadata, source_tier'
+    )
+    .eq('id', id)
+    .maybeSingle();
+
+  const location = locationData as LocationRecord | null;
+  if (locError != null || location == null) {
     return null;
   }
-  if (!response.ok) {
-    throw new Error(`Failed to fetch location: ${response.statusText}`);
-  }
 
-  const json: unknown = await response.json();
-  const parsed = LocationDetailResponseSchema.parse(json);
-  return parsed.data as LocationDetailV1;
+  const lat = Number(location.latitude);
+  const lon = Number(location.longitude);
+  const pad = 0.02;
+
+  const rpcResult = await supabase.rpc('locations_v1_in_bbox', {
+    p_min_lon: lon - pad,
+    p_min_lat: lat - pad,
+    p_max_lon: lon + pad,
+    p_max_lat: lat + pad,
+    p_limit: 5,
+  });
+  const bboxRows = rpcResult.data as LocationBboxRow[] | null | undefined;
+  const bboxMatch = bboxRows?.find((row) => row.id === id);
+
+  const { data: materialRows } = await supabase
+    .from('location_materials')
+    .select('abundance, materials(id, name)')
+    .eq('location_id', id)
+    .limit(10);
+
+  const materials =
+    materialRows
+      ?.map((row) => {
+        const raw = row.materials as unknown;
+        const mat = (Array.isArray(raw) ? raw[0] : raw) as { id: string; name: string } | null;
+        return {
+          id: mat?.id ?? '',
+          name: mat?.name ?? 'Unknown',
+          abundance: row.abundance as string | null,
+        };
+      })
+      .filter((m) => m.id) ?? [];
+
+  const { data: rulesetRows } = await supabase
+    .from('location_rulesets')
+    .select('is_primary, rulesets(summary, authority_url)')
+    .eq('location_id', id)
+    .eq('is_primary', true)
+    .limit(1);
+
+  const rulesetRaw = rulesetRows?.[0]?.rulesets as unknown;
+  const primaryRuleset = (Array.isArray(rulesetRaw) ? rulesetRaw[0] : rulesetRaw) as {
+    summary?: string | null;
+  } | null;
+
+  const meta = location.metadata ?? {};
+  const row: LocationBboxRow & {
+    permit_summary: string | null;
+    collecting_summary: string | null;
+    materials: { id: string; name: string; abundance: string | null }[];
+  } = {
+    id: location.id,
+    name: location.name,
+    description: location.description,
+    latitude: lat,
+    longitude: lon,
+    fuzzy_lat: bboxMatch?.fuzzy_lat ?? null,
+    fuzzy_lon: bboxMatch?.fuzzy_lon ?? null,
+    access_status: location.access_status,
+    difficulty_rating: location.difficulty_rating,
+    is_verified: location.is_verified ?? false,
+    trust_category: location.trust_category,
+    freshness_checked_at: location.freshness_checked_at,
+    freshness_status: location.freshness_status,
+    metadata: meta,
+    source_tier: location.source_tier,
+    top_materials: materials.map((m) => m.name),
+    permit_summary:
+      (typeof meta.permit_summary === 'string' ? meta.permit_summary : null) ??
+      primaryRuleset?.summary ??
+      null,
+    collecting_summary:
+      typeof meta.collecting_summary === 'string'
+        ? meta.collecting_summary
+        : (location.description ?? null),
+    materials,
+  };
+
+  const detail = mapDetailRow(row);
+  LocationV1Schema.parse(detail);
+  return detail as LocationDetailV1;
 }
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
@@ -58,7 +147,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   }
 
   try {
-    const location = await fetchLocation(parsed.data.id);
+    const location = await loadLocationDetail(parsed.data.id);
     if (location == null) {
       return { title: 'Location Not Found' };
     }
@@ -79,7 +168,7 @@ export default async function LocationDetailPage(props: PageProps): Promise<JSX.
     notFound();
   }
 
-  const location = await fetchLocation(parsed.data.id);
+  const location = await loadLocationDetail(parsed.data.id);
   if (location == null) {
     notFound();
   }

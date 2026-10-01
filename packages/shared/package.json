@@ -128,6 +128,30 @@
     "./usgs-sgmc-production-context": {
       "types": "./dist/usgs-sgmc-production-context.d.ts",
       "default": "./dist/usgs-sgmc-production-context.js"
+    },
+    "./fee-site-support": {
+      "types": "./dist/fee-site-support.d.ts",
+      "default": "./dist/fee-site-support.js"
+    },
+    "./trust-field-kernel": {
+      "types": "./dist/trust-field-kernel.d.ts",
+      "default": "./dist/trust-field-kernel.js"
+    },
+    "./partner-tenancy": {
+      "types": "./dist/partner-tenancy.d.ts",
+      "default": "./dist/partner-tenancy.js"
+    },
+    "./real-operator-pilot-cohort": {
+      "types": "./dist/real-operator-pilot-cohort.d.ts",
+      "default": "./dist/real-operator-pilot-cohort.js"
+    },
+    "./state-pack-research": {
+      "types": "./dist/state-pack-research.d.ts",
+      "default": "./dist/state-pack-research.js"
+    },
+    "./state-pack-deep-review": {
+      "types": "./dist/state-pack-deep-review.d.ts",
+      "default": "./dist/state-pack-deep-review.js"
     }
   },
   "scripts": {

@@ -1,3 +1,4 @@
+import { SiteTypeSchema } from '@rockhounding/shared/fee-site-support';
 import { z } from 'zod';
 
 const AccessStatusSchema = z.enum(['allowed', 'caution', 'restricted', 'prohibited', 'unknown']);
@@ -29,6 +30,16 @@ export const BboxQuerySchema = z.object({
     .union([z.string().uuid(), z.array(z.string().uuid())])
     .optional()
     .transform((v) => (v == null ? undefined : Array.isArray(v) ? v : [v])),
+  /** Site class filter (FEE_MINE / PUBLIC_COLLECTING / …). Compatible with Explore chips. */
+  site_type: z
+    .union([SiteTypeSchema, z.array(SiteTypeSchema)])
+    .optional()
+    .transform((v) => (v == null ? undefined : Array.isArray(v) ? v : [v])),
+  /** Convenience alias: site_type=FEE_MINE */
+  fee_mine: z
+    .union([z.literal('1'), z.literal('true'), z.literal('yes')])
+    .optional()
+    .transform((v) => v != null),
 });
 
 export type BboxQuery = z.infer<typeof BboxQuerySchema>;

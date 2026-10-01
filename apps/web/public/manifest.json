@@ -1,7 +1,7 @@
 {
-  "name": "Rockhounding MVP",
-  "short_name": "Rockhounding",
-  "description": "Discover prime rockhounding locations with legal gating, private observations, and offline-capable state packs.",
+  "name": "Rocky Atlas",
+  "short_name": "Rocky Atlas",
+  "description": "Launch-cohort rockhounding map for admitted sites. Recorded access is not collecting permission. Offline state packs when published.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -65,14 +65,14 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Interactive map with rockhounding locations"
+      "label": "Map of admitted rockhounding sites"
     },
     {
       "src": "/screenshots/location-detail.png",
       "sizes": "750x1334",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Location details with materials and legal information"
+      "label": "Location detail with recorded access and materials"
     }
   ],
   "shortcuts": [
@@ -90,10 +90,10 @@
       ]
     },
     {
-      "name": "Observations",
-      "short_name": "Observations",
-      "description": "View your private observations",
-      "url": "/observations",
+      "name": "Finds",
+      "short_name": "Finds",
+      "description": "View your field finds log",
+      "url": "/finds",
       "icons": [
         {
           "src": "/icons/observations-shortcut.png",
@@ -116,16 +116,6 @@
       ]
     }
   ],
-  "share_target": {
-    "action": "/share-location",
-    "method": "POST",
-    "enctype": "multipart/form-data",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
-    }
-  },
   "related_applications": [],
   "prefer_related_applications": false
 }

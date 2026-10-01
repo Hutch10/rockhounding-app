@@ -1,13 +1,20 @@
 /**
- * Sync Coordinator - Client-Side Sync Engine
+ * @deprecated QUARANTINED — SYNC_DUPLICATE_DEAD_CODE_QUARANTINE
  *
- * Handles:
- * - Offline-first batching
- * - Exponential backoff
- * - Retry logic
- * - Dependency resolution
- * - Conflict detection
- * - Integrity verification
+ * SyncCoordinator is LEGACY / DEAD. Canonical owner is SyncManager
+ * (`apps/web/lib/sync/orchestrator.ts` → StorageManager → POST /api/v1/sync/batch).
+ *
+ * Do NOT:
+ * - call initSync / getSync from providers, Field Mode, Quick Log, or Collection
+ * - merge rockhound-sync into rockhound-storage
+ * - treat this module as the live sync path
+ *
+ * See `apps/web/lib/sync/ownership.ts`.
+ *
+ * Historical responsibilities (unwired):
+ * - Offline-first batching via separate IndexedDB
+ * - Exponential backoff / retry / dependency resolution
+ * - Conflict detection / integrity verification
  */
 
 import { openDB, type IDBPDatabase } from 'idb';
@@ -776,16 +783,42 @@ export class SyncCoordinator {
 
 let syncCoordinator: SyncCoordinator | null = null;
 
-export function initSync(config?: Partial<SyncCoordinatorConfig>): SyncCoordinator {
+const QUARANTINE_MESSAGE =
+  '[SyncCoordinator] QUARANTINED (SYNC_DUPLICATE_DEAD_CODE_QUARANTINE). ' +
+  'Canonical owner is SyncManager (lib/sync/orchestrator.ts). ' +
+  'Do not initSync in app code. Use _initSyncForLegacyTestsOnly in tests only.';
+
+/**
+ * @deprecated Quarantined. Throws unless legacy test opt-in is used.
+ */
+export function initSync(_config?: Partial<SyncCoordinatorConfig>): SyncCoordinator {
+  throw new Error(QUARANTINE_MESSAGE);
+}
+
+/**
+ * @deprecated Quarantined. Throws — SyncCoordinator must stay unwired.
+ */
+export function getSync(): SyncCoordinator {
+  if (!syncCoordinator) {
+    throw new Error(QUARANTINE_MESSAGE);
+  }
+  return syncCoordinator;
+}
+
+/**
+ * Test-only escape hatch for legacy SyncCoordinator unit tests.
+ * Must never be called from app providers, routes, or field UI.
+ */
+export function _initSyncForLegacyTestsOnly(
+  config?: Partial<SyncCoordinatorConfig>
+): SyncCoordinator {
   if (!syncCoordinator) {
     syncCoordinator = new SyncCoordinator(config);
   }
   return syncCoordinator;
 }
 
-export function getSync(): SyncCoordinator {
-  if (!syncCoordinator) {
-    throw new Error('[SyncCoordinator] Not initialized. Call initSync() first.');
-  }
-  return syncCoordinator;
+/** Test-only: clear singleton between suites. */
+export function _resetSyncCoordinatorForTests(): void {
+  syncCoordinator = null;
 }

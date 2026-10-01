@@ -121,7 +121,7 @@ export function StatePackDetail({ pack }: StatePackDetailProps) {
           <div className="flex items-start">
             <span className="text-green-600 font-bold mr-3">✓</span>
             <div>
-              <strong>Locations:</strong> All approved rockhounding locations in{' '}
+              <strong>Locations:</strong> Launch-cohort / pack locations for{' '}
               {getStateName(pack.state)}, including coordinates (lat/lon), difficulty, legal tags,
               access models, and kid-friendly status
             </div>

@@ -394,4 +394,12 @@ export type {
   HarnessEvaluationResponse,
 } from './hutchstack';
 
+export {
+  SyncOperationStatusSchema,
+  SyncBatchRequestSchema,
+  SyncBatchResponseSchema,
+  type SyncOperationStatus,
+  type SyncBatchRequest,
+  type SyncBatchResponse,
+} from './v1-contract';
 export * from './v1-contract';

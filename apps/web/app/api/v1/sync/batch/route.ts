@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 
 import { processSyncBatch } from './handler';
 
+import { assertSyncBatchNonProdTarget } from '@/lib/env';
 import { createClient } from '@/lib/supabase/server';
 
 /**
@@ -13,6 +14,15 @@ import { createClient } from '@/lib/supabase/server';
  */
 
 export async function POST(req: Request) {
+  try {
+    assertSyncBatchNonProdTarget();
+  } catch (isolationError: unknown) {
+    const message =
+      isolationError instanceof Error ? isolationError.message : 'Non-prod isolation blocked sync';
+    console.error('[Sync] Production isolation blocked sync/batch:', message);
+    return NextResponse.json({ error: message, code: 'NONPROD_ISOLATION' }, { status: 403 });
+  }
+
   const supabase = await createClient();
   const {
     data: { user },

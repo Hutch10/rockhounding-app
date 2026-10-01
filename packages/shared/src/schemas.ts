@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { LegalTag, SourceTier, Status, Visibility } from './enums';
+import { AccessModel, LegalTag, SourceTier, Status, Visibility } from './enums';
 
 /**
  * Zod schema for LegalTag enum
@@ -21,6 +21,12 @@ export const SourceTierSchema = z.nativeEnum(SourceTier);
 export const StatusSchema = z.nativeEnum(Status);
 
 /**
+ * Zod schema for AccessModel enum
+ * Site class / access model — not collecting permission
+ */
+export const AccessModelSchema = z.nativeEnum(AccessModel);
+
+/**
  * Zod schema for Visibility enum
  * Validates content visibility level at runtime
  */
@@ -33,4 +39,5 @@ export const VisibilitySchema = z.nativeEnum(Visibility);
 export type LegalTagType = z.infer<typeof LegalTagSchema>;
 export type SourceTierType = z.infer<typeof SourceTierSchema>;
 export type StatusType = z.infer<typeof StatusSchema>;
+export type AccessModelType = z.infer<typeof AccessModelSchema>;
 export type VisibilityType = z.infer<typeof VisibilitySchema>;

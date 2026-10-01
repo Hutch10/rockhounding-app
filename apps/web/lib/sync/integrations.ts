@@ -1,13 +1,9 @@
 /**
- * Sync Engine Integration Points
- * 
- * Connects sync engine with all Rockhound subsystems:
- * - Field Sessions
- * - Find Logs
- * - Camera Pipeline
- * - Collection Management
- * - Collection Analytics
- * - Telemetry
+ * @deprecated QUARANTINED — SYNC_DUPLICATE_DEAD_CODE_QUARANTINE
+ *
+ * These helpers call SyncCoordinator via getSync(), which is unwired and now throws.
+ * Live sync uses enqueueFindCreate → StorageManager → SyncManager.
+ * Do not import this module from app routes or providers.
  */
 
 import { getSync } from '@/lib/sync/coordinator';
@@ -39,7 +35,7 @@ export async function syncFieldSession(
   modified: FieldSession
 ): Promise<string> {
   const sync = getSync();
-  
+
   return sync.enqueue(
     'field_session',
     modified.id,
@@ -58,7 +54,7 @@ export async function syncFieldSessionBatch(
   }>
 ): Promise<string[]> {
   const sync = getSync();
-  
+
   return Promise.all(
     sessions.map(({ operation, original, modified }) =>
       sync.enqueue('field_session', modified.id, operation, original, modified, 'high')
@@ -92,7 +88,7 @@ export async function syncFindLog(
   modified: FindLog
 ): Promise<string> {
   const sync = getSync();
-  
+
   return sync.enqueue(
     'find_log',
     modified.id,
@@ -111,7 +107,7 @@ export async function syncFindLogBatch(
   }>
 ): Promise<string[]> {
   const sync = getSync();
-  
+
   return Promise.all(
     logs.map(({ operation, original, modified }) =>
       sync.enqueue('find_log', modified.id, operation, original, modified, 'high')
@@ -145,7 +141,7 @@ export async function syncSpecimen(
   modified: Specimen
 ): Promise<string> {
   const sync = getSync();
-  
+
   return sync.enqueue(
     'specimen',
     modified.id,
@@ -207,7 +203,7 @@ export async function syncCaptureSession(
   modified: CaptureSession
 ): Promise<string> {
   const sync = getSync();
-  
+
   return sync.enqueue(
     'capture_session',
     modified.id,
@@ -224,18 +220,11 @@ export async function syncRawCapture(
   modified: RawCapture
 ): Promise<string> {
   const sync = getSync();
-  
+
   // Note: Actual file upload should be handled separately
   // This only syncs metadata
-  
-  return sync.enqueue(
-    'raw_capture',
-    modified.id,
-    operation,
-    original,
-    modified,
-    'normal'
-  );
+
+  return sync.enqueue('raw_capture', modified.id, operation, original, modified, 'normal');
 }
 
 export async function syncProcessedCapture(
@@ -244,15 +233,8 @@ export async function syncProcessedCapture(
   modified: ProcessedCapture
 ): Promise<string> {
   const sync = getSync();
-  
-  return sync.enqueue(
-    'processed_capture',
-    modified.id,
-    operation,
-    original,
-    modified,
-    'normal'
-  );
+
+  return sync.enqueue('processed_capture', modified.id, operation, original, modified, 'normal');
 }
 
 // ============================================================================
@@ -301,15 +283,8 @@ export async function syncStorageLocation(
   modified: StorageLocation
 ): Promise<string> {
   const sync = getSync();
-  
-  return sync.enqueue(
-    'storage_location',
-    modified.id,
-    operation,
-    original,
-    modified,
-    'normal'
-  );
+
+  return sync.enqueue('storage_location', modified.id, operation, original, modified, 'normal');
 }
 
 export async function syncCollectionGroup(
@@ -318,15 +293,8 @@ export async function syncCollectionGroup(
   modified: CollectionGroup
 ): Promise<string> {
   const sync = getSync();
-  
-  return sync.enqueue(
-    'collection_group',
-    modified.id,
-    operation,
-    original,
-    modified,
-    'normal'
-  );
+
+  return sync.enqueue('collection_group', modified.id, operation, original, modified, 'normal');
 }
 
 export async function syncTag(
@@ -335,7 +303,7 @@ export async function syncTag(
   modified: Tag
 ): Promise<string> {
   const sync = getSync();
-  
+
   return sync.enqueue(
     'tag',
     modified.id,
@@ -369,7 +337,7 @@ export async function syncExportJob(
   modified: ExportJob
 ): Promise<string> {
   const sync = getSync();
-  
+
   return sync.enqueue(
     'export_job',
     modified.id,
@@ -402,7 +370,7 @@ export async function syncAnalyticsCache(
   modified: AnalyticsCache
 ): Promise<string> {
   const sync = getSync();
-  
+
   return sync.enqueue(
     'analytics_cache',
     modified.id,
@@ -420,10 +388,7 @@ export async function syncAnalyticsCache(
 /**
  * Records sync events to telemetry system
  */
-export function recordSyncTelemetry(
-  eventName: string,
-  data: Record<string, any>
-): void {
+export function recordSyncTelemetry(eventName: string, data: Record<string, any>): void {
   try {
     if (typeof window !== 'undefined' && (window as any).telemetry) {
       (window as any).telemetry.recordEvent({
@@ -447,7 +412,7 @@ export async function trackSyncOperation<T>(
   fn: () => Promise<T>
 ): Promise<T> {
   const startTime = Date.now();
-  
+
   recordSyncTelemetry('sync_operation_start', {
     entity_type: entityType,
     operation_type: operation,
@@ -455,7 +420,7 @@ export async function trackSyncOperation<T>(
 
   try {
     const result = await fn();
-    
+
     const duration = Date.now() - startTime;
     recordSyncTelemetry('sync_operation_success', {
       entity_type: entityType,
@@ -495,15 +460,15 @@ export async function syncMixedBatch(
   }>
 ): Promise<string[]> {
   const sync = getSync();
-  
+
   recordSyncTelemetry('sync_mixed_batch_start', {
     operation_count: operations.length,
-    entity_types: [...new Set(operations.map(op => op.entityType))],
+    entity_types: [...new Set(operations.map((op) => op.entityType))],
   });
 
   try {
     const syncIds = await Promise.all(
-      operations.map(op =>
+      operations.map((op) =>
         sync.enqueue(
           op.entityType,
           op.entityId,
@@ -544,7 +509,7 @@ export async function hasPendingSync(
 ): Promise<boolean> {
   const sync = getSync();
   const state = await sync.getState();
-  
+
   // This is a simplified check - in production, you'd query the actual queue
   return state.pending_count > 0;
 }
@@ -579,7 +544,7 @@ export async function getEntitySyncStatus(
 export async function syncAllPending(): Promise<void> {
   const sync = getSync();
   await sync.sync();
-  
+
   recordSyncTelemetry('sync_all_pending', {
     timestamp: new Date().toISOString(),
   });

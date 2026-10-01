@@ -1,4 +1,10 @@
 import { LocationsListResponseSchema } from '@rockhounding/shared';
+import {
+  SiteType,
+  isPubliclyDiscoverableAdmission,
+  locationMatchesSiteTypeFilter,
+  parseFeeSiteEnvelope,
+} from '@rockhounding/shared/fee-site-support';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { mapRowToLocationV1 } from './mappers';
@@ -9,8 +15,23 @@ import { createClient } from '@/lib/supabase/server';
 export const dynamic = 'force-dynamic';
 
 /**
+ * Fail-closed: TEST_ONLY / DISCOVERED / RESEARCHING / REJECTED fee envelopes
+ * must not appear on the public map list. Rows without a fee envelope pass
+ * (legacy public sites). Rows with an envelope require ADMITTED or PUBLISHED.
+ */
+export function isPubliclyListableLocationMetadata(
+  metadata: Record<string, unknown> | null | undefined
+): boolean {
+  const envelope = parseFeeSiteEnvelope(metadata);
+  if (envelope == null) return true;
+  return isPubliclyDiscoverableAdmission(envelope.admissionStatus);
+}
+
+/**
  * API-001: GET /api/v1/locations
  * PostGIS bbox query on fuzzy_geom via locations_v1_in_bbox RPC.
+ * Optional site_type / fee_mine filters use metadata fee_site envelope (fail-closed).
+ * Fee-site admission is filtered fail-closed (TEST_ONLY never listed).
  */
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
@@ -28,7 +49,14 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    const { bbox, limit, access, trust } = parsed.data;
+    const {
+      bbox,
+      limit,
+      access,
+      trust,
+      site_type: siteTypeFilter,
+      fee_mine: feeMineOnly,
+    } = parsed.data;
     const supabase = createClient();
 
     const rpcResult = await supabase.rpc('locations_v1_in_bbox', {
@@ -52,6 +80,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
     let rows: LocationBboxRow[] = data ?? [];
 
+    // H2: exclude non-discoverable admission (TEST_ONLY never public).
+    rows = rows.filter((r) =>
+      isPubliclyListableLocationMetadata((r.metadata ?? {}) as Record<string, unknown>)
+    );
+
     if (access != null && access.length > 0) {
       rows = rows.filter((r) => access.includes(r.access_status as (typeof access)[number]));
     }
@@ -62,6 +95,22 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         const category = mapped.metadata?.trust_category as string;
         return trust.includes(category as (typeof trust)[number]);
       });
+    }
+
+    const effectiveSiteTypes =
+      feeMineOnly === true
+        ? [SiteType.FEE_MINE]
+        : siteTypeFilter != null && siteTypeFilter.length > 0
+          ? siteTypeFilter
+          : undefined;
+
+    if (effectiveSiteTypes != null) {
+      rows = rows.filter((r) =>
+        locationMatchesSiteTypeFilter(
+          (r.metadata ?? {}) as Record<string, unknown>,
+          effectiveSiteTypes
+        )
+      );
     }
 
     const locations = rows.map(mapRowToLocationV1);

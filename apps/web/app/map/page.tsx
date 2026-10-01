@@ -8,8 +8,8 @@ import type { MapConfig } from './types';
 import { SyncIndicator } from '@/components/Sync/SyncIndicator';
 
 export const metadata: Metadata = {
-  title: 'Field Map - Rockhounding Intelligence',
-  description: 'Tactical exploration and specimen logging interface',
+  title: 'Map · Rocky Atlas',
+  description: 'Find the ground. Know the rules. Record the find.',
 };
 
 const MAP_CONFIG: MapConfig = {
@@ -44,10 +44,10 @@ export default function MapPage(): JSX.Element {
           </div>
           <div>
             <h1 className="text-lg font-black text-white tracking-tight uppercase leading-none">
-              Field Intelligence
+              Rocky Atlas
             </h1>
             <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest mt-1">
-              Operational Area: CONUS
+              Find the ground · Know the rules · Record the find
             </p>
           </div>
         </div>

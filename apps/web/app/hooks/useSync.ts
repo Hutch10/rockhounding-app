@@ -1,5 +1,9 @@
 /**
- * Sync Hooks - React integration for Sync Engine
+ * @deprecated QUARANTINED — SYNC_DUPLICATE_DEAD_CODE_QUARANTINE
+ *
+ * These hooks bind to SyncCoordinator (dead). Live UI uses
+ * `apps/web/hooks/useSyncState.ts` + SyncManager.
+ * Do not import from Field Mode, Quick Log, Collection, or providers.
  */
 
 'use client';
@@ -29,7 +33,8 @@ export const syncKeys = {
   state: (userId: string) => [...syncKeys.all, 'state', userId] as const,
   queue: (userId: string) => [...syncKeys.all, 'queue', userId] as const,
   conflicts: (userId: string) => [...syncKeys.all, 'conflicts', userId] as const,
-  history: (userId: string, filters?: any) => [...syncKeys.all, 'history', userId, filters] as const,
+  history: (userId: string, filters?: any) =>
+    [...syncKeys.all, 'history', userId, filters] as const,
   metrics: (userId: string, period?: any) => [...syncKeys.all, 'metrics', userId, period] as const,
 };
 
@@ -77,10 +82,10 @@ export function useSync(options: UseSyncOptions = {}) {
         modified,
         priority
       );
-      
+
       // Invalidate queue queries
       queryClient.invalidateQueries({ queryKey: syncKeys.all });
-      
+
       return syncId;
     },
     [coordinator, queryClient]
@@ -137,7 +142,7 @@ export function useSyncState(userId: string): UseQueryResult<SyncState> {
     queryFn: async () => {
       // Get state from coordinator first (includes offline state)
       const localState = await coordinator.getState();
-      
+
       // Try to get server state if online
       try {
         const { data, error } = await supabase.rpc('get_sync_state', {
@@ -229,10 +234,12 @@ export function useSyncConflicts(
     queryFn: async () => {
       const { data, error } = await supabase
         .from('sync_conflicts')
-        .select(`
+        .select(
+          `
           *,
           sync_queue!inner(user_id)
-        `)
+        `
+        )
         .eq('sync_queue.user_id', userId)
         .eq('resolved', resolved)
         .order('detected_at', { ascending: false });
@@ -273,7 +280,7 @@ export function useResolveConflict() {
       if (error) throw error;
     },
     onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: syncKeys.all });
+      queryClient.invalidateQueries({ queryKey: syncKeys.all });
     },
   });
 }
@@ -337,10 +344,7 @@ export function useSyncHistory(
 // Sync Metrics Hook
 // ============================================================================
 
-export function useSyncMetrics(
-  userId: string,
-  days: number = 7
-): UseQueryResult<SyncMetrics[]> {
+export function useSyncMetrics(userId: string, days: number = 7): UseQueryResult<SyncMetrics[]> {
   const supabase = createClient();
 
   return useQuery({
@@ -444,7 +448,7 @@ export function useEntitySync<T extends Record<string, any>>(
   const syncCreate = useCallback(
     async (data: T) => {
       if (!entityId) return;
-      
+
       setIsSyncing(true);
       try {
         await enqueue(entityType, entityId, 'create', null, data, 'high');
@@ -458,7 +462,7 @@ export function useEntitySync<T extends Record<string, any>>(
   const syncUpdate = useCallback(
     async (original: T, modified: T) => {
       if (!entityId) return;
-      
+
       setIsSyncing(true);
       try {
         await enqueue(entityType, entityId, 'update', original, modified, 'normal');
@@ -472,7 +476,7 @@ export function useEntitySync<T extends Record<string, any>>(
   const syncDelete = useCallback(
     async (data: T) => {
       if (!entityId) return;
-      
+
       setIsSyncing(true);
       try {
         await enqueue(entityType, entityId, 'delete', data, data, 'critical');
@@ -513,7 +517,7 @@ export function useBatchSync() {
       setIsSyncing(true);
       try {
         const syncIds = await Promise.all(
-          operations.map(op =>
+          operations.map((op) =>
             enqueue(
               op.entityType,
               op.entityId,
@@ -548,10 +552,7 @@ export function useConflictResolution(conflictId: string) {
   const queryClient = useQueryClient();
 
   const resolveWithStrategy = useCallback(
-    async (
-      strategy: ConflictResolutionStrategy,
-      userId: string
-    ) => {
+    async (strategy: ConflictResolutionStrategy, userId: string) => {
       // Get conflict
       const { data: conflict, error } = await supabase
         .from('sync_conflicts')
@@ -579,8 +580,12 @@ export function useConflictResolution(conflictId: string) {
           // Merge at field level
           resolutionData = { ...conflict.server_data };
           for (const field of conflict.conflicting_fields) {
-            const clientTime = new Date(conflict.client_data[`${field}_updated_at`] || conflict.client_data.updated_at || 0).getTime();
-            const serverTime = new Date(conflict.server_data[`${field}_updated_at`] || conflict.server_data.updated_at || 0).getTime();
+            const clientTime = new Date(
+              conflict.client_data[`${field}_updated_at`] || conflict.client_data.updated_at || 0
+            ).getTime();
+            const serverTime = new Date(
+              conflict.server_data[`${field}_updated_at`] || conflict.server_data.updated_at || 0
+            ).getTime();
             if (clientTime > serverTime) {
               resolutionData[field] = conflict.client_data[field];
             }
@@ -621,9 +626,7 @@ export function useConflictResolution(conflictId: string) {
 // ============================================================================
 
 export function useOfflineStatus() {
-  const [isOnline, setIsOnline] = useState(
-    typeof window !== 'undefined' ? navigator.onLine : true
-  );
+  const [isOnline, setIsOnline] = useState(typeof window !== 'undefined' ? navigator.onLine : true);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
