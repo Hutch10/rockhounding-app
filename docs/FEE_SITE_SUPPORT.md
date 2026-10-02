@@ -1,7 +1,7 @@
 # Fee-site / pay-to-dig support (Rocky Atlas)
 
-**Contract:** `rockhounding:fee-site-support`  
-**Module:** `@rockhounding/shared/fee-site-support`  
+**Contract:** `rockhounding:fee-site-support`
+**Module:** `@rockhounding/shared/fee-site-support`
 **Schema version:** 1
 
 ## Purpose
@@ -30,7 +30,7 @@ Make fee mines / pay-to-dig sites a first-class **site type** on the canonical l
 
 ## Persistence
 
-Immediate: typed `locations.metadata.fee_site` envelope.  
+Immediate: typed `locations.metadata.fee_site` envelope.
 Proposed (not applied to Production): `supabase/migrations_proposed/20260930000000_fee_site_location_columns.sql`.
 
 ## Operator claim readiness
